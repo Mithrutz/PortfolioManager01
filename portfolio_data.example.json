@@ -1,0 +1,65 @@
+{
+  "_comment": "Redenumeste acest fisier in portfolio_data.json si modifica datele cu ale tale.",
+  "cursuri": {
+    "EUR": 1.0,
+    "USD": 1.14,
+    "RON": 5.23
+  },
+  "next_id": 7,
+  "tranzactii": [],
+  "snapshots": [],
+  "pozitii": [
+    {
+      "id": 1,
+      "nume": "VWCE",
+      "categorie": "ETF-uri",
+      "regiune": "World",
+      "cantitate": 10,
+      "pret": 140.0,
+      "pret_mediu": 120.0,
+      "moneda": "EUR",
+      "ticker_stooq": "vwce.de",
+      "ticker_source": "",
+      "dividende": []
+    },
+    {
+      "id": 2,
+      "nume": "SNP",
+      "categorie": "Acțiuni",
+      "regiune": "România",
+      "cantitate": 1000,
+      "pret": 1.25,
+      "pret_mediu": 0.90,
+      "moneda": "RON",
+      "ticker_stooq": "snp.ro",
+      "ticker_source": "",
+      "dividende": []
+    },
+    {
+      "id": 3,
+      "nume": "R3604AE",
+      "categorie": "Obligațiuni",
+      "regiune": "România",
+      "cantitate": 10,
+      "pret": 100.0,
+      "pret_mediu": 100.0,
+      "moneda": "EUR",
+      "ticker_stooq": "",
+      "ticker_source": "",
+      "dividende": []
+    },
+    {
+      "id": 4,
+      "nume": "Cash EUR",
+      "categorie": "Cash",
+      "regiune": "World",
+      "cantitate": 1,
+      "pret": 5000.0,
+      "pret_mediu": 5000.0,
+      "moneda": "EUR",
+      "ticker_stooq": "",
+      "ticker_source": "",
+      "dividende": []
+    }
+  ]
+}
