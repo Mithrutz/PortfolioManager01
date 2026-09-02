@@ -191,7 +191,7 @@ class DriveSync:
                     self.last_sync = datetime.now().strftime("%H:%M:%S")
                     return True    # local e la zi
 
-            # Descarca fisierul
+            # Download the file
             r = req.get(
                 f"{self.DRIVE_API}/files/{self.file_id}",
                 headers=self._headers(),
@@ -240,7 +240,7 @@ class DriveSync:
             }
 
             if self.file_id:
-                # Actualizeaza fisierul existent
+                # Update existing file
                 r = req.patch(
                     f"{self.UPLOAD_API}/files/{self.file_id}",
                     headers={**headers_upload, "Content-Type": "application/octet-stream"},
@@ -249,7 +249,7 @@ class DriveSync:
                     timeout=30
                 )
             else:
-                # Creeaza fisier nou (multipart)
+                # Create new file (multipart)
                 import email.mime.multipart, email.mime.base, email.mime.application
                 meta = json.dumps({
                     "name": DRIVE_FILENAME,
@@ -300,7 +300,7 @@ class DriveSync:
         }
 
 
-# Instanta globala
+# Global instance
 _drive = None
 
 def get_drive():
@@ -327,31 +327,31 @@ app = Flask(__name__, static_folder=None)
 
 # ── Date implicite ─────────────────────────────────────────────────────────────
 DEFAULT_DATA = {
-    "cursuri": {"EUR": 1.0, "USD": 1.16, "RON": 5.23},
+    "cursuri": {"EUR": 1.0, "USD": 1.14, "RON": 5.23},
     "pozitii": [
-        # ── ETF-uri / World ────────────────────────────────────────────────────
-        {"id":1,  "nume":"IS04",     "categorie":"ETF-uri",    "regiune":"World",    "cantitate":7200,  "pret":2.75,   "pret_mediu":2.84,   "moneda":"EUR", "ticker_stooq":"is04.uk"},
-        {"id":2,  "nume":"IGLN",     "categorie":"ETF-uri",    "regiune":"World",    "cantitate":30,    "pret":84.56,  "pret_mediu":80.0,   "moneda":"USD", "ticker_stooq":"igln.uk"},
-        {"id":3,  "nume":"COPX.UK",  "categorie":"ETF-uri",    "regiune":"World",    "cantitate":12,    "pret":60.70,  "pret_mediu":67.2,   "moneda":"EUR", "ticker_stooq":"copx.uk"},
-        {"id":4,  "nume":"EUNK.DE",  "categorie":"ETF-uri",    "regiune":"World",    "cantitate":7.14,  "pret":100.50, "pret_mediu":98.2,   "moneda":"EUR", "ticker_stooq":"eunk.de"},
-        {"id":5,  "nume":"CEBL.DE",  "categorie":"ETF-uri",    "regiune":"World",    "cantitate":2.5,   "pret":251.35, "pret_mediu":238.1,  "moneda":"EUR", "ticker_stooq":"cebl.de"},
-        # ── Acțiuni World ──────────────────────────────────────────────────────
-        {"id":6,  "nume":"BRK.B",    "categorie":"Acțiuni",    "regiune":"World",    "cantitate":15,    "pret":493.70, "pret_mediu":479.0,  "moneda":"USD", "ticker_stooq":"brkb.us"},
-        {"id":7,  "nume":"ORCL",     "categorie":"Acțiuni",    "regiune":"World",    "cantitate":29,    "pret":188.00, "pret_mediu":204.0,  "moneda":"USD", "ticker_stooq":"orcl.us"},
-        {"id":9,  "nume":"NFLX",     "categorie":"Acțiuni",    "regiune":"World",    "cantitate":20,    "pret":77.00,  "pret_mediu":84.5,   "moneda":"USD", "ticker_stooq":"nflx.us"},
-        # ── Acțiuni România ────────────────────────────────────────────────────
-        {"id":8,  "nume":"SNP",      "categorie":"Acțiuni",    "regiune":"România",  "cantitate":14200, "pret":1.054,  "pret_mediu":0.99,   "moneda":"RON", "ticker_stooq":"snp.ro"},
-        {"id":10, "nume":"H2O",      "categorie":"Acțiuni",    "regiune":"România",  "cantitate":35,    "pret":175.40, "pret_mediu":121.8,  "moneda":"RON", "ticker_stooq":"h2o.ro"},
-        {"id":11, "nume":"TLV",      "categorie":"Acțiuni",    "regiune":"România",  "cantitate":50,    "pret":37.84,  "pret_mediu":28.04,  "moneda":"RON", "ticker_stooq":"tlv.ro"},
-        # ── Obligațiuni România ────────────────────────────────────────────────
-        {"id":12, "nume":"R3604AE",  "categorie":"Obligațiuni","regiune":"România",  "cantitate":70,    "pret":100.70, "pret_mediu":100.0,  "moneda":"EUR", "ticker_stooq":""},
-        {"id":13, "nume":"R2907A",   "categorie":"Obligațiuni","regiune":"România",  "cantitate":121,   "pret":100.50, "pret_mediu":100.0,  "moneda":"RON", "ticker_stooq":""},
+        # ── ETFs / World ──────────────────────────────────────────────────────
+        {"id":1,  "nume":"VWCE",     "categorie":"ETF-uri",    "regiune":"World",   "cantitate":25,    "pret":142.80, "pret_mediu":118.40, "moneda":"EUR", "ticker_stooq":"vwce.de",  "dividende":[], "ticker_source":""},
+        {"id":2,  "nume":"CSPX",     "categorie":"ETF-uri",    "regiune":"World",   "cantitate":8,     "pret":534.20, "pret_mediu":420.60, "moneda":"USD", "ticker_stooq":"cspx.uk",  "dividende":[], "ticker_source":""},
+        {"id":3,  "nume":"EUNK.DE",  "categorie":"ETF-uri",    "regiune":"World",   "cantitate":15,    "pret":104.60, "pret_mediu":88.30,  "moneda":"EUR", "ticker_stooq":"eunk.de",  "dividende":[], "ticker_source":""},
+        {"id":4,  "nume":"IGLN",     "categorie":"ETF-uri",    "regiune":"World",   "cantitate":20,    "pret":82.50,  "pret_mediu":68.90,  "moneda":"USD", "ticker_stooq":"igln.uk",  "dividende":[], "ticker_source":""},
+        # ── Stocks / World ────────────────────────────────────────────────────
+        {"id":5,  "nume":"AAPL",     "categorie":"Acțiuni",   "regiune":"World",   "cantitate":10,    "pret":213.40, "pret_mediu":162.80, "moneda":"USD", "ticker_stooq":"aapl.us",  "dividende":[], "ticker_source":""},
+        {"id":6,  "nume":"MSFT",     "categorie":"Acțiuni",   "regiune":"World",   "cantitate":5,     "pret":478.90, "pret_mediu":380.50, "moneda":"USD", "ticker_stooq":"msft.us",  "dividende":[], "ticker_source":""},
+        {"id":7,  "nume":"BRK.B",    "categorie":"Acțiuni",   "regiune":"World",   "cantitate":8,     "pret":496.40, "pret_mediu":338.20, "moneda":"USD", "ticker_stooq":"brkb.us",  "dividende":[], "ticker_source":""},
+        # ── Stocks / Romania ──────────────────────────────────────────────────
+        {"id":8,  "nume":"SNP",      "categorie":"Acțiuni",   "regiune":"România", "cantitate":5000,  "pret":1.248,  "pret_mediu":0.820,  "moneda":"RON", "ticker_stooq":"snp.ro",   "dividende":[], "ticker_source":""},
+        {"id":9,  "nume":"TLV",      "categorie":"Acțiuni",   "regiune":"România", "cantitate":120,   "pret":42.60,  "pret_mediu":22.40,  "moneda":"RON", "ticker_stooq":"tlv.ro",   "dividende":[], "ticker_source":""},
+        # ── Bonds / Romania ───────────────────────────────────────────────────
+        {"id":10, "nume":"R3604AE",  "categorie":"Obligațiuni","regiune":"România", "cantitate":50,    "pret":101.20, "pret_mediu":100.0,  "moneda":"EUR", "ticker_stooq":"",         "dividende":[], "ticker_source":""},
+        {"id":11, "nume":"Tezaur",   "categorie":"Obligațiuni","regiune":"România", "cantitate":1000,  "pret":100.00, "pret_mediu":100.0,  "moneda":"RON", "ticker_stooq":"",         "dividende":[], "ticker_source":""},
+        # ── Crypto ────────────────────────────────────────────────────────────
+        {"id":12, "nume":"Bitcoin",  "categorie":"Crypto",     "regiune":"World",   "cantitate":0.1,   "pret":77200,  "pret_mediu":74000,  "moneda":"USD", "ticker_stooq":"BTC-USD",  "dividende":[], "ticker_source":"yahoo"},
         # ── Cash ──────────────────────────────────────────────────────────────
-        {"id":14, "nume":"Cash EUR", "categorie":"Cash",        "regiune":"World",    "cantitate":1,     "pret":7000.0, "pret_mediu":7000.0, "moneda":"EUR", "ticker_stooq":""},
-        {"id":15, "nume":"Cash RON", "categorie":"Cash",        "regiune":"România",  "cantitate":1,     "pret":11153.0,"pret_mediu":11153.0,"moneda":"RON", "ticker_stooq":""},
-        {"id":16, "nume":"Cash USD", "categorie":"Cash",        "regiune":"World",    "cantitate":1,     "pret":920.0,  "pret_mediu":920.0,  "moneda":"USD", "ticker_stooq":""},
+        {"id":13, "nume":"Cash EUR", "categorie":"Cash",        "regiune":"World",   "cantitate":1,     "pret":3500.0, "pret_mediu":3500.0, "moneda":"EUR", "ticker_stooq":"",         "dividende":[], "ticker_source":""},
+        {"id":14, "nume":"Cash USD", "categorie":"Cash",        "regiune":"World",   "cantitate":1,     "pret":1200.0, "pret_mediu":1200.0, "moneda":"USD", "ticker_stooq":"",         "dividende":[], "ticker_source":""},
+        {"id":15, "nume":"Cash RON", "categorie":"Cash",        "regiune":"România", "cantitate":1,     "pret":8400.0, "pret_mediu":8400.0, "moneda":"RON", "ticker_stooq":"",         "dividende":[], "ticker_source":""},
     ],
-    "next_id": 17,
+    "next_id": 16,
 }
 
 CAT_MIGRATE = {
@@ -398,7 +398,7 @@ def save_data(data):
         data["tranzactii"] = []
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    # Upload pe Drive in background (nu blocheaza)
+    # Upload to Drive in background (non-blocking)
     drive = get_drive()
     if drive.enabled:
         threading.Thread(target=drive.upload, daemon=True).start()
@@ -409,7 +409,7 @@ def save_snapshot(data, cursuri):
     today = str(dt_date.today())
     snapshots = data.setdefault("snapshots", [])
 
-    # Calculeaza valorile curente
+    # Calculate current values
     def to_eur(v, m):
         return v / (cursuri.get(m) or 1.0)
 
@@ -428,7 +428,7 @@ def save_snapshot(data, cursuri):
         "cursuri": {"USD": cursuri.get("USD", 1.16), "RON": cursuri.get("RON", 5.23)}
     }
 
-    # Inlocuieste snapshot-ul de azi daca exista deja
+    # Replace today's snapshot if it already exists
     existing = [s for s in snapshots if s["data"] != today]
     existing.append(snapshot)
     existing.sort(key=lambda s: s["data"])
@@ -596,7 +596,7 @@ def get_bvb(simbol):
     except Exception:
         pass
 
-    # 2. Scraping BVB cu sesiune ASP.NET
+    # 2. BVB scraping with session ASP.NET
     try:
         session = requests.Session()
         session.headers.update(HEADERS_BASE)
@@ -660,7 +660,7 @@ def get_tradeville(simbol):
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "lxml")
 
-        # Tradeville afișează prețul în clase specifice
+        # Tradeville shows price in specific CSS classes
         for sel in [
             {"class": re.compile(r"pret|price|cotatie|last", re.I)},
             {"id":    re.compile(r"pret|price|last",          re.I)},
@@ -714,8 +714,8 @@ def get_data():
 @app.route("/api/data", methods=["POST"])
 def set_data():
     new_data = request.get_json()
-    # Pastreaza ticker_source din fisierul existent
-    # (frontend-ul nu gestioneaza acest camp — il salveaza doar backend-ul)
+    # Preserve ticker_source from existing file
+    # (frontend does not manage this field — only backend writes it)
     try:
         existing = load_data()
         src_map = {p["id"]: p.get("ticker_source", "")
@@ -737,7 +737,7 @@ def refresh_prices():
     # ── Cursuri valutare ────────────────────────────────────────────────────
     cursuri_live = get_cursuri()
 
-    # ── Prețuri per poziție ─────────────────────────────────────────────────
+    # ── Prices per position ──────────────────────────────────────────────────
     for p in pozitii:
         ticker  = (p.get("ticker_stooq") or "").strip()
         regiune = p.get("regiune", "World")
@@ -767,7 +767,7 @@ def refresh_prices():
                 else:
                     sursa = f"Stooq: {sursa} | Yahoo: {sursa2}"
 
-            # ── 3. Fallback România → yfinance (.RO) → BVB → Tradeville ─
+            # ── 3. Fallback Romania → yfinance (.RO) → BVB → Tradeville ──
             if pret is None and regiune == "România":
                 # yfinance stie SNP.RO, TLV.RO, H2O.RO etc.
                 pret2, sursa2 = get_yfinance(ticker)
@@ -816,13 +816,13 @@ def normalize_stooq(ticker, regiune="World"):
     t = ticker.strip()
     tl = t.lower()
 
-    # Detecteaza format Yahoo Finance: XXX-USD, XXX-EUR, XXX-BTC etc.
-    # Acestea NU se trimit la Stooq, ci la Yahoo Finance
+    # Detect Yahoo Finance format: XXX-USD, XXX-EUR, XXX-BTC etc.
+    # These are NOT sent to Stooq, but to Yahoo Finance
     import re as _re
     if _re.match(r'^[A-Za-z0-9]+-(USD|EUR|GBP|BTC|ETH|USDT|USDC)$', t, _re.I):
-        return t  # returneaza neschimbat — va fi procesat de Yahoo Finance
+        return t  # return unchanged — will be processed by Yahoo Finance
 
-    return tl   # stooq foloseste lowercase
+    return tl   # stooq uses lowercase
 
 
 def test_ticker():
@@ -914,14 +914,14 @@ def drive_diagnose():
         "token_exists": os.path.exists(data_path("token.json")),
         "libraries": {}
     }
-    # Verifica librarii
+    # Check libraries
     for lib in ["google.auth", "google_auth_oauthlib", "googleapiclient", "httplib2"]:
         try:
             __import__(lib.replace("-","_"))
             result["libraries"][lib] = "OK"
         except ImportError as e:
             result["libraries"][lib] = f"LIPSESTE: {e}"
-    # Verifica drive status
+    # Check drive status
     drive = get_drive()
     result["drive_enabled"]   = drive.enabled
     result["drive_error"]     = drive.error
@@ -1007,7 +1007,7 @@ def refresh_prices_stream():
                     pr, sr = get_bvb(simbol)
                     return pr, sr, "bvb" if pr else ""
 
-                # Tickere format Yahoo (BTC-USD, ETH-EUR etc.) → direct Yahoo
+                # Yahoo Finance format tickers (BTC-USD, ETH-EUR etc.) → go direct to Yahoo
                 import re as _re2
                 is_yahoo_format = bool(_re2.match(
                     r'^[A-Za-z0-9]+-(USD|EUR|GBP|BTC|ETH|USDT|USDC)$', ticker, _re2.I))
@@ -1016,7 +1016,7 @@ def refresh_prices_stream():
                     pret, sursa, new_source = try_yahoo()
                 elif cached_source == "stooq":
                     pret, sursa, new_source = try_stooq()
-                    if not pret:  # sursa cache a picat, redescoperim
+                    if not pret:  # cached source failed, re-discovering
                         pret, sursa, new_source = try_yahoo()
                     if not pret and regiune != "World":
                         pret, sursa, new_source = try_bvb()
@@ -1036,7 +1036,7 @@ def refresh_prices_stream():
                         pret, sursa, new_source = try_yahoo()
 
                 else:
-                    # Prima rulare — descoperim sursa optima
+                    # First run — discover optimal source
                     pret, sursa, new_source = try_stooq()
                     if not pret and regiune == "World":
                         pret, sursa, new_source = try_yahoo()
@@ -1105,13 +1105,13 @@ def test_ticker():
         ticker, _re.I))
 
     if is_yahoo_fmt:
-        # Merge direct la Yahoo Finance
+        # Go directly to Yahoo Finance
         pret, sursa = get_yfinance(ticker)
         moneda = "USD" if ticker.upper().endswith("-USD") else                  "EUR" if ticker.upper().endswith("-EUR") else "USD"
         src_key = "yahoo" if pret else ""
     else:
         ticker_norm = normalize_stooq(ticker, regiune)
-        # Detecteaza moneda din extensia ticker-ului
+        # Detect currency from ticker extension
         if ".de" in ticker_norm or ".fr" in ticker_norm:
             moneda = "EUR"
         elif ".ro" in ticker_norm:
@@ -1157,7 +1157,7 @@ def run_flask():
 
 def sync_on_startup():
     """Incearca sa descarce datele din Drive la pornire."""
-    time.sleep(2)   # asteapta Flask sa fie gata
+    time.sleep(2)   # wait for Flask to start
     drive = get_drive()
     if drive.enabled:
         print("[Drive] Se verifică datele din cloud...")
@@ -1176,7 +1176,7 @@ if __name__ == "__main__":
         t.start()
         # Sync Drive in background
         threading.Thread(target=sync_on_startup, daemon=True).start()
-        time.sleep(1.2)   # asteapta Flask sa fie gata
+        time.sleep(1.2)   # wait for Flask to start
 
         # Deschide fereastra GUI nativa
         window = webview.create_window(
