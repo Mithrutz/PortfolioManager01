@@ -1,5 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-# PyInstaller spec — ONEFILE mode (un singur .exe)
+# PyInstaller spec — ONEFILE mode (only one .exe)
 
 a = Analysis(
     ['app.py'],

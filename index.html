@@ -92,7 +92,7 @@ header h1{font-family:Georgia,serif;font-weight:400;font-size:20px} header h1 sp
 .stooq-hint{font-size:10px;color:#4b5563;margin-top:3px}
 
 
-/* ── Dividende modal ── */
+/* ── Dividends modal ── */
 .dmodal{background:var(--card);border:1px solid var(--b1);border-radius:14px;
   padding:0;width:500px;max-width:95vw;max-height:82vh;display:flex;flex-direction:column;
   transform:translateY(10px);transition:transform .2s;overflow:hidden}
@@ -161,23 +161,22 @@ header h1{font-family:Georgia,serif;font-weight:400;font-size:20px} header h1 sp
   <h1>Portfolio <span>Manager</span></h1>
   <div style="display:flex;gap:8px;align-items:center">
     <div class="tabs">
-      <button class="tab on" id="tab-alloc" onclick="setTab('alloc')">📊 Alocare</button>
-      <button class="tab"    id="tab-pnl"     onclick="setTab('pnl')">📈 Profit / Pierdere</button>
-      <button class="tab"    id="tab-evo"     onclick="setTab('evo')">📉 Evoluție</button>
+      <button class="tab on" id="tab-alloc" onclick="setTab('alloc')">📊 Allocation</button>
+      <button class="tab"    id="tab-pnl"     onclick="setTab('pnl')">📈 Profit / Loss</button>
+      <button class="tab"    id="tab-evo"     onclick="setTab('evo')">📉 Evolution</button>
     </div>
-    <button class="btn bs" id="btn-refresh" onclick="startRefresh()">🔄 Actualizează prețuri</button>
-    <button class="btn bs" id="btn-save" onclick="saveData()">💾 Salvează</button>
-    <button class="btn bs" onclick="toggleLang()" id="lang-btn" style="font-size:13px;padding:6px 11px">🇬🇧 EN</button>
+    <button class="btn bs" id="btn-refresh" onclick="startRefresh()">🔄 Update prices</button>
+    <button class="btn bs" id="btn-save" onclick="saveDate()">💾 Save</button>
     <button class="drive-badge drive-off" id="drive-badge" onclick="manualDriveSync()" title="Google Drive sync">☁ Drive</button>
   </div>
 </header>
 
 <div class="main">
   <aside class="sb">
-    <div class="sb-h"><h2 id="sb-title">Poziții</h2><button class="btn bp bsm" id="sb-add-btn" onclick="openModal()">＋ Adaugă</button></div>
+    <div class="sb-h"><h2 id="sb-title">Positions</h2><button class="btn bp bsm" id="sb-add-btn" onclick="openModal()">＋ Add</button></div>
     <div class="pl" id="pl"></div>
     <div class="rates">
-      <div class="rt" id="rates-title">Cursuri valutare</div>
+      <div class="rt" id="rates-title">Exchange rates</div>
       <div class="rr">
         <div class="ri"><label>EUR / USD</label><input id="r-usd" type="number" step="0.0001" onchange="onRate()"/></div>
         <div class="ri"><label>EUR / RON</label><input id="r-ron" type="number" step="0.001"  onchange="onRate()"/></div>
@@ -190,50 +189,50 @@ header h1{font-family:Georgia,serif;font-weight:400;font-size:20px} header h1 sp
 <!-- Modal -->
 <div class="ov" id="ov">
   <div class="modal">
-    <h3 id="mt">Adaugă poziție</h3>
-    <div class="fr"><label>Ticker / Nume</label><input class="fi" id="fn" placeholder="ex: AAPL, IS04"/></div>
-    <div class="fr"><label>Categorie</label>
+    <h3 id="mt">Add position</h3>
+    <div class="fr"><label>Ticker / Name</label><input class="fi" id="fn" placeholder="ex: AAPL, IS04"/></div>
+    <div class="fr"><label>Category</label>
       <select class="fs" id="fc" onchange="onCategoryChange()">
-        <option>ETF-uri</option><option>Acțiuni</option><option>Obligațiuni</option>
+        <option>ETFs</option><option>Stocks</option><option>Bonds</option>
         <option>Cash</option><option>Crypto</option>
       </select></div>
     <div class="fg" style="margin-bottom:12px">
-      <div id="row-qty" class="fr" style="margin-bottom:0"><label>Cantitate / Nr. acțiuni</label><input class="fi" id="fq" type="number" step="any" placeholder="ex: 100"/></div>
-      <div class="fr" style="margin-bottom:0"><label>Monedă</label>
+      <div id="row-qty" class="fr" style="margin-bottom:0"><label>Quantity / Shares</label><input class="fi" id="fq" type="number" step="any" placeholder="ex: 100"/></div>
+      <div class="fr" style="margin-bottom:0"><label>Currency</label>
         <select class="fs" id="fm"><option value="EUR">EUR €</option><option value="USD">USD $</option><option value="RON">RON lei</option></select></div>
     </div>
     <div class="fg" style="margin-bottom:12px">
-      <div class="fr" style="margin-bottom:0"><label id="label-pret">Preț curent</label><input class="fi" id="fp" type="number" step="any" placeholder="ex: 150.50"/></div>
-      <div id="row-pmed" class="fr" style="margin-bottom:0"><label>Preț mediu achiziție</label><input class="fi" id="fpm" type="number" step="any" placeholder="ex: 130.00"/></div>
+      <div class="fr" style="margin-bottom:0"><label id="label-pret">Current price</label><input class="fi" id="fp" type="number" step="any" placeholder="ex: 150.50"/></div>
+      <div id="row-pmed" class="fr" style="margin-bottom:0"><label>Avg. purchase price</label><input class="fi" id="fpm" type="number" step="any" placeholder="ex: 130.00"/></div>
     </div>
         <div class="fg" style="margin-bottom:12px">
-      <div class="fr" style="margin-bottom:0"><label>Regiune</label>
+      <div class="fr" style="margin-bottom:0"><label>Region</label>
         <select class="fs" id="frg">
           <option value="World">🌍 World</option>
-          <option value="România">🇷🇴 România</option>
+          <option value="Romania">🇷🇴 Romania</option>
         </select></div>
       <div id="add-cash-div" style="display:none;align-items:center;gap:8px;padding:10px 0;border-top:1px solid #1f2937">
         <input type="checkbox" id="add-from-cash" style="accent-color:#22c55e;width:15px;height:15px"/>
         <label for="add-from-cash" style="font-size:12px;color:#9ca3af;cursor:pointer">
-          Deduce costul achiziției din Cash
-          <span id="add-cash-info" style="color:#4b5563;display:block;font-size:10px;margin-top:2px">completează cantitate și preț mediu pentru a vedea suma</span>
+          Deduct acquisition cost from Cash
+          <span id="add-cash-info" style="color:#4b5563;display:block;font-size:10px;margin-top:2px">fill in quantity and avg price to see amount</span>
         </label>
       </div>
       <div class="fr" id="row-ticker" style="margin-bottom:0">
-        <label>Ticker Stooq
-          <a href="https://stooq.com/t/" target="_blank" style="color:#4b5563;font-size:10px;text-decoration:none;margin-left:6px">🔍 caută pe stooq.com</a>
+        <label>Stooq Ticker
+          <a href="https://stooq.com/t/" target="_blank" style="color:#4b5563;font-size:10px;text-decoration:none;margin-left:6px">🔍 browse stooq.com</a>
         </label>
         <div class="ticker-row">
           <input class="fi" id="fty" placeholder="ex: brkb.us · snp.ro · eunk.de · is04.uk"/>
-          <button class="btn-test" onclick="testTicker()">▶ Testează</button>
+          <button class="btn-test" onclick="testTicker()">▶ Test</button>
         </div>
-        <div class="stooq-hint">Format: {simbol}.{piata} — us/ro/de/uk/fr/jp etc.</div>
+        <div class="stooq-hint">Format: {symbol}.{market} — us/ro/de/uk/fr/jp etc.</div>
         <div class="ticker-result" id="ticker-result"></div>
       </div>
     </div>
     <div class="mf">
-      <button class="btn bs" onclick="closeModal()">Anulează</button>
-      <button class="btn bp" onclick="savePos()">Salvează</button>
+      <button class="btn bs" onclick="closeModal()">Cancel</button>
+      <button class="btn bp" onclick="savePos()">Save</button>
     </div>
   </div>
 </div>
@@ -243,21 +242,20 @@ header h1{font-family:Georgia,serif;font-weight:400;font-size:20px} header h1 sp
 <script>
 var ST={cursuri:{EUR:1,USD:1.16,RON:5.23},pozitii:[],next_id:1,tranzactii:[],snapshots:[]};
 var editId=null, curTab="alloc";
-var CATS=["ETF-uri","Acțiuni","Obligațiuni","Cash","Crypto"];
+var CATS=["ETFs","Stocks","Bonds","Cash","Crypto"];
 var PAL={
-  "ETF-uri":    {main:"#f59e0b",sh:["#b45309","#d97706","#f59e0b","#fbbf24","#fde68a"]},
-  "Acțiuni":    {main:"#14d9c4",sh:["#0f766e","#0d9488","#14b8a6","#2dd4bf","#5eead4","#99f6e4"]},
-  "Obligațiuni":{main:"#a78bfa",sh:["#6d28d9","#8b5cf6","#a78bfa","#c4b5fd"]},
+  "ETFs":    {main:"#f59e0b",sh:["#b45309","#d97706","#f59e0b","#fbbf24","#fde68a"]},
+  "Stocks":    {main:"#14d9c4",sh:["#0f766e","#0d9488","#14b8a6","#2dd4bf","#5eead4","#99f6e4"]},
+  "Bonds":{main:"#a78bfa",sh:["#6d28d9","#8b5cf6","#a78bfa","#c4b5fd"]},
   "Cash":       {main:"#64748b",sh:["#1e293b","#334155","#475569","#64748b"]},
   "Crypto":     {main:"#f97316",sh:["#7c2d12","#c2410c","#ea580c","#f97316","#fb923c"]}
 };
 function toE(v,m){return v/(ST.cursuri[m]||1)}
 function pVal(p){return toE(p.cantitate*p.pret,p.moneda)}
-function fe(n){return new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(n)+" €"}
+function fe(n){return new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(n)+" €"}
 
 async function init(){
   var r=await fetch("/api/data"); ST=await r.json();
-  applyLang();
   if(!ST.tranzactii) ST.tranzactii=[];
   if(!ST.snapshots)  ST.snapshots=[];
   document.getElementById("r-usd").value=ST.cursuri.USD;
@@ -278,27 +276,27 @@ function renderSB(){
       var v=pVal(p),pct=tot>0?(v/tot*100).toFixed(1):"0.0",sh=(PAL[cat]||{sh:["#64748b"]}).sh[i%(PAL[cat]||{sh:["#64748b"]}).sh.length];
       var row=document.createElement("div"); row.className="pr";
       var isCash=(p.categorie==="Cash");
-      var regBadge='<span style="margin-left:5px;font-size:9px;padding:1px 5px;border-radius:4px;background:'+(p.regiune==="România"?"#3b1f0f":"#0f2b3b")+';color:'+(p.regiune==="România"?"#fb923c":"#38bdf8")+'">'+( p.regiune||"World")+"</span>";
+      var regBadge='<span style="margin-left:5px;font-size:9px;padding:1px 5px;border-radius:4px;background:'+(p.regiune==="Romania"?"#3b1f0f":"#0f2b3b")+';color:'+(p.regiune==="Romania"?"#fb923c":"#38bdf8")+'">'+( p.regiune||"World")+"</span>";
       if(isCash){
         row.innerHTML='<span style="font-size:14px;flex-shrink:0">💵</span>'+
           '<div class="pi"><div class="pn">'+p.nume+regBadge+'</div>'+
-          '<div class="ps">'+t("cashBalance")+'</div></div>'+
+          '<div class="ps">'+"Cash Balance"+'</div></div>'+
           '<div class="pv"><div class="pvn">'+fe(v)+'</div><div class="pvp">'+pct+'%</div></div>'+
           '<div class="pact">'+
-          '<button class="ib" style="color:#22c55e;font-size:16px;font-weight:bold" onclick="openCashModal('+p.id+',1)" title="'+t("addFunds")+'">＋</button>'+
-          '<button class="ib" style="color:#ef4444;font-size:16px;font-weight:bold" onclick="openCashModal('+p.id+',-1)" title="'+t("removeFunds")+'">—</button>'+
-          '<button class="ib d" onclick="delPos('+p.id+')" title="Șterge poziție">🗑</button></div>';
+          '<button class="ib" style="color:#22c55e;font-size:16px;font-weight:bold" onclick="openCashModal('+p.id+',1)" title="'+"Add funds"+'">＋</button>'+
+          '<button class="ib" style="color:#ef4444;font-size:16px;font-weight:bold" onclick="openCashModal('+p.id+',-1)" title="'+"Withdraw funds"+'">—</button>'+
+          '<button class="ib d" onclick="delPos('+p.id+')" title="Delete position">🗑</button></div>';
       } else {
         row.innerHTML='<span class="pdot" style="background:'+sh+'"></span>'+
           '<div class="pi"><div class="pn">'+p.nume+regBadge+'</div>'+
           '<div class="ps">'+p.cantitate+' × '+p.pret+' '+p.moneda+'</div></div>'+
           '<div class="pv"><div class="pvn">'+fe(v)+'</div><div class="pvp">'+pct+'%</div></div>'+
           '<div class="pact">'+
-          '<button class="ib" style="color:#4ade80" onclick="openDivModal('+p.id+')" title="Dividende">💰</button>'+
-          '<button class="ib" style="color:#4ade80" onclick="openBuyModal('+p.id+')" title="Cumpără mai mult">🛒</button>'+
-          '<button class="ib" style="color:#fb923c" onclick="openSellModal('+p.id+')" title="Vinde">💸</button>'+
-          '<button class="ib e" onclick="openModal('+p.id+')" title="Editează poziție">✏️</button>'+
-          '<button class="ib d" onclick="delPos('+p.id+')" title="Șterge poziție">🗑</button></div>';
+          '<button class="ib" style="color:#4ade80" onclick="openDivModal('+p.id+')" title="Dividends">💰</button>'+
+          '<button class="ib" style="color:#4ade80" onclick="openBuyModal('+p.id+')" title="Buy more">🛒</button>'+
+          '<button class="ib" style="color:#fb923c" onclick="openSellModal('+p.id+')" title="Sell">💸</button>'+
+          '<button class="ib e" onclick="openModal('+p.id+')" title="Edit position">✏️</button>'+
+          '<button class="ib d" onclick="delPos('+p.id+')" title="Delete position">🗑</button></div>';
       }
       el.appendChild(row);
     });
@@ -314,7 +312,7 @@ function setTab(t){
 }
 function genChart(){
   if(typeof renderChart==="function") renderChart(JSON.parse(JSON.stringify(ST)),curTab);
-  else showToast("Se inițializează graficul…");
+  else showToast("Initializing chart…");
 }
 function onRate(){
   ST.cursuri.USD=parseFloat(document.getElementById("r-usd").value)||1.16;
@@ -323,7 +321,7 @@ function onRate(){
 }
 function openModal(id){
   editId=id||null;
-  document.getElementById("mt").textContent=id?"Editează poziție":"Adaugă poziție nouă";
+  document.getElementById("mt").textContent=id?"Edit position":"Add new position";
   if(id){
     var p=ST.pozitii.find(function(x){return x.id===id});
     document.getElementById("fn").value=p.nume;
@@ -338,7 +336,7 @@ function openModal(id){
   } else {
     ["fn","fq","fp","fpm","fty"].forEach(function(i){document.getElementById(i).value=""});
     document.getElementById("frg").value="World";
-    document.getElementById("fc").value="ETF-uri";
+    document.getElementById("fc").value="ETFs";
     document.getElementById("fm").value="EUR";
   }
   document.getElementById("ov").classList.add("open");
@@ -352,9 +350,9 @@ function openModal(id){
 function closeModal(){document.getElementById("ov").classList.remove("open");editId=null}
 function ovCk(e){/* click outside dezactivat pentru Add/Edit */}
 function delPos(id){
-  if(!confirm("Ștergi această poziție?"))return;
+  if(!confirm("Delete this position?"))return;
   ST.pozitii=ST.pozitii.filter(function(p){return p.id!==id});
-  renderSB();genChart();showToast("Poziție ștearsă");
+  renderSB();genChart();showToast("Position deleted");
 }
 function savePos(){
   var n=document.getElementById("fn").value.trim();
@@ -373,8 +371,8 @@ function savePos(){
         info.style.display="block";
         info.style.background="#2d1515";
         info.style.borderColor="#dc2626";
-        info.innerHTML='⚠️ <strong>Există deja Cash '+m+' / '+rg+'</strong><br>'+
-          '<span style="font-size:12px;color:#9ca3af">Folosește butoanele <strong>＋</strong> și <strong>—</strong> din sidebar pentru a modifica soldul poziției existente <em>'+dup.nume+'</em>.</span>';
+        info.innerHTML='⚠️ <strong>Cash already exists '+m+' / '+rg+'</strong><br>'+
+          '<span style="font-size:12px;color:#9ca3af">Use the <strong>＋</strong> and <strong>—</strong> din sidebar to modify the balance of existing position <em>'+dup.nume+'</em>.</span>';
       }
       return;
     }
@@ -383,18 +381,18 @@ function savePos(){
   var q=isCash?1:parseFloat(document.getElementById("fq").value);
   var p=isCash?parseFloat(document.getElementById("fp").value||"0"):parseFloat(document.getElementById("fp").value);
   var pm=isCash?p:parseFloat(document.getElementById("fpm").value);
-  if(!n){alert("Completează cel puțin Numele!");return}
-  if(!isCash&&(isNaN(q)||isNaN(p))){alert("Completează cel puțin: Nume, Cantitate, Preț curent!");return}
+  if(!n){alert("Please fill in at least Numele!");return}
+  if(!isCash&&(isNaN(q)||isNaN(p))){alert("Please fill in at least: Nume, Cantitate, Current price!");return}
   if(isCash&&isNaN(p)){p=0;}
   var ty=document.getElementById("fty").value.trim();
   var rg=document.getElementById("frg").value;
   if(isNaN(pm))pm=p;
   if(editId){
     Object.assign(ST.pozitii.find(function(x){return x.id===editId}),{nume:n,categorie:c,cantitate:q,pret:p,pret_mediu:pm,moneda:m,ticker_stooq:ty,regiune:rg});
-    showToast(n+" actualizat");
+    showToast(n+" updated");
   } else {
     ST.pozitii.push({id:ST.next_id++,nume:n,categorie:c,cantitate:q,pret:p,pret_mediu:pm,moneda:m,ticker_stooq:ty,regiune:rg});
-    showToast(n+" adăugat");
+    showToast(n+" added");
   }
   // Deduce din cash daca e bifat (doar la pozitii noi, nu la editare)
   if(!editId){
@@ -403,13 +401,13 @@ function savePos(){
       var costAchiz = q*(isNaN(pm)?p:pm);
       var cpCheck = getCashPos(m);
       if(cpCheck && cpCheck.pret < costAchiz){
-        alert("❌ Cash insuficient pentru deducere!\n\nCost: "+
-          new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(costAchiz)+" "+m+"\n"+
-          "Cash: "+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(cpCheck.pret)+" "+m+
-          "\n\nPoziția a fost adăugată fără deducere din Cash.");
+        alert("❌ Insufficient cash pentru deducere!\n\nCost: "+
+          new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(costAchiz)+" "+m+"\n"+
+          "Cash: "+new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(cpCheck.pret)+" "+m+
+          "\n\nPosition added without Cash deduction.");
       } else {
       addToCash(m, -costAchiz);
-      showToast(n+" adăugat · -"+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(costAchiz)+" "+m+" din Cash");
+      showToast(n+" added · -"+new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(costAchiz)+" "+m+" from Cash");
       }
     }
   }
@@ -426,7 +424,7 @@ async function _autoSavePos(){
     await fetch("/api/data",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
   }catch(e){}
 }
-async function saveData(){
+async function saveDate(){
   // Preia snapshot-urile existente de pe server
   var snaps = [];
   try {
@@ -442,7 +440,7 @@ async function saveData(){
   if(_driveStatus && _driveStatus.enabled){
     showDriveSavePrompt();
   } else {
-    showToast("Salvat local ✓");
+    showToast("Saved locally ✓");
   }
 }
 
@@ -466,10 +464,10 @@ async function confirmDriveSave(){
     var d = await r.json();
     if(d.status) _driveStatus = d.status;
     updateDriveBadge();
-    showToast(d.ok ? "Salvat local + ☁ Drive ✓" : ("Salvat local · Drive: "+(d.mesaj||"eroare")));
+    showToast(d.ok ? "Saved locally + ☁ Drive ✓" : ("Saved locally · Drive: "+(d.mesaj||"eroare")));
   }catch(e){
     if(b) b.textContent = orig;
-    showToast("Salvat local ✓ · Drive indisponibil");
+    showToast("Saved locally ✓ · Drive inavailable");
   }
 }
 var _tt;
@@ -483,19 +481,19 @@ document.addEventListener("keydown",function(e){
 <!-- ═══════════ REACT CHARTS (no Babel) ═══════════ -->
 <script>
 var h=React.createElement;
-var CATS_R=["ETF-uri","Acțiuni","Obligațiuni","Cash","Crypto"];
-var REG_COL={"World":"#38bdf8","România":"#fb923c"};
+var CATS_R=["ETFs","Stocks","Bonds","Cash","Crypto"];
+var REG_COL={"World":"#38bdf8","Romania":"#fb923c"};
 var PAL_R={
-  "ETF-uri":    {main:"#f59e0b",sh:["#b45309","#d97706","#f59e0b","#fbbf24","#fde68a"]},
-  "Acțiuni":    {main:"#14d9c4",sh:["#0f766e","#0d9488","#14b8a6","#2dd4bf","#5eead4","#99f6e4"]},
-  "Obligațiuni":{main:"#a78bfa",sh:["#6d28d9","#8b5cf6","#a78bfa","#c4b5fd"]},
+  "ETFs":    {main:"#f59e0b",sh:["#b45309","#d97706","#f59e0b","#fbbf24","#fde68a"]},
+  "Stocks":    {main:"#14d9c4",sh:["#0f766e","#0d9488","#14b8a6","#2dd4bf","#5eead4","#99f6e4"]},
+  "Bonds":{main:"#a78bfa",sh:["#6d28d9","#8b5cf6","#a78bfa","#c4b5fd"]},
   "Cash":       {main:"#64748b",sh:["#1e293b","#334155","#475569","#64748b"]},
   "Crypto":     {main:"#f97316",sh:["#7c2d12","#c2410c","#ea580c","#f97316","#fb923c"]}
 };
 function toEr(v,m,cur){return v/(cur[m]||1)}
-function fe(n){return new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(n)+" €"}
+function fe(n){return new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(n)+" €"}
 function fp(n){return n.toFixed(1).replace(".",",")+"%"}
-function fsgn(n){return (n>=0?"+":"")+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(n)+" €"}
+function fsgn(n){return (n>=0?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(n)+" €"}
 function fpct(n){return (n>=0?"+":"")+n.toFixed(1).replace(".",",")+"%"}
 
 /* ── Arc helpers ── */
@@ -548,8 +546,8 @@ function AllocChart(props){
   var id2=CATS_R.map(function(c){return {key:c,v:cm[c].ve,color:PAL_R[c].main,cat:c}});
   var oa=sectors(od,CX,CY,RO,1.2);
   var ia=sectors(id2,CX,CY,RI,2.0);
-  var hcat=typeof hov==="number"?(poz.find(function(p){return p.id===hov})||{}).categorie:typeof hov==="string"&&hov!=="World"&&hov!=="România"?hov:null;
-  var hreg=hov==="World"||hov==="România"?hov:(typeof hov==="number"?(poz.find(function(p){return p.id===hov})||{}).regiune:null);
+  var hcat=typeof hov==="number"?(poz.find(function(p){return p.id===hov})||{}).categorie:typeof hov==="string"&&hov!=="World"&&hov!=="Romania"?hov:null;
+  var hreg=hov==="World"||hov==="Romania"?hov:(typeof hov==="number"?(poz.find(function(p){return p.id===hov})||{}).regiune:null);
   function dimO(a){return hov!==null&&a.extra.p.id!==hov&&a.extra.cat!==hcat}
   function litO(a){return hov===a.extra.p.id}
   function dimI(a){return hov!==null&&a.extra.cat!==hcat}
@@ -565,8 +563,8 @@ function AllocChart(props){
         h("text",{key:"b",x:CX,y:CY-4, textAnchor:"middle",fill:"#e6e1d8",fontSize:13,fontWeight:"600"},hp.nume||""),
         h("text",{key:"c",x:CX,y:CY+15,textAnchor:"middle",fill:PAL_R[hp.categorie||"Cash"].main,fontSize:17,fontFamily:"Georgia,serif"},fe(hp.ve||0)),
         h("text",{key:"d",x:CX,y:CY+31,textAnchor:"middle",fill:"#6b7280",fontSize:11},fp(hp.pct||0))];
-  } else if(hov==="World"||hov==="România"){
-    var rv=poz.filter(function(p){return hov==="România"?p.regiune==="România":p.regiune!=="România"}).reduce(function(s,p){return s+p.ve},0);
+  } else if(hov==="World"||hov==="Romania"){
+    var rv=poz.filter(function(p){return hov==="Romania"?p.regiune==="Romania":p.regiune!=="Romania"}).reduce(function(s,p){return s+p.ve},0);
     ct=[h("text",{key:"a",x:CX,y:CY-16,textAnchor:"middle",fill:"#9ca3af",fontSize:9},"REGIUNE"),
         h("text",{key:"b",x:CX,y:CY+2, textAnchor:"middle",fill:"#e6e1d8",fontSize:13,fontWeight:"600"},hov),
         h("text",{key:"c",x:CX,y:CY+22,textAnchor:"middle",fill:REG_COL[hov],fontSize:17,fontFamily:"Georgia,serif"},fe(rv)),
@@ -582,7 +580,7 @@ function AllocChart(props){
   return h("div",{style:{display:"flex",gap:16,padding:16,flexWrap:"wrap",alignItems:"flex-start"}},
     /* Donut */
     h("div",{style:{background:"#111827",border:"1px solid #1f2937",borderRadius:14,padding:"16px 14px",flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center"}},
-      h("div",{style:{fontSize:10,color:"#6b7280",letterSpacing:".09em",textTransform:"uppercase",marginBottom:10}},"Alocare vizuală"),
+      h("div",{style:{fontSize:10,color:"#6b7280",letterSpacing:".09em",textTransform:"uppercase",marginBottom:10}},"Visual allocation"),
       h("svg",{width:310,height:310,style:{overflow:"visible"}},
         h("defs",null,CATS_R.map(function(c){
           return h("filter",{key:c,id:"gf"+c.replace(/\W/g,""),x:"-60%",y:"-60%",width:"220%",height:"220%"},
@@ -603,13 +601,13 @@ function AllocChart(props){
             style:{cursor:"pointer",transition:"opacity .18s"},
             onMouseEnter:function(){setHov(a.extra.cat)},onMouseLeave:function(){setHov(null)}})
         }),
-        /* ── Inel 3: World / România ── */
+        /* ── Ring 3: World / Romania ── */
         (function(){
-          var regData=[
-            {key:"World",   v:poz.filter(function(p){return p.regiune!=="România"}).reduce(function(s,p){return s+p.ve},0), color:REG_COL["World"]},
-            {key:"România", v:poz.filter(function(p){return p.regiune==="România"}).reduce(function(s,p){return s+p.ve},0), color:REG_COL["România"]},
+          var regDate=[
+            {key:"World",   v:poz.filter(function(p){return p.regiune!=="Romania"}).reduce(function(s,p){return s+p.ve},0), color:REG_COL["World"]},
+            {key:"Romania", v:poz.filter(function(p){return p.regiune==="Romania"}).reduce(function(s,p){return s+p.ve},0), color:REG_COL["Romania"]},
           ].filter(function(d){return d.v>0});
-          return sectors(regData,CX,CY,52,3.0).map(function(a){
+          return sectors(regDate,CX,CY,52,3.0).map(function(a){
             var lit=hov===a.key, dim=hov!==null&&!lit;
             return h("path",{key:"reg-"+a.key,d:a.path,fill:"none",stroke:a.color,
               strokeWidth:lit?24:18,strokeLinecap:"round",
@@ -632,12 +630,12 @@ function AllocChart(props){
             h("span",{style:{fontSize:10.5,color:PAL_R[c].main,fontWeight:600}},fp(cm[c].pct)))
         })
       ),
-      /* ── Summary World / România ── */
+      /* ── Summary World / Romania ── */
       h("div",{style:{marginTop:12,paddingTop:10,borderTop:"1px solid #1f2937",width:"100%",display:"flex",gap:8,justifyContent:"center"}},
-        ["World","România"].map(function(reg){
-          var rv=poz.filter(function(p){return reg==="România"?p.regiune==="România":p.regiune!=="România"}).reduce(function(s,p){return s+p.ve},0);
+        ["World","Romania"].map(function(reg){
+          var rv=poz.filter(function(p){return reg==="Romania"?p.regiune==="Romania":p.regiune!=="Romania"}).reduce(function(s,p){return s+p.ve},0);
           var rpct=rv/tot*100;
-          var dim=hov!==null&&hov!==reg&&hov!=="World"&&hov!=="România"?false:hov!==null&&hov!==reg;
+          var dim=hov!==null&&hov!==reg&&hov!=="World"&&hov!=="Romania"?false:hov!==null&&hov!==reg;
           return h("div",{key:reg,
             style:{flex:1,background:"#0d1117",border:"1px solid",borderColor:hov===reg?REG_COL[reg]+"88":"#1f2937",
               borderRadius:8,padding:"7px 10px",cursor:"pointer",
@@ -658,10 +656,10 @@ function AllocChart(props){
     h("div",{style:{flex:1,minWidth:260,display:"flex",flexDirection:"column",gap:6}},
       h("div",{style:{background:"#111827",border:"1px solid #1f2937",borderRadius:12,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"baseline",justifyContent:"space-between"}},
         h("div",null,
-          h("div",{style:{fontSize:10,color:"#6b7280",letterSpacing:".08em",textTransform:"uppercase",marginBottom:3}},"Valoare totală"),
+          h("div",{style:{fontSize:10,color:"#6b7280",letterSpacing:".08em",textTransform:"uppercase",marginBottom:3}},"Total amount"),
           h("span",{style:{fontFamily:"Georgia,serif",fontSize:24,color:"#e6e1d8"}},fe(tot))
         ),
-        h("span",{style:{fontSize:11,color:"#4b5563"}},poz.length+" poziții")
+        h("span",{style:{fontSize:11,color:"#4b5563"}},poz.length+" positions")
       ),
       CATS_R.map(function(cat){
         var cd=cm[cat]; if(!cd.it.length)return null;
@@ -672,7 +670,7 @@ function AllocChart(props){
             h("div",{style:{display:"flex",alignItems:"center",gap:6}},
               h("span",{style:{width:9,height:9,borderRadius:3,background:pal.main,display:"inline-block"}}),
               h("span",{style:{fontWeight:700,fontSize:12.5}},cat),
-              h("span",{style:{fontSize:10,color:"#6b7280"}},cd.it.length+" poziții")
+              h("span",{style:{fontSize:10,color:"#6b7280"}},cd.it.length+" positions")
             ),
             h("div",null,
               h("span",{style:{fontFamily:"Georgia,serif",fontSize:13.5,color:pal.main}},fe(cd.ve)),
@@ -692,7 +690,7 @@ function AllocChart(props){
                   h("div",{style:{display:"flex",alignItems:"center",gap:5}},
                     h("span",{style:{width:5,height:5,borderRadius:"50%",background:sh,display:"inline-block",boxShadow:plit?"0 0 5px "+sh:undefined}}),
                     h("span",{style:{fontSize:12,fontWeight:plit?700:500,color:plit?"#e6e1d8":"#9ca3af",transition:"color .15s"}},p.nume),
-                    h("span",{style:{fontSize:9.5,color:"#4b5563"}},Number(p.cantitate).toLocaleString("ro-RO")+" × "+p.pret+" "+p.moneda)
+                    h("span",{style:{fontSize:9.5,color:"#4b5563"}},Number(p.cantitate).toLocaleString("en-US")+" × "+p.pret+" "+p.moneda)
                   ),
                   h("div",{style:{display:"flex",gap:7,alignItems:"baseline"}},
                     h("span",{style:{fontFamily:"Georgia,serif",fontSize:12.5,color:plit?sh:"#d1d5db",transition:"color .15s"}},fe(p.ve)),
@@ -713,7 +711,7 @@ function AllocChart(props){
         )
       }),
       
-    /* ── Sectiunea Realizat (tranzactii inchise) ── */
+    /* ── Realized section (tranzactii inchise) ── */
     (function(){
       var tranz = (data.tranzactii||[]);
       if(tranz.length===0) return null;
@@ -726,13 +724,13 @@ function AllocChart(props){
         h("div",{style:{padding:"10px 16px 8px",borderBottom:"1px solid #161d29",
           display:"flex",justifyContent:"space-between",alignItems:"center"}},
           h("div",{style:{display:"flex",alignItems:"center",gap:8}},
-            h("span",{style:{fontSize:12,fontWeight:700}},"💸 Câștiguri / Pierderi Realizate"),
-            h("span",{style:{fontSize:10,color:"#6b7280"}},tranz.length+" tranzacții")
+            h("span",{style:{fontSize:12,fontWeight:700}},"💸 Realized Gains / Losses"),
+            h("span",{style:{fontSize:10,color:"#6b7280"}},tranz.length+" transactions")
           ),
           h("div",{style:{display:"flex",alignItems:"baseline",gap:8}},
             h("span",{style:{fontFamily:"Georgia,serif",fontSize:15,
               color:totRealEur>=0?"#22c55e":"#ef4444"}},
-              (totRealEur>=0?"+":"")+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(totRealEur)+" €"),
+              (totRealEur>=0?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(totRealEur)+" €"),
             h("span",{style:{fontSize:10,color:"#6b7280"}},"echiv. EUR")
           )
         ),
@@ -740,7 +738,7 @@ function AllocChart(props){
           tranz.map(function(t){
             var isPos = (t.profit||0)>=0;
             var profEur = toEurT(t.profit||0, t.moneda||"EUR");
-            var catColor = {"ETF-uri":"#f59e0b","Acțiuni":"#14d9c4","Obligațiuni":"#a78bfa","Cash":"#64748b"}[t.categorie]||"#64748b";
+            var catColor = {"ETFs":"#f59e0b","Stocks":"#14d9c4","Bonds":"#a78bfa","Cash":"#64748b"}[t.categorie]||"#64748b";
             return h("div",{key:t.id,style:{
               background:"#0d1117",borderRadius:8,padding:"10px 12px",
               borderLeft:"3px solid "+(isPos?"#22c55e":"#ef4444")}},
@@ -754,17 +752,17 @@ function AllocChart(props){
                 h("div",{style:{display:"flex",gap:10,alignItems:"baseline"}},
                   h("span",{style:{fontSize:13,fontFamily:"Georgia,serif",
                     color:isPos?"#22c55e":"#ef4444",fontWeight:600}},
-                    (isPos?"+":"")+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(t.profit||0)+" "+(t.moneda||"EUR")),
+                    (isPos?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(t.profit||0)+" "+(t.moneda||"EUR")),
                   profEur!==t.profit&&h("span",{style:{fontSize:10,color:"#4b5563"}},
-                    "("+( profEur>=0?"+":"")+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(profEur)+" €)"),
+                    "("+( profEur>=0?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(profEur)+" €)"),
                   h("span",{style:{fontSize:11,color:isPos?"#16a34a":"#dc2626",minWidth:44,textAlign:"right"}},
                     (isPos?"+":"")+( t.pct||0).toFixed(1).replace(".",",")+"%")
                 )
               ),
               h("div",{style:{fontSize:10,color:"#4b5563",marginTop:4}},
-                new Intl.NumberFormat("ro-RO",{maximumFractionDigits:4}).format(t.cantitate||0)+" unități",
-                " × "+(t.pret_vanzare||0)+" "+(t.moneda||"")+" (preț vânzare)",
-                " · cost mediu: "+(t.pret_mediu||0)+" "+(t.moneda||"")
+                new Intl.NumberFormat("en-US",{maximumFractionDigits:4}).format(t.cantitate||0)+" units",
+                " × "+(t.pret_vanzare||0)+" "+(t.moneda||"")+" (sale price)",
+                " · avg. cost: "+(t.pret_mediu||0)+" "+(t.moneda||"")
               )
             )
           })
@@ -775,7 +773,7 @@ function AllocChart(props){
         h("span",null,"EUR/USD "+data.cursuri.USD+" · EUR/RON "+data.cursuri.RON),
         h("span",null,"Date orientative"))
     ),
-    /* ── Donuts World / România ── */
+    /* ── Donuts World / Romania ── */
     h("div",{style:{display:"flex",gap:12,flexWrap:"wrap",padding:"0 16px 16px"}},
       h("div",{style:{fontSize:11,fontWeight:600,color:"#6b7280",width:"100%",
         textTransform:"uppercase",letterSpacing:".07em",paddingBottom:4,
@@ -783,15 +781,15 @@ function AllocChart(props){
         "Alocare per regiune"),
       h(MiniDonut,{
         label:"World",
-        pozitii:poz.filter(function(p){return p.regiune!=="România"}),
+        pozitii:poz.filter(function(p){return p.regiune!=="Romania"}),
         tot_global:tot,
         color:REG_COL["World"]
       }),
       h(MiniDonut,{
-        label:"România",
-        pozitii:poz.filter(function(p){return p.regiune==="România"}),
+        label:"Romania",
+        pozitii:poz.filter(function(p){return p.regiune==="Romania"}),
         tot_global:tot,
-        color:REG_COL["România"]
+        color:REG_COL["Romania"]
       })
     )
   )
@@ -851,15 +849,15 @@ function PnlChart(props){
       /* banner total */
       h("div",{style:{background:"#111827",border:"1px solid",borderColor:totPnl>=0?"#16a34a55":"#dc262655",borderRadius:12,padding:"14px 18px",marginBottom:4,display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}},
         h("div",null,
-          h("div",{style:{fontSize:10,color:"#6b7280",letterSpacing:".08em",textTransform:"uppercase",marginBottom:3}},"P&L total (fără cash)"),
+          h("div",{style:{fontSize:10,color:"#6b7280",letterSpacing:".08em",textTransform:"uppercase",marginBottom:3}},"P&L total (excl. cash)"),
           h("div",{style:{display:"flex",alignItems:"baseline",gap:10}},
             h("span",{style:{fontFamily:"Georgia,serif",fontSize:26,color:totPnl>=0?"#22c55e":"#ef4444"}},fsgn(totPnl)),
             h("span",{style:{fontSize:14,color:totPnl>=0?"#16a34a":"#dc2626",fontWeight:600}},fpct(totPct)),
-            (function(){var td=poz.reduce(function(s,p){return s+(p.divEur||0)},0);return td>0?h("span",{style:{fontSize:11,color:"#4ade80",marginLeft:6}},"💰 "+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(td)+" € dividende"):null;})()
+            (function(){var td=poz.reduce(function(s,p){return s+(p.divEur||0)},0);return td>0?h("span",{style:{fontSize:11,color:"#4ade80",marginLeft:6}},"💰 "+new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(td)+" € dividende"):null;})()
           )
         ),
         h("div",{style:{textAlign:"right"}},
-          h("div",{style:{fontSize:10,color:"#6b7280",marginBottom:3}},"Cost total investit"),
+          h("div",{style:{fontSize:10,color:"#6b7280",marginBottom:3}},"Total cost investit"),
           h("span",{style:{fontFamily:"Georgia,serif",fontSize:15,color:"#9ca3af"}},fe(totCost))
         )
       ),
@@ -879,11 +877,11 @@ function PnlChart(props){
         })
       ),
 
-      /* Bare P&L per poziție */
+      /* Bare P&L per position */
       h("div",{style:{background:"#111827",border:"1px solid #1f2937",borderRadius:12,overflow:"hidden"}},
         h("div",{style:{padding:"12px 16px 8px",borderBottom:"1px solid #161d29",display:"flex",justifyContent:"space-between",alignItems:"center"}},
-          h("span",{style:{fontSize:12,fontWeight:600}},sorted.length+" poziții (excl. cash)"),
-          h("span",{style:{fontSize:10,color:"#6b7280"}},"sortat după P&L")
+          h("span",{style:{fontSize:12,fontWeight:600}},sorted.length+" positions (excl. cash)"),
+          h("span",{style:{fontSize:10,color:"#6b7280"}},"sorted by P&L")
         ),
         h("div",{style:{padding:"8px 16px 12px",display:"flex",flexDirection:"column",gap:8}},
           sorted.map(function(p){
@@ -922,9 +920,9 @@ function PnlChart(props){
                 h("div",{style:{position:"absolute",top:0,left:"50%",width:1,height:"100%",background:"#2a2f38"}})
               ),
               lit&&h("div",{style:{display:"flex",justifyContent:"space-between",marginTop:3}},
-                h("span",{style:{fontSize:9,color:"#374151"}},"Preț mediu: "+p.pret_mediu+" · curent: "+p.pret+" "+p.moneda),
+                h("span",{style:{fontSize:9,color:"#374151"}},"Avg. price: "+p.pret_mediu+" · current: "+p.pret+" "+p.moneda),
                 p.divEur>0&&h("span",{style:{fontSize:9,color:"#4ade80"}},
-                  "💰 Dividende: +"+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(p.divEur)+" €")
+                  "💰 Dividends: +"+new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(p.divEur)+" €")
               )
             )
           })
@@ -934,7 +932,7 @@ function PnlChart(props){
 
     /* ── Waterfall vertical ── */
     h("div",{style:{background:"#111827",border:"1px solid #1f2937",borderRadius:14,padding:"16px",flexShrink:0,width:260}},
-      h("div",{style:{fontSize:10,color:"#6b7280",letterSpacing:".09em",textTransform:"uppercase",marginBottom:12}},"Contribuție P&L"),
+      h("div",{style:{fontSize:10,color:"#6b7280",letterSpacing:".09em",textTransform:"uppercase",marginBottom:12}},"P&L Contribution"),
       h("div",{style:{display:"flex",flexDirection:"column",gap:5}},
         sorted.map(function(p){
           var pal=PAL_R[p.categorie]||{main:"#64748b"};
@@ -968,7 +966,7 @@ function PnlChart(props){
 }
 
 
-/* ════════════ MINI DONUT — World / România ════════════ */
+/* ════════════ MINI DONUT — World / Romania ════════════ */
 function MiniDonut(props){
   var label=props.label, pozitii=props.pozitii, tot_global=props.tot_global, color=props.color;
   var hovS=React.useState(null); var hov=hovS[0]; var setHov=hovS[1];
@@ -987,7 +985,7 @@ function MiniDonut(props){
   var tot=pozitii.reduce(function(s,p){return s+p.ve},0);
   if(tot===0) return h("div",{style:{background:"#111827",border:"1px solid #1f2937",borderRadius:12,
     padding:"14px",display:"flex",alignItems:"center",justifyContent:"center",flex:1,minWidth:200,color:"#4b5563",fontSize:12}},
-    "Nicio poziție "+label);
+    "Nicio position "+label);
 
   var CX=90,CY=90,R=75,SW=22;
   var sd=CATS_R.map(function(c){return {key:c,v:cm2[c].ve,color:PAL_R[c].main}}).filter(function(d){return d.v>0});
@@ -1015,7 +1013,7 @@ function MiniDonut(props){
     h("div",{style:{display:"flex",alignItems:"center",gap:6,marginBottom:10}},
       h("span",{style:{width:8,height:8,borderRadius:"50%",background:color,display:"inline-block",boxShadow:"0 0 6px "+color}}),
       h("span",{style:{fontSize:11,fontWeight:600,color:"#e6e1d8"}},label),
-      h("span",{style:{fontSize:10,color:"#4b5563"}},"· "+pozitii.length+" poziții")
+      h("span",{style:{fontSize:10,color:"#4b5563"}},"· "+pozitii.length+" positions")
     ),
     /* SVG */
     h("svg",{width:180,height:180,style:{overflow:"visible"}},
@@ -1064,7 +1062,7 @@ function MiniDonut(props){
 
 
 /* ════════════════════════════════════════════════════════
-   TAB 3 — EVOLUȚIE PORTOFOLIU
+   TAB 3 — PORTFOLIO EVOLUTION
 ════════════════════════════════════════════════════════ */
 function EvolutionChart(){
   var snapsS  = React.useState([]);  var snapshots=snapsS[0];  var setSnapshots=snapsS[1];
@@ -1112,25 +1110,25 @@ function EvolutionChart(){
 
   if(loading) return h("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",
     height:"calc(100vh - 51px)",color:"#4b5563",gap:10}},
-    h("span",{className:"spin"}), "Se încarcă...");
+    h("span",{className:"spin"}), "Loading...");
 
   if(snapshots.length===0) return h("div",{style:{display:"flex",alignItems:"center",
     justifyContent:"center",height:"calc(100vh - 51px)",flexDirection:"column",gap:14,color:"#4b5563"}},
     h("div",{style:{fontSize:32,opacity:.3}},"📉"),
-    h("div",null,"Niciun snapshot înregistrat încă."),
-    h("div",{style:{fontSize:12,color:"#374151"}},"Apasă «🔄 Actualizează prețuri» pentru primul snapshot,"),
-    h("div",{style:{fontSize:12,color:"#374151"}},"sau adaugă manual date istorice."),
+    h("div",null,"No snapshots recorded yet."),
+    h("div",{style:{fontSize:12,color:"#374151"}},"Press «🔄 Update prices» for the first snapshot,"),
+    h("div",{style:{fontSize:12,color:"#374151"}},"or add historical data manually."),
     h("button",{onClick:function(){setShowAdd(true)},
       style:{marginTop:8,background:"#f59e0b",color:"#000",border:"none",padding:"8px 18px",
-        borderRadius:7,cursor:"pointer",fontSize:13,fontWeight:500}}, "＋ Adaugă manual")
+        borderRadius:7,cursor:"pointer",fontSize:13,fontWeight:500}}, "＋ Add manual")
   );
 
   /* ── Constante culori ── */
-  var CAT_COLORS = {"ETF-uri":"#f59e0b","Acțiuni":"#14d9c4","Obligațiuni":"#a78bfa","Cash":"#64748b","Crypto":"#f97316","Total":"#f59e0b"};
+  var CAT_COLORS = {"ETFs":"#f59e0b","Stocks":"#14d9c4","Bonds":"#a78bfa","Cash":"#64748b","Crypto":"#f97316","Total":"#f59e0b"};
   var n = snapshots.length;
 
-  /* ── Categoriile disponibile (au date in snapshots) ── */
-  var availCats = ["ETF-uri","Acțiuni","Obligațiuni","Cash"].filter(function(c){
+  /* ── Categoriile availablee (au date in snapshots) ── */
+  var availCats = ["ETFs","Stocks","Bonds","Cash"].filter(function(c){
     return snapshots.some(function(s){return ((s.categorii||{})[c]||0)>0});
   });
 
@@ -1195,15 +1193,15 @@ function EvolutionChart(){
     h("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}},
       h("div",null,
         h("div",{style:{fontSize:10,color:"#6b7280",letterSpacing:".08em",textTransform:"uppercase",marginBottom:4}},
-          selectedCat==="Total"?"EVOLUȚIE PORTOFOLIU":"EVOLUȚIE — "+selectedCat.toUpperCase()),
+          selectedCat==="Total"?"PORTFOLIO EVOLUTION":"EVOLUTION — "+selectedCat.toUpperCase()),
         h("div",{style:{display:"flex",alignItems:"baseline",gap:12}},
           h("span",{style:{fontFamily:"Georgia,serif",fontSize:24,color:"#e6e1d8"}},
-            new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(lastVal)+" €"),
+            new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(lastVal)+" €"),
           h("span",{style:{fontSize:13,fontWeight:600,color:totalChange>=0?"#22c55e":"#ef4444"}},
-            (totalChange>=0?"+":"")+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(totalChange)+" €"),
+            (totalChange>=0?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(totalChange)+" €"),
           h("span",{style:{fontSize:12,color:totalChange>=0?"#16a34a":"#dc2626"}},
             (totalPct>=0?"+":"")+totalPct.toFixed(1).replace(".",",")+"%"),
-          h("span",{style:{fontSize:10,color:"#4b5563"}},"față de primul snapshot")
+          h("span",{style:{fontSize:10,color:"#4b5563"}},"vs first snapshot")
         )
       ),
       h("div",{style:{display:"flex",gap:6,alignItems:"center",flexWrap:"wrap"}},
@@ -1225,13 +1223,13 @@ function EvolutionChart(){
           style:{padding:"5px 12px",borderRadius:6,border:"1px solid #1e4a7a",
             background:"#1e3a5f",color:"#60a5fa",fontSize:12,cursor:"pointer",
             fontFamily:"Inter,sans-serif"}},
-          "＋ Adaugă manual"),
+          "＋ Add manual"),
         h("span",{style:{fontSize:10,color:"#374151"}},n+" snapshot-uri"),
         h("button",{onClick:function(){setShowHistoric(true)},
           style:{padding:"5px 10px",borderRadius:6,border:"1px solid #2a2f38",
             background:"transparent",color:"#6b7280",fontSize:11,cursor:"pointer",
             fontFamily:"Inter,sans-serif"}},
-          "📋 Istoric")
+          "📋 History")
       )
     ),
 
@@ -1239,13 +1237,13 @@ function EvolutionChart(){
     showAdd && h("div",{style:{background:"#111827",border:"1px solid #1f2937",borderRadius:10,
       padding:"12px 16px",display:"flex",gap:10,alignItems:"flex-end",flexWrap:"wrap"}},
       h("div",null,
-        h("label",{style:{fontSize:10,color:"#6b7280",display:"block",marginBottom:3}},"Data"),
+        h("label",{style:{fontSize:10,color:"#6b7280",display:"block",marginBottom:3}},"Date"),
         h("input",{type:"date",value:addDate,onChange:function(e){setAddDate(e.target.value)},
           style:{background:"#1f2937",border:"1px solid #2a2f38",color:"#e6e1d8",
             padding:"6px 10px",borderRadius:6,fontSize:13}})
       ),
       h("div",null,
-        h("label",{style:{fontSize:10,color:"#6b7280",display:"block",marginBottom:3}},"Valoare totală (€)"),
+        h("label",{style:{fontSize:10,color:"#6b7280",display:"block",marginBottom:3}},"Total value (€)"),
         h("input",{type:"number",step:"any",value:addTotal,
           onChange:function(e){setAddTotal(e.target.value)},
           placeholder:"ex: 58000",
@@ -1254,10 +1252,10 @@ function EvolutionChart(){
       ),
       h("button",{onClick:addManualSnapshot,
         style:{background:"#f59e0b",color:"#000",border:"none",padding:"7px 16px",
-          borderRadius:7,cursor:"pointer",fontSize:13,fontWeight:500}}, "Adaugă"),
+          borderRadius:7,cursor:"pointer",fontSize:13,fontWeight:500}}, "Add"),
       h("button",{onClick:function(){setShowAdd(false)},
         style:{background:"#2a2f38",color:"#9ca3af",border:"none",padding:"7px 12px",
-          borderRadius:7,cursor:"pointer",fontSize:13}}, "Anulează")
+          borderRadius:7,cursor:"pointer",fontSize:13}}, "Cancel")
     ),
 
     /* ── GRAFIC SVG ── */
@@ -1284,7 +1282,7 @@ function EvolutionChart(){
             h("line",{x1:ML,y1:yl.y.toFixed(1),x2:W-MR,y2:yl.y.toFixed(1),
               stroke:"#1f2937",strokeWidth:1,strokeDasharray:"4,4"}),
             h("text",{x:ML-5,y:(yl.y+4).toFixed(1),textAnchor:"end",fill:"#4b5563",fontSize:10},
-              new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(Math.round(yl.v/1000))+"k")
+              new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(Math.round(yl.v/1000))+"k")
           );
         }),
         /* Grid X */
@@ -1336,15 +1334,15 @@ function EvolutionChart(){
               fill:"#1b1f26",stroke:"#2a2f38",strokeWidth:1}),
             h("text",{x:tipX+10,y:tipY+15,fill:"#9ca3af",fontSize:10},s.data+(s.manual?" (manual)":"")),
             h("text",{x:tipX+10,y:tipY+32,fill:"#e6e1d8",fontSize:14,fontFamily:"Georgia,serif"},
-              new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(vals[hovIdx])+" €"),
+              new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(vals[hovIdx])+" €"),
             delta!==null&&h("text",{x:tipX+10,y:tipY+48,
               fill:delta>=0?"#22c55e":"#ef4444",fontSize:11},
-              (delta>=0?"+":"")+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(delta)+" €")
+              (delta>=0?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(delta)+" €")
           );
         })()
       ),
       h("div",{style:{fontSize:9,color:"#374151",marginTop:6,textAlign:"center"}},
-        "Click pe un punct pentru a-l șterge · Hover pentru detalii · Snapshot-urile se salvează automat la actualizarea prețurilor")
+        "Click a point to delete it · Hover for details · Snapshots are saved automatically when prices are updated")
     ),
 
     /* ── MODAL ISTORIC ── */
@@ -1354,17 +1352,17 @@ function EvolutionChart(){
         width:560,maxWidth:"95vw",maxHeight:"85vh",display:"flex",flexDirection:"column",overflow:"hidden"}},
         h("div",{style:{padding:"14px 20px",borderBottom:"1px solid #1f2937",
           display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}},
-          h("span",{style:{fontSize:14,fontWeight:600}},"📋 Istoric snapshot-uri"),
+          h("span",{style:{fontSize:14,fontWeight:600}},"📋 History snapshot-uri"),
           h("button",{onClick:function(){setShowHistoric(false)},
             style:{background:"#2a2f38",border:"none",color:"#e6e1d8",
-              padding:"4px 10px",borderRadius:6,cursor:"pointer",fontSize:12}},"✕ Închide")
+              padding:"4px 10px",borderRadius:6,cursor:"pointer",fontSize:12}},"✕ Close")
         ),
         h("div",{style:{overflowY:"auto",flex:1}},
           h("div",{style:{padding:"6px 20px 4px",display:"flex",gap:0,
             fontSize:10,color:"#6b7280",borderBottom:"1px solid #161d29"}},
-            h("span",{style:{width:100}},"Data"),
-            h("span",{style:{flex:1,textAlign:"right"}},"Valoare totală"),
-            h("span",{style:{width:100,textAlign:"right"}},"Variație"),
+            h("span",{style:{width:100}},"Date"),
+            h("span",{style:{flex:1,textAlign:"right"}},"Total amount"),
+            h("span",{style:{width:100,textAlign:"right"}},"Change"),
             h("span",{style:{width:32}})
           ),
           snapshots.slice().reverse().map(function(s,i){
@@ -1380,11 +1378,11 @@ function EvolutionChart(){
               s.manual&&h("span",{style:{fontSize:9,padding:"1px 5px",borderRadius:4,
                 background:"#1e3a5f",color:"#60a5fa"}},"manual"),
               h("span",{style:{flex:1,textAlign:"right",fontFamily:"Georgia,serif",fontSize:13,color:"#e6e1d8"}},
-                new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(s.total_eur)+" €"),
+                new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(s.total_eur)+" €"),
               h("span",{style:{width:100,textAlign:"right",fontSize:11,
                 color:delta===null?"transparent":delta>=0?"#22c55e":"#ef4444"}},
                 delta!==null?(delta>=0?"+":"")+
-                  new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(delta)+" €":""),
+                  new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(delta)+" €":""),
               h("button",{
                 onClick:function(){setShowHistoric(false);setTimeout(function(){setConfirmDel(s.data)},100)},
                 style:{width:28,background:"transparent",border:"none",cursor:"pointer",
@@ -1400,15 +1398,15 @@ function EvolutionChart(){
       display:"flex",alignItems:"center",justifyContent:"center",zIndex:600}},
       h("div",{style:{background:"#111827",border:"1px solid #1f2937",borderRadius:12,
         padding:24,width:340,textAlign:"center"}},
-        h("div",{style:{fontSize:15,fontWeight:600,marginBottom:8}},"Ștergi snapshot-ul din "+confirmDel+"?"),
-        h("div",{style:{fontSize:12,color:"#6b7280",marginBottom:18}},"Acțiunea nu poate fi anulată."),
+        h("div",{style:{fontSize:15,fontWeight:600,marginBottom:8}},"Delete snapshot from "+confirmDel+"?"),
+        h("div",{style:{fontSize:12,color:"#6b7280",marginBottom:18}},"This action cannot be undone."),
         h("div",{style:{display:"flex",gap:10,justifyContent:"center"}},
           h("button",{onClick:function(){deleteSnapshot(confirmDel)},
             style:{background:"#7f1d1d",color:"#fca5a5",border:"none",padding:"8px 18px",
-              borderRadius:7,cursor:"pointer",fontSize:13}},"Șterge"),
+              borderRadius:7,cursor:"pointer",fontSize:13}},"Delete"),
           h("button",{onClick:function(){setConfirmDel(null)},
             style:{background:"#2a2f38",color:"#e6e1d8",border:"none",padding:"8px 18px",
-              borderRadius:7,cursor:"pointer",fontSize:13}},"Anulează")
+              borderRadius:7,cursor:"pointer",fontSize:13}},"Cancel")
         )
       )
     )
@@ -1423,7 +1421,7 @@ function App(props){
     return h("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",
       height:"calc(100vh - 51px)",color:"#4b5563",flexDirection:"column",gap:12}},
       h("div",{style:{fontSize:32,opacity:.3}},"📊"),
-      h("span",null,"Adaugă poziții din sidebar pentru a vedea graficul · Folosește 🔄 pentru a înregistra primul snapshot de evoluție"));
+      h("span",null,"Add positions in the sidebar to see the chart · Use 🔄 to recordra primul snapshot de evolution"));
   }
   if(tab==="evo") return h(EvolutionChart,null);
   return tab==="pnl"?h(PnlChart,{data:data}):h(AllocChart,{data:data});
@@ -1439,26 +1437,26 @@ renderChart(null,"alloc");
 <div class="ov" id="ov-refresh" onclick="ovRefreshCk(event)">
   <div class="rmodal">
     <div class="rmodal-hdr">
-      <h3 id="rmodal-title">🔄 Actualizare prețuri live</h3>
+      <h3 id="rmodal-title">🔄 Live price update</h3>
       <button class="btn bs" style="padding:4px 10px;font-size:12px" onclick="closeRefresh()">✕</button>
     </div>
     <div class="rmodal-body" id="rmodal-body">
       <div style="display:flex;align-items:center;gap:10px;color:var(--dim);padding:20px 0">
-        <span class="spin"></span> Se preiau cotațiile...
+        <span class="spin"></span> Fetching prices...
       </div>
     </div>
     <div class="rmodal-ftr">
-      <button class="btn bs" onclick="closeRefresh()">Anulează</button>
-      <button class="btn bp" id="btn-apply" onclick="applyRefresh()" disabled>✓ Aplică prețurile selectate</button>
+      <button class="btn bs" onclick="closeRefresh()">Cancel</button>
+      <button class="btn bp" id="btn-apply" onclick="applyRefresh()" disabled>✓ Apply pricesle selectate</button>
     </div>
   </div>
 </div>
 
 <script>
 /* ════════════════════════════════════════
-   REFRESH PREȚURI
+   PRICE REFRESH
 ════════════════════════════════════════ */
-var _refreshData=null;
+var _refreshDate=null;
 
 function ovRefreshCk(e){if(e.target===document.getElementById("ov-refresh"))closeRefresh()}
 function closeRefresh(){document.getElementById("ov-refresh").classList.remove("open")}
@@ -1466,12 +1464,12 @@ function closeRefresh(){document.getElementById("ov-refresh").classList.remove("
 async function startRefresh(){
   var btn=document.getElementById("btn-refresh");
   btn.disabled=true; btn.innerHTML='<span class="spin"></span>';
-  document.getElementById("rmodal-title").textContent="🔄 " + t("updatePrices").replace("🔄 ","").trim();
+  document.getElementById("rmodal-title").textContent="🔄 " + "🔄 Update prices".replace("🔄 ","").trim();
   document.getElementById("btn-apply").disabled=true;
   document.getElementById("ov-refresh").classList.add("open");
 
   // Construieste tabelul initial cu toate pozitiile
-  var html='<div style="font-size:11px;color:var(--dim);margin-bottom:8px" id="refresh-summary">'+t("updating")+'...</div><div id="refresh-rows">';
+  var html='<div style="font-size:11px;color:var(--dim);margin-bottom:8px" id="refresh-summary">'+"Updating"+'...</div><div id="refresh-rows">';
   ST.pozitii.forEach(function(p){
     html+='<div id="rrow-'+p.id+'" class="rrow" style="opacity:0.4">'+
       '<span class="rrow-name">'+p.nume+'</span>'+
@@ -1483,7 +1481,7 @@ async function startRefresh(){
   });
   html+='</div>';
   document.getElementById("rmodal-body").innerHTML=html;
-  _refreshData={rezultate:[],cursuri_live:{}};
+  _refreshDate={rezultate:[],cursuri_live:{}};
 
   var source=new EventSource("/api/refresh-prices/stream");
   var nOk=0;
@@ -1506,28 +1504,28 @@ async function startRefresh(){
         if(poz) poz.pret=d.pret_nou;
       } else if(d.status==="manual"){
         if(newEl) newEl.innerHTML='<span style="color:var(--dim)">—</span>';
-        if(stEl)  stEl.innerHTML ='<span style="color:var(--dim)">'+t("manual")+'</span>';
+        if(stEl)  stEl.innerHTML ='<span style="color:var(--dim)">'+"manual"+'</span>';
       } else {
         if(newEl) newEl.innerHTML='<span style="color:#ef4444">✗</span>';
         if(stEl)  stEl.innerHTML ='<span style="color:#ef4444;font-size:9px">'+(d.mesaj||"").substring(0,40)+'</span>';
       }
-      _refreshData.rezultate.push(d);
+      _refreshDate.rezultate.push(d);
       var sm=document.getElementById("refresh-summary");
-      if(sm) sm.textContent=t("updating")+" "+(d.index+1)+"/"+d.total+" — "+d.nume+"...";
+      if(sm) sm.textContent="Updating"+" "+(d.index+1)+"/"+d.total+" — "+d.nume+"...";
     }
     if(d.type==="done"){
       source.close();
-      _refreshData.cursuri_live=d.cursuri_live||{};
+      _refreshDate.cursuri_live=d.cursuri_live||{};
       var fx=d.cursuri_live||{};
       var sm=document.getElementById("refresh-summary");
-      if(sm){sm.textContent="✓ "+nOk+" "+t("priceUpdated")+(!fx.error?" · EUR/USD "+fx.USD+" · EUR/RON "+fx.RON:"");sm.style.color="#22c55e";}
+      if(sm){sm.textContent="✓ "+nOk+" "+"prices updated"+(!fx.error?" · EUR/USD "+fx.USD+" · EUR/RON "+fx.RON:"");sm.style.color="#22c55e";}
       if(fx&&!fx.error&&fx.USD&&fx.RON){
         ST.cursuri.USD=fx.USD;ST.cursuri.RON=fx.RON;
         document.getElementById("r-usd").value=fx.USD;
         document.getElementById("r-ron").value=fx.RON;
       }
       document.getElementById("btn-apply").disabled=false;
-      btn.disabled=false;btn.innerHTML=t("updatePrices");
+      btn.disabled=false;btn.innerHTML="🔄 Update prices";
       renderSB();genChart();
       // Re-incarca snapshot-urile in tab-ul Evolutie
       setTimeout(function(){
@@ -1537,12 +1535,12 @@ async function startRefresh(){
   };
   source.onerror=function(){
     source.close();
-    btn.disabled=false;btn.innerHTML=t("updatePrices");
+    btn.disabled=false;btn.innerHTML="🔄 Update prices";
     document.getElementById("btn-apply").disabled=false;
   };
 }
 
-function applyRefresh(){ closeRefresh(); renderSB(); genChart(); showToast("✓ "+t("priceUpdated")); }
+function applyRefresh(){ closeRefresh(); renderSB(); genChart(); showToast("✓ "+"prices updated"); }
 
 
 async function manualDriveSync(){
@@ -1563,17 +1561,17 @@ async function manualDriveSync(){
       document.getElementById("r-ron").value=ST.cursuri.RON;
       renderSB();genChart();
     } else {
-      showToast("☁ "+(d.mesaj||"Sync eșuat"));
+      showToast("☁ "+(d.mesaj||"Sync failed"));
       // Arata diagnosticul daca e eroare de autentificare
-      if(d.mesaj && (d.mesaj.indexOf("lipsă")!==-1||d.mesaj.indexOf("Eroare")!==-1||d.mesaj.indexOf("invalid")!==-1)){
+      if(d.mesaj && (d.mesaj.indexOf("missing")!==-1||d.mesaj.indexOf("Error")!==-1||d.mesaj.indexOf("invalid")!==-1)){
         setTimeout(function(){
-          if(confirm("A apărut o eroare Drive.\nVrei să vezi diagnosticul complet?")){
+          if(confirm("A Drive error occurred.\nWould you like to see the full diagnostic?")){
             showDriveDiagnose();
           }
         },500);
       }
     }
-  }catch(e){b.textContent=orig;showToast("☁ Eroare conexiune Drive: "+e.message);}
+  }catch(e){b.textContent=orig;showToast("☁ Drive connection error: "+e.message);}
 }
 
 checkDriveStatus();
@@ -1581,7 +1579,7 @@ setInterval(checkDriveStatus,30000);
 
 
 /* ════════════════════════════════════════════════
-   VÂNZARE POZIȚIE
+   SELL POSITION
 ════════════════════════════════════════════════ */
 var _sellPozId = null;
 
@@ -1592,7 +1590,7 @@ function openSellModal(id){
   _sellPozId = id;
   var p = ST.pozitii.find(function(x){return x.id===id});
   if(!p) return;
-  document.getElementById("sell-title").textContent = "💸 Vinde — " + p.nume;
+  document.getElementById("sell-title").textContent = "💸 Sell — " + p.nume;
   document.getElementById("sell-qty").value = "";
   document.getElementById("sell-qty").placeholder = "max: " + p.cantitate;
   document.getElementById("sell-price").value = p.pret;
@@ -1618,7 +1616,7 @@ function updateSellPreview(){
   var cost     = qty * (p.pret_mediu||p.pret);
   var pnl      = proceeds - cost;
   var pct      = cost>0 ? pnl/cost*100 : 0;
-  var fmt = function(n){ return new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(n)+" "+p.moneda; };
+  var fmt = function(n){ return new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(n)+" "+p.moneda; };
   document.getElementById("sell-prev-proceeds").textContent = fmt(proceeds);
   document.getElementById("sell-prev-cost").textContent     = fmt(cost);
   document.getElementById("sell-prev-pnl").textContent      = (pnl>=0?"+":"")+fmt(pnl);
@@ -1627,8 +1625,8 @@ function updateSellPreview(){
   document.getElementById("sell-prev-pct").style.color      = pct>=0?"#22c55e":"#ef4444";
   document.getElementById("sell-preview").style.display     = "flex";
   document.getElementById("sell-cash-note").textContent     =
-    "✓ " + new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(proceeds) +
-    " " + p.moneda + " vor fi adăugate în Cash " + p.moneda;
+    "✓ " + new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(proceeds) +
+    " " + p.moneda + " will be added to Cash " + p.moneda;
 }
 
 function confirmSell(){
@@ -1637,9 +1635,9 @@ function confirmSell(){
   var qty   = parseFloat(document.getElementById("sell-qty").value);
   var price = parseFloat(document.getElementById("sell-price").value);
   var data  = document.getElementById("sell-date").value;
-  if(isNaN(qty)||qty<=0)   {alert("Introdu cantitatea de vândut!");return}
-  if(isNaN(price)||price<=0){alert("Introdu prețul de vânzare!");return}
-  if(qty > p.cantitate)    {alert("Nu poți vinde mai mult decât deții ("+p.cantitate+")!");return}
+  if(isNaN(qty)||qty<=0)   {alert("Enter the quantity to sell!");return}
+  if(isNaN(price)||price<=0){alert("Enter the sale price!");return}
+  if(qty > p.cantitate)    {alert("You can't sell more than you own ("+p.cantitate+")!");return}
 
   var proceeds = qty * price;
   var cost     = qty * (p.pret_mediu||p.pret);
@@ -1670,10 +1668,10 @@ function confirmSell(){
   var ramas = +(p.cantitate - qty).toFixed(6);
   if(ramas <= 0.000001){
     ST.pozitii = ST.pozitii.filter(function(x){return x.id!==p.id});
-    showToast("💸 "+p.nume+" vândut complet → +"+ new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(proceeds)+" "+p.moneda+" în Cash");
+    showToast("💸 "+p.nume+" fully sold → +"+ new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(proceeds)+" "+p.moneda+" to Cash");
   } else {
     p.cantitate = ramas;
-    showToast("💸 "+qty+" "+p.nume+" vânduți → +"+ new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(proceeds)+" "+p.moneda+" în Cash");
+    showToast("💸 "+qty+" "+p.nume+" sold → +"+ new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(proceeds)+" "+p.moneda+" to Cash");
   }
 
   closeSellModal();
@@ -1697,7 +1695,7 @@ function addToCash(moneda, suma){
     cp.pret_mediu = cp.pret;
   } else {
     ST.pozitii.push({id:ST.next_id++,nume:"Cash "+moneda,categorie:"Cash",
-      regiune:moneda==="RON"?"România":"World",cantitate:1,
+      regiune:moneda==="RON"?"Romania":"World",cantitate:1,
       pret:+suma.toFixed(4),pret_mediu:+suma.toFixed(4),
       moneda:moneda,ticker_stooq:"",dividende:[]});
   }
@@ -1709,7 +1707,7 @@ function addTranzactie(t){
 
 
 /* ════════════════════════════════════════════════
-   CUMPĂRARE ACȚIUNI
+   BUY SHARES
 ════════════════════════════════════════════════ */
 var _buyPozId = null;
 
@@ -1720,18 +1718,18 @@ function openBuyModal(id){
   _buyPozId = id;
   var p = ST.pozitii.find(function(x){return x.id===id});
   if(!p) return;
-  document.getElementById("buy-title").textContent = "🛒 Cumpără — " + p.nume;
+  document.getElementById("buy-title").textContent = "🛒 Buy — " + p.nume;
   document.getElementById("buy-qty").value = "";
   document.getElementById("buy-price").value = p.pret;
   document.getElementById("buy-currency").textContent = p.moneda;
   document.getElementById("buy-date").value = new Date().toISOString().split("T")[0];
   document.getElementById("buy-preview").style.display = "none";
   document.getElementById("buy-cash-warn").style.display = "none";
-  // Afiseaza cash disponibil
+  // Afiseaza cash available
   var cp = getCashPos(p.moneda);
   var avail = cp ? cp.pret : 0;
   document.getElementById("buy-cash-avail").textContent =
-    cp ? "(disponibil: "+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(avail)+" "+p.moneda+")" : "(fără poziție Cash "+p.moneda+")";
+    cp ? "(available: "+new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(avail)+" "+p.moneda+")" : "(no Cash Cash "+p.moneda+")";
   document.getElementById("ov-buy").classList.add("open");
   setTimeout(function(){document.getElementById("buy-qty").focus()},150);
   updateBuyPreview();
@@ -1749,10 +1747,10 @@ function updateBuyPreview(){
   var cost   = qty * price;
   var newQty = p.cantitate + qty;
   var newAvg = (p.cantitate * (p.pret_mediu||p.pret) + qty * price) / newQty;
-  var fmt = function(n){return new Intl.NumberFormat("ro-RO",{maximumFractionDigits:4}).format(n)+" "+p.moneda};
+  var fmt = function(n){return new Intl.NumberFormat("en-US",{maximumFractionDigits:4}).format(n)+" "+p.moneda};
   document.getElementById("buy-prev-cost").textContent = fmt(cost);
   document.getElementById("buy-prev-avg").textContent  = fmt(newAvg);
-  document.getElementById("buy-prev-qty").textContent  = new Intl.NumberFormat("ro-RO",{maximumFractionDigits:4}).format(newQty);
+  document.getElementById("buy-prev-qty").textContent  = new Intl.NumberFormat("en-US",{maximumFractionDigits:4}).format(newQty);
   document.getElementById("buy-preview").style.display = "flex";
   // Verifica cash suficient
   var cp = getCashPos(p.moneda);
@@ -1766,8 +1764,8 @@ function confirmBuy(){
   if(!p) return;
   var qty   = parseFloat(document.getElementById("buy-qty").value);
   var price = parseFloat(document.getElementById("buy-price").value);
-  if(isNaN(qty)||qty<=0)    {alert("Introdu cantitatea de cumpărat!");return}
-  if(isNaN(price)||price<=0){alert("Introdu prețul de cumpărare!");return}
+  if(isNaN(qty)||qty<=0)    {alert("Enter the quantity to buy!");return}
+  if(isNaN(price)||price<=0){alert("Enter the purchase price!");return}
   var fromCash = document.getElementById("buy-from-cash").checked;
   var cost     = qty * price;
   var cp       = getCashPos(p.moneda);
@@ -1775,11 +1773,11 @@ function confirmBuy(){
     var available = cp ? cp.pret : 0;
     if(available < cost){
       // BLOCARE — nu permite achizitia daca cash insuficient
-      var fmt = function(n){return new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(n)};
-      alert("❌ Cash insuficient!\n\n" +
-            "Cost achiziție:  " + fmt(cost) + " " + p.moneda + "\n" +
-            "Cash disponibil: " + fmt(available) + " " + p.moneda + "\n\n" +
-            "Adaugă fonduri în Cash " + p.moneda + " sau debifează opțiunea \"Deduce din Cash\".");
+      var fmt = function(n){return new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(n)};
+      alert("❌ Insufficient cash!\n\n" +
+            "Purchase cost:  " + fmt(cost) + " " + p.moneda + "\n" +
+            "Cash available: " + fmt(available) + " " + p.moneda + "\n\n" +
+            "Add funds to Cash " + p.moneda + " or uncheck the option \"Deduct from Cash\".");
       return;
     }
   }
@@ -1794,7 +1792,7 @@ function confirmBuy(){
   closeBuyModal();
   renderSB();
   genChart();
-  showToast("🛒 "+qty+" "+p.nume+" cumpărate"+(fromCash?" · -"+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(cost)+" "+p.moneda+" din Cash":"")+" · Preț mediu nou: "+newAvg+" "+p.moneda);
+  showToast("🛒 "+qty+" "+p.nume+" purchased"+(fromCash?" · -"+new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(cost)+" "+p.moneda+" from Cash":"")+" · New avg. price: "+newAvg+" "+p.moneda);
 }
 
 
@@ -1805,44 +1803,44 @@ var _lang = localStorage.getItem("pm_lang") || "ro";
 
 var T = {
   ro: {
-    save:"Salvează", updatePrices:"🔄 Actualizează prețuri",
-    add:"＋ Adaugă", edit:"Editează", delete:"Șterge",
-    cancel:"Anulează", close:"Închide", confirm:"Confirmă",
-    positions:"Poziții", allocation:"📊 Alocare",
-    pnl:"📈 Profit / Pierdere", evolution:"📉 Evoluție",
-    totalValue:"VALOARE TOTALĂ", positions_count:"poziții",
-    exchangeRates:"Cursuri valutare",
-    addPosition:"Adaugă poziție nouă", editPosition:"Editează poziție",
-    ticker:"Ticker / Nume", category:"Categorie", quantity:"Cantitate",
-    currentPrice:"Preț curent", avgPrice:"Preț mediu achiziție",
-    currency:"Monedă", region:"Regiune", stooqTicker:"Ticker Stooq",
-    deductCash:"Deduce costul achiziției din Cash",
-    dividends:"Dividende", sell:"💸 Vinde", buy:"🛒 Cumpără",
-    buyMore:"🛒 Cumpără mai mult", sellPos:"💸 Vânzare",
-    priceUpdated:"prețuri actualizate",
-    updating:"Se actualizează", done:"Gata",
-    manual:"manual", noTicker:"Fără ticker",
-    cashBalance:"Sold Cash", addFunds:"＋ Adaugă fonduri",
-    removeFunds:"— Retrage fonduri", currentBalance:"Sold curent",
-    newBalance:"Sold nou",
-    world:"World", romania:"România",
-    totalPnl:"P&L TOTAL (fără cash)",
-    realizedPnl:"💸 Câștiguri / Pierderi Realizate",
-    transactions:"tranzacții",
-    totalAlloc:"ALOCARE VIZUALĂ", visualAlloc:"Alocare vizuală",
-    perRegion:"ALOCARE PER REGIUNE",
-    saveInDrive:"Salvezi și în Google Drive?",
+    save:"Save", updatePrices:"🔄 Update prices",
+    add:"＋ Add", edit:"Edit", delete:"Delete",
+    cancel:"Cancel", close:"Close", confirm:"Confirm",
+    positions:"Positions", allocation:"📊 Alocare",
+    pnl:"📈 Profit / Pierdere", evolution:"📉 Evolution",
+    totalValue:"TOTAL VALUE", positions_count:"positions",
+    exchangeRates:"Exchange rates",
+    addPosition:"Add new position", editPosition:"Edit position",
+    ticker:"Ticker / Name", category:"Category", quantity:"Cantitate",
+    currentPrice:"Current price", avgPrice:"Avg. purchase price",
+    currency:"Currency", region:"Region", stooqTicker:"Stooq Ticker",
+    deductCash:"Deduct acquisition cost from Cash",
+    dividends:"Dividends", sell:"💸 Sell", buy:"🛒 Buy",
+    buyMore:"🛒 Buy more", sellPos:"💸 Sale",
+    priceUpdated:"prices updatede",
+    updating:"Updating", done:"Gata",
+    manual:"manual", noTicker:"No ticker",
+    cashBalance:"Cash Balance", addFunds:"＋ Add fonduri",
+    removeFunds:"— Withdraw funds", currentBalance:"Current balance",
+    newBalance:"New balance",
+    world:"World", romania:"Romania",
+    totalPnl:"P&L TOTAL (excl. cash)",
+    realizedPnl:"💸 Realized Gains / Losses",
+    transactions:"transactions",
+    totalAlloc:"VISUAL ALLOCATION", visualAlloc:"Visual allocation",
+    perRegion:"ALLOCATION BY REGION",
+    saveInDrive:"Save to Google Drive?",
     savedLocal:"Date salvate local.",
-    driveYes:"☁ Da, salvează în Drive",
-    driveNo:"Nu, doar local",
-    evolPortfolio:"EVOLUȚIE PORTOFOLIU",
-    firstSnapshot:"față de primul snapshot",
-    addManual:"＋ Adaugă manual",
-    history:"📋 Istoric",
-    deleteSnapshot:"Ștergi snapshot-ul din",
-    cantUndo:"Acțiunea nu poate fi anulată.",
-    dateField:"Data", totalField:"Valoare totală (€)",
-    addBtn:"Adaugă",
+    driveYes:"☁ Yes, save to Drive",
+    driveNo:"No, local only",
+    evolPortfolio:"PORTFOLIO EVOLUTION",
+    firstSnapshot:"vs first snapshot",
+    addManual:"＋ Add manual",
+    history:"📋 History",
+    deleteSnapshot:"Delete snapshot from",
+    cantUndo:"This action cannot be undone.",
+    dateField:"Date", totalField:"Total value (€)",
+    addBtn:"Add",
   },
   en: {
     save:"Save", updatePrices:"🔄 Update prices",
@@ -1872,7 +1870,7 @@ var T = {
     totalAlloc:"VISUAL ALLOCATION", visualAlloc:"Visual allocation",
     perRegion:"ALLOCATION BY REGION",
     saveInDrive:"Save to Google Drive?",
-    savedLocal:"Data saved locally.",
+    savedLocal:"Date saved locally.",
     driveYes:"☁ Yes, save to Drive",
     driveNo:"No, local only",
     evolPortfolio:"PORTFOLIO EVOLUTION",
@@ -1891,7 +1889,6 @@ function t(key){ return (T[_lang]||T.ro)[key] || key; }
 function toggleLang(){
   _lang = _lang==="ro" ? "en" : "ro";
   localStorage.setItem("pm_lang", _lang);
-  applyLang();
   renderSB();
   genChart();
 }
@@ -1901,14 +1898,14 @@ function applyLang(){
   if(btn) btn.textContent = _lang==="ro" ? "🇬🇧 EN" : "🇷🇴 RO";
   // Update static DOM elements
   var map = {
-    "btn-save":     t("save"),
-    "btn-refresh":  t("updatePrices"),
-    "tab-alloc":    t("allocation"),
-    "tab-pnl":      t("pnl"),
-    "tab-evo":      t("evolution"),
-    "sb-add-btn":   t("add"),
-    "sb-title":     t("positions"),
-    "rates-title":  t("exchangeRates"),
+    "btn-save":     "Save",
+    "btn-refresh":  "🔄 Update prices",
+    "tab-alloc":    "📊 Allocation",
+    "tab-pnl":      "📈 Profit / Loss",
+    "tab-evo":      "📉 Evolution",
+    "sb-add-btn":   "＋ Add",
+    "sb-title":     "Positions",
+    "rates-title":  "Exchange rates",
   };
   for(var id in map){
     var el = document.getElementById(id);
@@ -1926,10 +1923,10 @@ function openCashModal(id, dir){
   _cashPozId=id; _cashDir=dir;
   var p=ST.pozitii.find(function(x){return x.id===id}); if(!p) return;
   document.getElementById("cash-title").textContent = "💵 "+p.nume;
-  document.getElementById("cash-balance-label").textContent = t("currentBalance");
+  document.getElementById("cash-balance-label").textContent = "Current balance";
   document.getElementById("cash-balance-val").textContent =
-    new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(p.pret)+" "+p.moneda;
-  document.getElementById("cash-amount-label").textContent = dir>0?t("addFunds"):t("removeFunds");
+    new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(p.pret)+" "+p.moneda;
+  document.getElementById("cash-amount-label").textContent = dir>0?"Add funds":"Withdraw funds";
   document.getElementById("cash-amount").value="";
   document.getElementById("cash-preview").style.display="none";
   document.getElementById("cash-date").value=new Date().toISOString().split("T")[0];
@@ -1944,7 +1941,7 @@ function updateCashPreview(){
   var amt=parseFloat(document.getElementById("cash-amount").value);
   if(isNaN(amt)||amt<=0){document.getElementById("cash-preview").style.display="none";return;}
   var newBal=p.pret+(_cashDir*amt);
-  var fmt=function(n){return new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(n)+" "+p.moneda};
+  var fmt=function(n){return new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(n)+" "+p.moneda};
   document.getElementById("cash-new-val").textContent=fmt(newBal);
   document.getElementById("cash-preview").style.display="block";
 }
@@ -1952,12 +1949,12 @@ function updateCashPreview(){
 function confirmCash(){
   var p=ST.pozitii.find(function(x){return x.id===_cashPozId}); if(!p) return;
   var amt=parseFloat(document.getElementById("cash-amount").value);
-  if(isNaN(amt)||amt<=0){alert("Introdu suma!");return;}
+  if(isNaN(amt)||amt<=0){alert("Enter the amount!");return;}
   var newBal=p.pret+(_cashDir*amt);
-  if(newBal<0){if(!confirm("Soldul va deveni negativ. Continui?"))return;}
+  if(newBal<0){if(!confirm("Balance will go negative. Continue?"))return;}
   p.pret=+newBal.toFixed(4); p.pret_mediu=p.pret;
   closeCashModal(); renderSB(); genChart();
-  showToast("💵 "+p.nume+": "+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(newBal)+" "+p.moneda);
+  showToast("💵 "+p.nume+": "+new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(newBal)+" "+p.moneda);
 }
 
 
@@ -1970,7 +1967,7 @@ function closeDivModal(){document.getElementById("ov-div").classList.remove("ope
 function openDivModal(id){
   _divPozId=id;
   var p=ST.pozitii.find(function(x){return x.id===id}); if(!p) return;
-  document.getElementById("dmodal-title").textContent="💰 "+t("dividends")+" — "+p.nume;
+  document.getElementById("dmodal-title").textContent="💰 "+"Dividends"+" — "+p.nume;
   renderDivBody(p);
   document.getElementById("ov-div").classList.add("open");
 }
@@ -1982,40 +1979,40 @@ function renderDivBody(p){
   var totalEur=divs.reduce(function(s,d){return s+toEurD(d.valoare||0,d.moneda||"EUR")},0);
   var html='<div class="div-sum">';
   html+='<div class="div-sum-item"><div class="div-sum-label">Total EUR</div><div class="div-sum-val">'+
-    new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(totalEur)+" €</div></div>";
-  html+='<div class="div-sum-item"><div class="div-sum-label">Nr. plăți</div>'+
+    new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(totalEur)+" €</div></div>";
+  html+='<div class="div-sum-item"><div class="div-sum-label">No. payments</div>'+
     '<div class="div-sum-val" style="font-size:13px">'+divs.length+'</div></div>';
   html+='</div>';
   if(divs.length===0){
-    html+='<div style="color:var(--dim);font-size:12px;padding:8px 0">Niciun dividend înregistrat.</div>';
+    html+='<div style="color:var(--dim);font-size:12px;padding:8px 0">No dividends recorded.</div>';
   } else {
     html+='<div style="font-size:10px;color:var(--dim);margin-bottom:6px;display:flex">'+
-      '<span style="flex:1">Data</span><span style="width:100px;text-align:right">Valoare</span>'+
-      '<span style="width:50px;text-align:center">Monedă</span><span style="width:30px"></span></div>';
+      '<span style="flex:1">Date</span><span style="width:100px;text-align:right">Amount</span>'+
+      '<span style="width:50px;text-align:center">Currency</span><span style="width:30px"></span></div>';
     divs.forEach(function(d,i){
       html+='<div class="div-row">'+
         '<span style="flex:1;font-size:12px;color:#9ca3af">'+(d.data||"—")+'</span>'+
         '<span style="width:100px;text-align:right;font-family:Georgia,serif;font-size:13px;color:#4ade80">'+
-          new Intl.NumberFormat("ro-RO",{maximumFractionDigits:4}).format(d.valoare||0)+'</span>'+
+          new Intl.NumberFormat("en-US",{maximumFractionDigits:4}).format(d.valoare||0)+'</span>'+
         '<span style="width:50px;text-align:center;font-size:11px;color:var(--dim)">'+d.moneda+'</span>'+
         '<button class="btn-del-div" onclick="delDiv('+i+')">🗑</button></div>';
     });
   }
   html+='<div class="div-add-row" style="margin-top:12px">'+
-    '<div><label style="font-size:10px;color:var(--dim);display:block;margin-bottom:3px">Data plății</label>'+
+    '<div><label style="font-size:10px;color:var(--dim);display:block;margin-bottom:3px">Payment date</label>'+
     '<input class="fi" id="d-data" type="date" style="font-size:13px;padding:6px 8px"/></div>'+
-    '<div><label style="font-size:10px;color:var(--dim);display:block;margin-bottom:3px">Valoare</label>'+
+    '<div><label style="font-size:10px;color:var(--dim);display:block;margin-bottom:3px">Amount</label>'+
     '<input class="fi" id="d-val" type="number" step="any" placeholder="ex: 45.20" style="font-size:13px;padding:6px 8px"/></div>'+
-    '<div><label style="font-size:10px;color:var(--dim);display:block;margin-bottom:3px">Monedă</label>'+
+    '<div><label style="font-size:10px;color:var(--dim);display:block;margin-bottom:3px">Currency</label>'+
     '<select class="fs" id="d-mon" style="font-size:13px;padding:6px 8px">'+
       '<option value="EUR">EUR</option><option value="USD">USD</option><option value="RON">RON</option>'+
     '</select></div>'+
-    '<div style="display:flex;align-items:flex-end"><button class="btn-div" onclick="addDiv()">＋ Adaugă</button></div>'+
+    '<div style="display:flex;align-items:flex-end"><button class="btn-div" onclick="addDiv()">＋ Add</button></div>'+
     '</div>'+
     '<div style="margin-top:6px;display:flex;align-items:center;gap:6px">'+
     '<input type="checkbox" id="d-addcash" checked style="accent-color:#22c55e"/>'+
     '<label for="d-addcash" style="font-size:11px;color:#9ca3af;cursor:pointer">'+
-    'Adaugă suma automat în Cash '+(p.moneda||'')+'</label></div>';
+    'Auto-add to Cash '+(p.moneda||'')+'</label></div>';
   document.getElementById("dmodal-body").innerHTML=html;
   var p2=ST.pozitii.find(function(x){return x.id===_divPozId});
   if(p2&&document.getElementById("d-mon")) document.getElementById("d-mon").value=p2.moneda||"EUR";
@@ -2028,19 +2025,19 @@ function addDiv(){
   var val=parseFloat(document.getElementById("d-val").value);
   var mon=document.getElementById("d-mon").value;
   var addCash=document.getElementById("d-addcash")&&document.getElementById("d-addcash").checked;
-  if(!data||isNaN(val)||val<=0){alert("Completează data și valoarea!");return}
+  if(!data||isNaN(val)||val<=0){alert("Fill in the date and amount!");return}
   if(!p.dividende) p.dividende=[];
   p.dividende.push({data:data,valoare:val,moneda:mon});
   p.dividende.sort(function(a,b){return a.data.localeCompare(b.data)});
-  if(addCash){addToCash(mon,val);showToast("Dividend adăugat ✓ + "+val+" "+mon+" → Cash");}
-  else showToast("Dividend adăugat ✓");
+  if(addCash){addToCash(mon,val);showToast("Dividend added ✓ + "+val+" "+mon+" → Cash");}
+  else showToast("Dividend added ✓");
   renderDivBody(p); renderSB(); genChart();
 }
 
 function delDiv(idx){
   var p=ST.pozitii.find(function(x){return x.id===_divPozId}); if(!p||!p.dividende) return;
-  if(!confirm("Ștergi dividendul din "+p.dividende[idx].data+"?")) return;
-  p.dividende.splice(idx,1); renderDivBody(p); showToast("Dividend șters"); genChart();
+  if(!confirm("Delete dividend from "+p.dividende[idx].data+"?")) return;
+  p.dividende.splice(idx,1); renderDivBody(p); showToast("Dividend deleted"); genChart();
 }
 
 /* ════════════ DRIVE STATUS ════════════ */
@@ -2054,12 +2051,12 @@ function updateDriveBadge(){
   var b=document.getElementById("drive-badge"); if(!b) return;
   var s=_driveStatus;
   if(!s.enabled){b.className="drive-badge drive-off";b.textContent="☁ Drive";
-    b.title="Google Drive neconfigurat — adaugă credentials.json lângă .exe";}
+    b.title="Google Drive neconfigurat — add credentials.json next to .exe";}
   else if(s.error){b.className="drive-badge drive-err";b.textContent="☁ Eroare";
-    b.title="Eroare: "+s.error;}
+    b.title="Error: "+s.error;}
   else if(s.last_sync){b.className="drive-badge drive-on";
-    b.textContent="☁ "+s.last_sync;b.title="Sincronizat la "+s.last_sync;}
-  else{b.className="drive-badge drive-off";b.textContent="☁ ...";b.title="Se conectează...";}
+    b.textContent="☁ "+s.last_sync;b.title="Synced at "+s.last_sync;}
+  else{b.className="drive-badge drive-off";b.textContent="☁ ...";b.title="Connecting...";}
 }
 
 
@@ -2067,7 +2064,7 @@ function updateDriveBadge(){
 async function testTicker(){
   var ticker  = (document.getElementById("fty")||{}).value;
   var regiune = (document.getElementById("frg")||{}).value || "World";
-  if(!ticker||!ticker.trim()){alert("Introdu un ticker Stooq mai întâi!");return}
+  if(!ticker||!ticker.trim()){alert("Please enter a Stooq ticker first!");return}
   var btn = document.querySelector(".btn-test");
   var res = document.getElementById("ticker-result");
   if(btn){ btn.disabled=true; btn.textContent="⏳"; }
@@ -2077,7 +2074,7 @@ async function testTicker(){
     res.style.color = "#6b7280";
     res.style.background = "transparent";
     res.style.border = "none";
-    res.textContent = "Se testează " + ticker.trim() + "...";
+    res.textContent = "Testing " + ticker.trim() + "...";
   }
   try{
     var r = await fetch("/api/test-ticker", {
@@ -2096,7 +2093,7 @@ async function testTicker(){
       } else {
         res.className = "ticker-result err";
         res.style.color = ""; res.style.background = ""; res.style.border = "";
-        res.textContent = "✗ " + (d.eroare || "Ticker negăsit — ex: brkb.us · snp.ro");
+        res.textContent = "✗ " + (d.eroare || "Ticker not found — ex: brkb.us · snp.ro");
       }
     }
   } catch(e){
@@ -2104,10 +2101,10 @@ async function testTicker(){
       res.style.display = "block";
       res.className = "ticker-result err";
       res.style.color = ""; res.style.background = ""; res.style.border = "";
-      res.textContent = "✗ Eroare: " + e.message;
+      res.textContent = "✗ Error: " + e.message;
     }
   } finally {
-    if(btn){ btn.disabled = false; btn.textContent = "▶ Testează"; }
+    if(btn){ btn.disabled = false; btn.textContent = "▶ Test"; }
   }
 }
 
@@ -2129,12 +2126,12 @@ function onCategoryChange(){
   if(cashDiv)   cashDiv.style.display  = isCash ? "none" : (editId?"none":"flex");
   if(cashInfo){ cashInfo.style.display = isCash ? "block" : "none";
     if(isCash){ cashInfo.style.background="#0d2818"; cashInfo.style.borderColor="#166534";
-      cashInfo.innerHTML='💵 <strong>Poziție Cash</strong><br><span style="font-size:12px;color:#9ca3af">Introdu suma în câmpul <em>Sold inițial</em> și alege moneda.<br>Cantitatea se setează automat la 1.</span>';
+      cashInfo.innerHTML='💵 <strong>Cash Position</strong><br><span style="font-size:12px;color:#9ca3af">Enter the amount in the <em>Initial balance</em> field and choose currency.<br>Quantity is automatically set to 1.</span>';
     }
   }
   var lpret  = document.getElementById("label-pret");
   var pmedRow= document.getElementById("row-pmed");
-  if(lpret)   lpret.textContent = isCash ? "Sold inițial" : "Preț curent";
+  if(lpret)   lpret.textContent = isCash ? "Initial balance" : "Current price";
   if(pmedRow) pmedRow.style.display = isCash ? "none" : "";
 }
 
@@ -2156,13 +2153,13 @@ init();
 <div class="ov" id="ov-div" >
   <div class="dmodal">
     <div class="dmodal-hdr">
-      <h3 id="dmodal-title">💰 Dividende</h3>
+      <h3 id="dmodal-title">💰 Dividends</h3>
       <button class="btn bs" style="padding:4px 10px;font-size:12px" onclick="closeDivModal()">✕</button>
     </div>
     <div class="dmodal-body" id="dmodal-body"></div>
     <div class="dmodal-ftr">
-      <span style="font-size:11px;color:var(--dim)">Adaugă toate dividendele primite pentru această poziție</span>
-      <button class="btn bp" onclick="closeDivModal()">Închide</button>
+      <span style="font-size:11px;color:var(--dim)">Add all received dividends toentru această position</span>
+      <button class="btn bp" onclick="closeDivModal()">Close</button>
     </div>
   </div>
 </div>
@@ -2170,51 +2167,51 @@ init();
 <!-- Drive save prompt -->
 <div id="drive-save-modal" >
   <div class="drive-prompt">
-    <div class="drive-prompt-title">☁ Salvezi și în Google Drive?</div>
+    <div class="drive-prompt-title">☁ Save to Google Drive?</div>
     <div class="drive-prompt-sub">
-      Datele au fost salvate local.<br>
-      Vrei să le uploadezi și în Drive pentru sincronizare între calculatoare?
+      Date saved locally.<br>
+      Upload to Drive for multi-device sync?
     </div>
     <div class="drive-prompt-btns">
       <button class="btn bs" onclick="closeDriveSavePrompt()" 
         style="font-size:12px;padding:6px 14px">
-        Nu, doar local
+        No, local only
       </button>
       <button class="btn bp" onclick="confirmDriveSave()"
         style="font-size:12px;padding:6px 14px;background:#166534;color:#4ade80;border:1px solid #166534">
-        ☁ Da, salvează în Drive
+        ☁ Yes, save to Drive
       </button>
     </div>
   </div>
 </div>
 
-<!-- Modal vânzare poziție -->
+<!-- Modal vânzare position -->
 <div class="ov" id="ov-sell" >
   <div class="modal" style="width:440px">
-    <h3 id="sell-title">💸 Vinde poziție</h3>
+    <h3 id="sell-title">💸 Sell position</h3>
     <div id="sell-body">
       <div class="fr">
-        <label>Cantitate de vândut</label>
+        <label>Quantity to sell</label>
         <input class="fi" id="sell-qty" type="number" step="any"
           placeholder="max: —" oninput="updateSellPreview()"/>
       </div>
       <div class="fr">
-        <label>Preț de vânzare (<span id="sell-currency">—</span>)</label>
+        <label>Sale price (<span id="sell-currency">—</span>)</label>
         <input class="fi" id="sell-price" type="number" step="any"
           placeholder="ex: 150.00" oninput="updateSellPreview()"/>
       </div>
       <div class="fr">
-        <label>Data vânzării</label>
+        <label>Sale date</label>
         <input class="fi" id="sell-date" type="date"/>
       </div>
       <!-- Preview calcul -->
       <div class="sell-preview" id="sell-preview" style="display:none">
         <div class="sell-preview-item">
-          <div class="sell-preview-label">Încasare brută</div>
+          <div class="sell-preview-label">Gross proceeds</div>
           <div class="sell-preview-val" id="sell-prev-proceeds">—</div>
         </div>
         <div class="sell-preview-item">
-          <div class="sell-preview-label">Cost achiziție</div>
+          <div class="sell-preview-label">Purchase cost</div>
           <div class="sell-preview-val" id="sell-prev-cost">—</div>
         </div>
         <div class="sell-preview-item">
@@ -2222,16 +2219,16 @@ init();
           <div class="sell-preview-val" id="sell-prev-pnl">—</div>
         </div>
         <div class="sell-preview-item">
-          <div class="sell-preview-label">Randament</div>
+          <div class="sell-preview-label">Return</div>
           <div class="sell-preview-val" id="sell-prev-pct">—</div>
         </div>
       </div>
       <div style="font-size:11px;color:var(--dim);margin-top:4px" id="sell-cash-note"></div>
     </div>
     <div class="mf">
-      <button class="btn bs" onclick="closeSellModal()">Anulează</button>
+      <button class="btn bs" onclick="closeSellModal()">Cancel</button>
       <button class="btn bp" style="background:#fb923c;color:#000" onclick="confirmSell()">
-        💸 Confirmă vânzarea
+        💸 Confirm sale
       </button>
     </div>
   </div>
@@ -2240,42 +2237,42 @@ init();
 <!-- Modal cumpărare acțiuni -->
 <div class="ov" id="ov-buy" >
   <div class="modal" style="width:440px">
-    <h3 id="buy-title">🛒 Cumpără acțiuni</h3>
+    <h3 id="buy-title">🛒 Buy shares</h3>
     <div class="fr">
-      <label>Cantitate de cumpărat</label>
+      <label>Quantity to buy</label>
       <input class="fi" id="buy-qty" type="number" step="any" placeholder="ex: 10" oninput="updateBuyPreview()"/>
     </div>
     <div class="fr">
-      <label>Preț de cumpărare (<span id="buy-currency">—</span>)</label>
+      <label>Purchase price (<span id="buy-currency">—</span>)</label>
       <input class="fi" id="buy-price" type="number" step="any" placeholder="ex: 150.00" oninput="updateBuyPreview()"/>
     </div>
     <div class="fr">
-      <label>Data tranzacției</label>
+      <label>Transaction date</label>
       <input class="fi" id="buy-date" type="date"/>
     </div>
     <!-- Preview -->
     <div id="buy-preview" style="background:#0d1117;border-radius:8px;padding:10px 14px;margin:8px 0;display:none;gap:16px;flex-wrap:wrap">
-      <div><div style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">Cost total</div>
+      <div><div style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">Total cost</div>
         <div style="font-family:Georgia,serif;font-size:16px" id="buy-prev-cost">—</div></div>
-      <div><div style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">Preț mediu nou</div>
+      <div><div style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">New avg. price</div>
         <div style="font-family:Georgia,serif;font-size:16px;color:#f59e0b" id="buy-prev-avg">—</div></div>
-      <div><div style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">Cantitate totală</div>
+      <div><div style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">Total quantity</div>
         <div style="font-family:Georgia,serif;font-size:16px" id="buy-prev-qty">—</div></div>
     </div>
     <!-- Checkbox cash -->
     <div style="display:flex;align-items:center;gap:8px;margin:8px 0;padding:8px 0;border-top:1px solid #1f2937">
       <input type="checkbox" id="buy-from-cash" checked style="accent-color:#22c55e;width:15px;height:15px"/>
       <label for="buy-from-cash" style="font-size:12px;color:#9ca3af;cursor:pointer">
-        Deduce costul din Cash <span id="buy-cash-avail" style="color:#4b5563"></span>
+        Deduct cost from Cash <span id="buy-cash-avail" style="color:#4b5563"></span>
       </label>
     </div>
     <div id="buy-cash-warn" style="font-size:11px;color:#ef4444;display:none">
-      ⚠ Cash insuficient pentru această tranzacție
+      ⚠ Insufficient cash pentru această tranzacție
     </div>
     <div class="mf">
-      <button class="btn bs" onclick="closeBuyModal()">Anulează</button>
+      <button class="btn bs" onclick="closeBuyModal()">Cancel</button>
       <button class="btn bp" style="background:#22c55e;color:#000" onclick="confirmBuy()">
-        🛒 Confirmă cumpărarea
+        🛒 Confirm purchase
       </button>
     </div>
   </div>
@@ -2286,7 +2283,7 @@ init();
   <div class="modal" style="width:380px">
     <h3 id="cash-title">💵 Cash</h3>
     <div style="background:#0d1117;border-radius:8px;padding:12px 14px;margin-bottom:14px">
-      <div style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px" id="cash-balance-label">Sold curent</div>
+      <div style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px" id="cash-balance-label">Current balance</div>
       <div style="font-family:Georgia,serif;font-size:22px;color:#e6e1d8" id="cash-balance-val">—</div>
     </div>
     <div class="fr">
@@ -2294,15 +2291,15 @@ init();
       <input class="fi" id="cash-amount" type="number" step="any" placeholder="ex: 1000.00" oninput="updateCashPreview()"/>
     </div>
     <div id="cash-preview" style="font-size:12px;color:#9ca3af;margin:6px 0;display:none">
-      Sold nou: <span id="cash-new-val" style="color:#f59e0b;font-weight:600"></span>
+      New balance: <span id="cash-new-val" style="color:#f59e0b;font-weight:600"></span>
     </div>
     <div class="fr">
-      <label>Data</label>
+      <label>Date</label>
       <input class="fi" id="cash-date" type="date"/>
     </div>
     <div class="mf">
-      <button class="btn bs" onclick="closeCashModal()">Anulează</button>
-      <button class="btn bp" id="cash-confirm-btn" onclick="confirmCash()">Confirmă</button>
+      <button class="btn bs" onclick="closeCashModal()">Cancel</button>
+      <button class="btn bp" id="cash-confirm-btn" onclick="confirmCash()">Confirm</button>
     </div>
   </div>
 </div>
