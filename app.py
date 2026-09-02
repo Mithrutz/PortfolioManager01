@@ -809,35 +809,22 @@ def refresh_prices():
 # ── Normalizare ticker Stooq ──────────────────────────────────────────────────
 def normalize_stooq(ticker, regiune="World"):
     """
-    Converteste tickere comune in format Stooq.
-    Exemple: BRK.B → brkb.us  |  EUNK.DE → eunk.de  |  SNP → snp.ro
+    Normalizeaza ticker-ul pentru Stooq.
+    Detecteaza format Yahoo Finance (BTC-USD, ETH-USD) si le pastreaza neschimbate
+    pentru a fi procesate de Yahoo Finance, nu Stooq.
     """
-    t = ticker.strip().lower()
-    # deja are sufix de piata → returnam as-is
-    for suf in [".us",".ro",".de",".uk",".hu",".pl",".cz",".at",".fr",".it",".es",".jp",".hk",".au"]:
-        if t.endswith(suf):
-            return t.replace("-","").replace(".","", t.count(".")-1) if t.count(".")>1 else t
+    t = ticker.strip()
+    tl = t.lower()
 
-    # elimina puncte din numele ticker-ului (BRK.B → brkb)
-    t_clean = t.replace(".", "").replace("-", "")
+    # Detecteaza format Yahoo Finance: XXX-USD, XXX-EUR, XXX-BTC etc.
+    # Acestea NU se trimit la Stooq, ci la Yahoo Finance
+    import re as _re
+    if _re.match(r'^[A-Za-z0-9]+-(USD|EUR|GBP|BTC|ETH|USDT|USDC)$', t, _re.I):
+        return t  # returneaza neschimbat — va fi procesat de Yahoo Finance
 
-    # adauga sufix in functie de regiune / indicii cunoscuti
-    if regiune == "România":
-        return t_clean + ".ro"
-
-    # ETF-uri / actiuni cu sufix explicit de bursa
-    raw = ticker.strip().upper()
-    if raw.endswith(".DE") or raw.endswith(".DE"):
-        return t_clean[:-2] + ".de"
-    if raw.endswith(".UK") or raw.endswith(".L"):
-        base = t_clean[:-2] if t_clean.endswith("uk") or t_clean.endswith(".l") else t_clean
-        return base + ".uk"
-
-    # implicit → piata US
-    return t_clean + ".us"
+    return tl   # stooq foloseste lowercase
 
 
-@app.route("/api/test-ticker", methods=["POST"])
 def test_ticker():
     """Testeaza un ticker: Stooq → yfinance (World) sau BVB/Tradeville (Romania)."""
     body    = request.get_json()
@@ -1020,7 +1007,14 @@ def refresh_prices_stream():
                     pr, sr = get_bvb(simbol)
                     return pr, sr, "bvb" if pr else ""
 
-                if cached_source == "stooq":
+                # Tickere format Yahoo (BTC-USD, ETH-EUR etc.) → direct Yahoo
+                import re as _re2
+                is_yahoo_format = bool(_re2.match(
+                    r'^[A-Za-z0-9]+-(USD|EUR|GBP|BTC|ETH|USDT|USDC)$', ticker, _re2.I))
+
+                if is_yahoo_format:
+                    pret, sursa, new_source = try_yahoo()
+                elif cached_source == "stooq":
                     pret, sursa, new_source = try_stooq()
                     if not pret:  # sursa cache a picat, redescoperim
                         pret, sursa, new_source = try_yahoo()
@@ -1089,6 +1083,60 @@ def refresh_prices_stream():
         mimetype="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"}
     )
+
+
+@app.route("/api/test-ticker", methods=["POST"])
+def test_ticker():
+    """Testeaza un ticker: Stooq → Yahoo Finance → BVB."""
+    import re as _re
+    body    = request.get_json() or {}
+    ticker  = (body.get("ticker") or "").strip()
+    regiune = body.get("regiune", "World")
+
+    if not ticker:
+        return jsonify({"ok": False, "pret": None, "eroare": "Ticker gol"})
+
+    moneda = "EUR"
+    pret, sursa = None, ""
+
+    # Detecteaza format Yahoo Finance: BTC-USD, ETH-EUR etc.
+    is_yahoo_fmt = bool(_re.match(
+        r"^[A-Za-z0-9]+-( USD|EUR|GBP|BTC|ETH|USDT|USDC)$".replace(" ",""),
+        ticker, _re.I))
+
+    if is_yahoo_fmt:
+        # Merge direct la Yahoo Finance
+        pret, sursa = get_yfinance(ticker)
+        moneda = "USD" if ticker.upper().endswith("-USD") else                  "EUR" if ticker.upper().endswith("-EUR") else "USD"
+        src_key = "yahoo" if pret else ""
+    else:
+        ticker_norm = normalize_stooq(ticker, regiune)
+        # Detecteaza moneda din extensia ticker-ului
+        if ".de" in ticker_norm or ".fr" in ticker_norm:
+            moneda = "EUR"
+        elif ".ro" in ticker_norm:
+            moneda = "RON"
+        else:
+            moneda = "USD"
+
+        pret, sursa = get_stooq(ticker_norm)
+        src_key = "stooq" if pret else ""
+
+        if not pret and regiune == "World":
+            pret, sursa = get_yfinance(ticker_norm)
+            src_key = "yahoo" if pret else ""
+
+        if not pret and regiune != "World":
+            simbol = ticker_norm.replace(".ro","").upper()
+            pret, sursa = get_bvb(simbol)
+            src_key = "bvb" if pret else ""
+            moneda = "RON"
+
+    if pret is not None:
+        return jsonify({"ok": True, "pret": pret, "sursa": sursa,
+                        "moneda": moneda, "source_key": src_key})
+    return jsonify({"ok": False, "pret": None,
+                    "eroare": "Ticker negăsit — verifică formatul (ex: brkb.us · snp.ro · BTC-USD)"})
 
 
 @app.route("/api/shutdown", methods=["POST"])

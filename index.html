@@ -188,22 +188,23 @@ header h1{font-family:Georgia,serif;font-weight:400;font-size:20px} header h1 sp
 </div>
 
 <!-- Modal -->
-<div class="ov" id="ov" onclick="ovCk(event)">
+<div class="ov" id="ov">
   <div class="modal">
     <h3 id="mt">Adaugă poziție</h3>
     <div class="fr"><label>Ticker / Nume</label><input class="fi" id="fn" placeholder="ex: AAPL, IS04"/></div>
     <div class="fr"><label>Categorie</label>
-      <select class="fs" id="fc">
-        <option>ETF-uri</option><option>Acțiuni</option><option>Obligațiuni</option><option>Cash</option>
+      <select class="fs" id="fc" onchange="onCategoryChange()">
+        <option>ETF-uri</option><option>Acțiuni</option><option>Obligațiuni</option>
+        <option>Cash</option><option>Crypto</option>
       </select></div>
     <div class="fg" style="margin-bottom:12px">
-      <div class="fr" style="margin-bottom:0"><label>Cantitate / Nr. acțiuni</label><input class="fi" id="fq" type="number" step="any" placeholder="ex: 100"/></div>
-      <div class="fr" style="margin-bottom:0"><label>Moneda</label>
+      <div id="row-qty" class="fr" style="margin-bottom:0"><label>Cantitate / Nr. acțiuni</label><input class="fi" id="fq" type="number" step="any" placeholder="ex: 100"/></div>
+      <div class="fr" style="margin-bottom:0"><label>Monedă</label>
         <select class="fs" id="fm"><option value="EUR">EUR €</option><option value="USD">USD $</option><option value="RON">RON lei</option></select></div>
     </div>
     <div class="fg" style="margin-bottom:12px">
-      <div class="fr" style="margin-bottom:0"><label>Preț curent</label><input class="fi" id="fp" type="number" step="any" placeholder="ex: 150.50"/></div>
-      <div class="fr" style="margin-bottom:0"><label>Preț mediu achiziție</label><input class="fi" id="fpm" type="number" step="any" placeholder="ex: 130.00"/></div>
+      <div class="fr" style="margin-bottom:0"><label id="label-pret">Preț curent</label><input class="fi" id="fp" type="number" step="any" placeholder="ex: 150.50"/></div>
+      <div id="row-pmed" class="fr" style="margin-bottom:0"><label>Preț mediu achiziție</label><input class="fi" id="fpm" type="number" step="any" placeholder="ex: 130.00"/></div>
     </div>
         <div class="fg" style="margin-bottom:12px">
       <div class="fr" style="margin-bottom:0"><label>Regiune</label>
@@ -218,7 +219,7 @@ header h1{font-family:Georgia,serif;font-weight:400;font-size:20px} header h1 sp
           <span id="add-cash-info" style="color:#4b5563;display:block;font-size:10px;margin-top:2px">completează cantitate și preț mediu pentru a vedea suma</span>
         </label>
       </div>
-      <div class="fr" style="margin-bottom:0">
+      <div class="fr" id="row-ticker" style="margin-bottom:0">
         <label>Ticker Stooq
           <a href="https://stooq.com/t/" target="_blank" style="color:#4b5563;font-size:10px;text-decoration:none;margin-left:6px">🔍 caută pe stooq.com</a>
         </label>
@@ -242,12 +243,13 @@ header h1{font-family:Georgia,serif;font-weight:400;font-size:20px} header h1 sp
 <script>
 var ST={cursuri:{EUR:1,USD:1.16,RON:5.23},pozitii:[],next_id:1,tranzactii:[],snapshots:[]};
 var editId=null, curTab="alloc";
-var CATS=["ETF-uri","Acțiuni","Obligațiuni","Cash"];
+var CATS=["ETF-uri","Acțiuni","Obligațiuni","Cash","Crypto"];
 var PAL={
   "ETF-uri":    {main:"#f59e0b",sh:["#b45309","#d97706","#f59e0b","#fbbf24","#fde68a"]},
   "Acțiuni":    {main:"#14d9c4",sh:["#0f766e","#0d9488","#14b8a6","#2dd4bf","#5eead4","#99f6e4"]},
   "Obligațiuni":{main:"#a78bfa",sh:["#6d28d9","#8b5cf6","#a78bfa","#c4b5fd"]},
-  "Cash":       {main:"#64748b",sh:["#1e293b","#334155","#475569","#64748b"]}
+  "Cash":       {main:"#64748b",sh:["#1e293b","#334155","#475569","#64748b"]},
+  "Crypto":     {main:"#f97316",sh:["#7c2d12","#c2410c","#ea580c","#f97316","#fb923c"]}
 };
 function toE(v,m){return v/(ST.cursuri[m]||1)}
 function pVal(p){return toE(p.cantitate*p.pret,p.moneda)}
@@ -270,10 +272,10 @@ function renderSB(){
     var items=ST.pozitii.filter(function(p){return p.categorie===cat});
     if(!items.length) return;
     var l=document.createElement("div"); l.className="cl";
-    l.innerHTML='<span class="cd" style="background:'+PAL[cat].main+'"></span>'+cat;
+    l.innerHTML='<span class="cd" style="background:'+(PAL[cat]||{main:"#64748b"}).main+'"></span>'+cat;
     el.appendChild(l);
     items.forEach(function(p,i){
-      var v=pVal(p),pct=tot>0?(v/tot*100).toFixed(1):"0.0",sh=PAL[cat].sh[i%PAL[cat].sh.length];
+      var v=pVal(p),pct=tot>0?(v/tot*100).toFixed(1):"0.0",sh=(PAL[cat]||{sh:["#64748b"]}).sh[i%(PAL[cat]||{sh:["#64748b"]}).sh.length];
       var row=document.createElement("div"); row.className="pr";
       var isCash=(p.categorie==="Cash");
       var regBadge='<span style="margin-left:5px;font-size:9px;padding:1px 5px;border-radius:4px;background:'+(p.regiune==="România"?"#3b1f0f":"#0f2b3b")+';color:'+(p.regiune==="România"?"#fb923c":"#38bdf8")+'">'+( p.regiune||"World")+"</span>";
@@ -285,18 +287,18 @@ function renderSB(){
           '<div class="pact">'+
           '<button class="ib" style="color:#22c55e;font-size:16px;font-weight:bold" onclick="openCashModal('+p.id+',1)" title="'+t("addFunds")+'">＋</button>'+
           '<button class="ib" style="color:#ef4444;font-size:16px;font-weight:bold" onclick="openCashModal('+p.id+',-1)" title="'+t("removeFunds")+'">—</button>'+
-          '<button class="ib d" onclick="delPos('+p.id+')">🗑</button></div>';
+          '<button class="ib d" onclick="delPos('+p.id+')" title="Șterge poziție">🗑</button></div>';
       } else {
         row.innerHTML='<span class="pdot" style="background:'+sh+'"></span>'+
           '<div class="pi"><div class="pn">'+p.nume+regBadge+'</div>'+
           '<div class="ps">'+p.cantitate+' × '+p.pret+' '+p.moneda+'</div></div>'+
           '<div class="pv"><div class="pvn">'+fe(v)+'</div><div class="pvp">'+pct+'%</div></div>'+
           '<div class="pact">'+
-          '<button class="ib" style="color:#4ade80" onclick="openDivModal('+p.id+')">💰</button>'+
-          '<button class="ib" style="color:#4ade80" onclick="openBuyModal('+p.id+')">🛒</button>'+
-          '<button class="ib" style="color:#fb923c" onclick="openSellModal('+p.id+')">💸</button>'+
-          '<button class="ib e" onclick="openModal('+p.id+')">✏️</button>'+
-          '<button class="ib d" onclick="delPos('+p.id+')">🗑</button></div>';
+          '<button class="ib" style="color:#4ade80" onclick="openDivModal('+p.id+')" title="Dividende">💰</button>'+
+          '<button class="ib" style="color:#4ade80" onclick="openBuyModal('+p.id+')" title="Cumpără mai mult">🛒</button>'+
+          '<button class="ib" style="color:#fb923c" onclick="openSellModal('+p.id+')" title="Vinde">💸</button>'+
+          '<button class="ib e" onclick="openModal('+p.id+')" title="Editează poziție">✏️</button>'+
+          '<button class="ib d" onclick="delPos('+p.id+')" title="Șterge poziție">🗑</button></div>';
       }
       el.appendChild(row);
     });
@@ -348,7 +350,7 @@ function openModal(id){
   setTimeout(function(){document.getElementById("fn").focus()},150);
 }
 function closeModal(){document.getElementById("ov").classList.remove("open");editId=null}
-function ovCk(e){if(e.target===document.getElementById("ov"))closeModal()}
+function ovCk(e){/* click outside dezactivat pentru Add/Edit */}
 function delPos(id){
   if(!confirm("Ștergi această poziție?"))return;
   ST.pozitii=ST.pozitii.filter(function(p){return p.id!==id});
@@ -357,11 +359,33 @@ function delPos(id){
 function savePos(){
   var n=document.getElementById("fn").value.trim();
   var c=document.getElementById("fc").value;
-  var q=parseFloat(document.getElementById("fq").value);
-  var p=parseFloat(document.getElementById("fp").value);
-  var pm=parseFloat(document.getElementById("fpm").value);
   var m=document.getElementById("fm").value;
-  if(!n||isNaN(q)||isNaN(p)){alert("Completează cel puțin: Nume, Cantitate, Preț curent!");return}
+  var rg=document.getElementById("frg").value;
+  var isCash=(c==="Cash");
+
+  // Cash: validare duplicat
+  if(isCash && !editId){
+    var dup = validateCashDuplicate(m, rg, null);
+    if(dup){
+      // Mesaj elegant in loc de alert
+      var info=document.getElementById("cash-form-info");
+      if(info){
+        info.style.display="block";
+        info.style.background="#2d1515";
+        info.style.borderColor="#dc2626";
+        info.innerHTML='⚠️ <strong>Există deja Cash '+m+' / '+rg+'</strong><br>'+
+          '<span style="font-size:12px;color:#9ca3af">Folosește butoanele <strong>＋</strong> și <strong>—</strong> din sidebar pentru a modifica soldul poziției existente <em>'+dup.nume+'</em>.</span>';
+      }
+      return;
+    }
+  }
+
+  var q=isCash?1:parseFloat(document.getElementById("fq").value);
+  var p=isCash?parseFloat(document.getElementById("fp").value||"0"):parseFloat(document.getElementById("fp").value);
+  var pm=isCash?p:parseFloat(document.getElementById("fpm").value);
+  if(!n){alert("Completează cel puțin Numele!");return}
+  if(!isCash&&(isNaN(q)||isNaN(p))){alert("Completează cel puțin: Nume, Cantitate, Preț curent!");return}
+  if(isCash&&isNaN(p)){p=0;}
   var ty=document.getElementById("fty").value.trim();
   var rg=document.getElementById("frg").value;
   if(isNaN(pm))pm=p;
@@ -377,8 +401,16 @@ function savePos(){
     var addCashChk = document.getElementById("add-from-cash");
     if(addCashChk && addCashChk.checked){
       var costAchiz = q*(isNaN(pm)?p:pm);
+      var cpCheck = getCashPos(m);
+      if(cpCheck && cpCheck.pret < costAchiz){
+        alert("❌ Cash insuficient pentru deducere!\n\nCost: "+
+          new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(costAchiz)+" "+m+"\n"+
+          "Cash: "+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(cpCheck.pret)+" "+m+
+          "\n\nPoziția a fost adăugată fără deducere din Cash.");
+      } else {
       addToCash(m, -costAchiz);
       showToast(n+" adăugat · -"+new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(costAchiz)+" "+m+" din Cash");
+      }
     }
   }
   closeModal();renderSB();genChart();
@@ -451,13 +483,14 @@ document.addEventListener("keydown",function(e){
 <!-- ═══════════ REACT CHARTS (no Babel) ═══════════ -->
 <script>
 var h=React.createElement;
-var CATS_R=["ETF-uri","Acțiuni","Obligațiuni","Cash"];
+var CATS_R=["ETF-uri","Acțiuni","Obligațiuni","Cash","Crypto"];
 var REG_COL={"World":"#38bdf8","România":"#fb923c"};
 var PAL_R={
   "ETF-uri":    {main:"#f59e0b",sh:["#b45309","#d97706","#f59e0b","#fbbf24","#fde68a"]},
   "Acțiuni":    {main:"#14d9c4",sh:["#0f766e","#0d9488","#14b8a6","#2dd4bf","#5eead4","#99f6e4"]},
   "Obligațiuni":{main:"#a78bfa",sh:["#6d28d9","#8b5cf6","#a78bfa","#c4b5fd"]},
-  "Cash":       {main:"#64748b",sh:["#1e293b","#334155","#475569","#64748b"]}
+  "Cash":       {main:"#64748b",sh:["#1e293b","#334155","#475569","#64748b"]},
+  "Crypto":     {main:"#f97316",sh:["#7c2d12","#c2410c","#ea580c","#f97316","#fb923c"]}
 };
 function toEr(v,m,cur){return v/(cur[m]||1)}
 function fe(n){return new Intl.NumberFormat("ro-RO",{maximumFractionDigits:0}).format(n)+" €"}
@@ -791,7 +824,9 @@ function PnlChart(props){
 
   var totCost=poz.reduce(function(s,p){return s+p.cost},0);
   var totVal=poz.reduce(function(s,p){return s+p.ve},0);
-  var totPnl=totVal-totCost;
+  var totDiv=poz.reduce(function(s,p){return s+(p.divEur||0)},0);
+  var totPnlFaraDivid=totVal-totCost;
+  var totPnl=totPnlFaraDivid+totDiv;  // include dividende = consistent cu per-pozitie
   var totPct=totCost>0?totPnl/totCost*100:0;
 
   var maxAbs=poz.reduce(function(m,p){return Math.max(m,Math.abs(p.pnl))},1);
@@ -1091,7 +1126,7 @@ function EvolutionChart(){
   );
 
   /* ── Constante culori ── */
-  var CAT_COLORS = {"ETF-uri":"#f59e0b","Acțiuni":"#14d9c4","Obligațiuni":"#a78bfa","Cash":"#64748b","Total":"#f59e0b"};
+  var CAT_COLORS = {"ETF-uri":"#f59e0b","Acțiuni":"#14d9c4","Obligațiuni":"#a78bfa","Cash":"#64748b","Crypto":"#f97316","Total":"#f59e0b"};
   var n = snapshots.length;
 
   /* ── Categoriile disponibile (au date in snapshots) ── */
@@ -1102,7 +1137,16 @@ function EvolutionChart(){
   /* ── Valorile pentru categoria selectata ── */
   var vals = selectedCat==="Total"
     ? snapshots.map(function(s){return s.total_eur||0})
-    : snapshots.map(function(s){return (s.categorii||{})[selectedCat]||0});
+    : snapshots.map(function(s){
+        var cats = s.categorii||{};
+        // Daca nu are nicio categorie (snapshot manual) → null complet
+        if(!cats||Object.keys(cats).length===0) return null;
+        var v = cats[selectedCat];
+        return (v && v>0) ? v : null;
+      });
+
+  // Filtreaza null pentru calcule min/max
+  var validValsEvo = vals.filter(function(v){return v!=null&&v>0});
 
   var selectedColor = CAT_COLORS[selectedCat]||"#f59e0b";
   var firstVal = vals[0]||0;
@@ -1112,7 +1156,7 @@ function EvolutionChart(){
 
   /* ── SVG dimensiuni ── */
   var W=760,H=320,ML=62,MR=16,MT=16,MB=44,CW=W-ML-MR,CH=H-MT-MB;
-  var validVals = vals.filter(function(v){return v>0});
+  var validVals = validValsEvo||vals.filter(function(v){return v!=null&&v>0});
   var minV = validVals.length ? Math.min.apply(null,validVals)*0.95 : 0;
   var maxV = validVals.length ? Math.max.apply(null,validVals)*1.05 : 1;
   if(maxV<=minV) maxV=minV+1;
@@ -1121,12 +1165,16 @@ function EvolutionChart(){
   function yPos(v){ return MT + CH - (v-minV)/(maxV-minV)*CH; }
 
   /* ── Paths ── */
-  var linePath = vals.map(function(v,i){
-    return (i===0?"M":"L")+xPos(i).toFixed(1)+","+yPos(v).toFixed(1);
-  }).join(" ");
-  var areaPath = linePath+
-    " L"+xPos(n-1).toFixed(1)+","+(MT+CH)+
-    " L"+xPos(0).toFixed(1)+","+(MT+CH)+" Z";
+  var linePath = vals.reduce(function(acc,v,i){
+    if(v==null||v<=0) return acc; // sare peste null (snapshot manual fara categorie)
+    var cmd=(acc===""||vals.slice(0,i).every(function(x){return x==null||x<=0}))?"M":"L";
+    return acc+cmd+xPos(i).toFixed(1)+","+yPos(v).toFixed(1)+" ";
+  },"").trim();
+  var firstValid = vals.findIndex(function(v){return v!=null&&v>0});
+  var lastValid  = vals.reduce(function(li,v,i){return (v!=null&&v>0)?i:li},-1);
+  var areaPath = firstValid>=0 ? (linePath+
+    " L"+xPos(lastValid).toFixed(1)+","+(MT+CH)+
+    " L"+xPos(firstValid).toFixed(1)+","+(MT+CH)+" Z") : "";
 
   /* ── Grid Y (5 niveluri) ── */
   var yLabels = [];
@@ -1262,6 +1310,7 @@ function EvolutionChart(){
         }),
         /* Puncte */
         snapshots.map(function(s,i){
+          if(vals[i]==null) return null; // nu desena punct pt null
           var isHov=hovIdx===i;
           return h("circle",{key:i,cx:xPos(i).toFixed(1),cy:yPos(vals[i]).toFixed(1),
             r:isHov?6:3.5,fill:isHov?selectedColor:"#0d1117",
@@ -1722,10 +1771,17 @@ function confirmBuy(){
   var fromCash = document.getElementById("buy-from-cash").checked;
   var cost     = qty * price;
   var cp       = getCashPos(p.moneda);
-  if(fromCash && (!cp || cp.pret < cost)){
-    if(!confirm("Cash insuficient ("+( cp?new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(cp.pret):"0")+" "+p.moneda+").\nContinui oricum (fără deducere din cash)?"))
+  if(fromCash){
+    var available = cp ? cp.pret : 0;
+    if(available < cost){
+      // BLOCARE — nu permite achizitia daca cash insuficient
+      var fmt = function(n){return new Intl.NumberFormat("ro-RO",{maximumFractionDigits:2}).format(n)};
+      alert("❌ Cash insuficient!\n\n" +
+            "Cost achiziție:  " + fmt(cost) + " " + p.moneda + "\n" +
+            "Cash disponibil: " + fmt(available) + " " + p.moneda + "\n\n" +
+            "Adaugă fonduri în Cash " + p.moneda + " sau debifează opțiunea \"Deduce din Cash\".");
       return;
-    fromCash = false;
+    }
   }
   // Actualizeaza pretul mediu (medie ponderata)
   var newQty = +(p.cantitate + qty).toFixed(6);
@@ -2055,11 +2111,49 @@ async function testTicker(){
   }
 }
 
+
+/* ════════ CASH SPECIAL FORM ════════ */
+function onCategoryChange(){
+  var cat = document.getElementById("fc").value;
+  var isCash = (cat === "Cash");
+  // Ascunde/afiseaza grupuri de campuri
+  var qtyRow   = document.getElementById("row-qty-money");
+  var pretRow  = document.getElementById("row-pret-pmed");
+  var tickerRow= document.getElementById("row-ticker");
+  var cashDiv  = document.getElementById("add-cash-div");
+  var cashInfo = document.getElementById("cash-form-info");
+  // row-qty = doar cantitatea (moneda ramane vizibila mereu)
+  var qtyEl = document.getElementById("row-qty");
+  if(qtyEl)     qtyEl.style.display    = isCash ? "none" : "";
+  if(tickerRow) tickerRow.style.display = isCash ? "none" : "";
+  if(cashDiv)   cashDiv.style.display  = isCash ? "none" : (editId?"none":"flex");
+  if(cashInfo){ cashInfo.style.display = isCash ? "block" : "none";
+    if(isCash){ cashInfo.style.background="#0d2818"; cashInfo.style.borderColor="#166534";
+      cashInfo.innerHTML='💵 <strong>Poziție Cash</strong><br><span style="font-size:12px;color:#9ca3af">Introdu suma în câmpul <em>Sold inițial</em> și alege moneda.<br>Cantitatea se setează automat la 1.</span>';
+    }
+  }
+  var lpret  = document.getElementById("label-pret");
+  var pmedRow= document.getElementById("row-pmed");
+  if(lpret)   lpret.textContent = isCash ? "Sold inițial" : "Preț curent";
+  if(pmedRow) pmedRow.style.display = isCash ? "none" : "";
+}
+
+function validateCashDuplicate(moneda, regiune, editId){
+  // Verifica daca exista deja o pozitie Cash cu aceeasi moneda+regiune
+  var exists = ST.pozitii.find(function(p){
+    return p.categorie === "Cash" &&
+           p.moneda === moneda &&
+           p.regiune === regiune &&
+           p.id !== editId;
+  });
+  return exists || null;
+}
+
 init();
 </script>
 
 <!-- Modal dividende -->
-<div class="ov" id="ov-div" onclick="ovDivCk(event)">
+<div class="ov" id="ov-div" >
   <div class="dmodal">
     <div class="dmodal-hdr">
       <h3 id="dmodal-title">💰 Dividende</h3>
@@ -2074,7 +2168,7 @@ init();
 </div>
 
 <!-- Drive save prompt -->
-<div id="drive-save-modal" onclick="if(event.target===this)closeDriveSavePrompt()">
+<div id="drive-save-modal" >
   <div class="drive-prompt">
     <div class="drive-prompt-title">☁ Salvezi și în Google Drive?</div>
     <div class="drive-prompt-sub">
@@ -2095,7 +2189,7 @@ init();
 </div>
 
 <!-- Modal vânzare poziție -->
-<div class="ov" id="ov-sell" onclick="ovSellCk(event)">
+<div class="ov" id="ov-sell" >
   <div class="modal" style="width:440px">
     <h3 id="sell-title">💸 Vinde poziție</h3>
     <div id="sell-body">
@@ -2144,7 +2238,7 @@ init();
 </div>
 
 <!-- Modal cumpărare acțiuni -->
-<div class="ov" id="ov-buy" onclick="ovBuyCk(event)">
+<div class="ov" id="ov-buy" >
   <div class="modal" style="width:440px">
     <h3 id="buy-title">🛒 Cumpără acțiuni</h3>
     <div class="fr">
@@ -2188,7 +2282,7 @@ init();
 </div>
 
 <!-- Modal Cash -->
-<div class="ov" id="ov-cash" onclick="if(event.target===this)closeCashModal()">
+<div class="ov" id="ov-cash" >
   <div class="modal" style="width:380px">
     <h3 id="cash-title">💵 Cash</h3>
     <div style="background:#0d1117;border-radius:8px;padding:12px 14px;margin-bottom:14px">
