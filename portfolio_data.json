@@ -12,7 +12,7 @@
     {
       "id": 1,
       "nume": "VWCE",
-      "categorie": "ETF-uri",
+      "categorie": "ETFs",
       "regiune": "World",
       "cantitate": 10,
       "pret": 140.0,
@@ -25,11 +25,11 @@
     {
       "id": 2,
       "nume": "SNP",
-      "categorie": "Acțiuni",
+      "categorie": "Stocks",
       "regiune": "România",
       "cantitate": 1000,
       "pret": 1.25,
-      "pret_mediu": 0.90,
+      "pret_mediu": 0.9,
       "moneda": "RON",
       "ticker_stooq": "snp.ro",
       "ticker_source": "",
@@ -38,7 +38,7 @@
     {
       "id": 3,
       "nume": "R3604AE",
-      "categorie": "Obligațiuni",
+      "categorie": "Bonds",
       "regiune": "România",
       "cantitate": 10,
       "pret": 100.0,
