@@ -1,22 +1,36 @@
-# -*- mode: python ; coding: utf-8 -*-
-# PyInstaller spec — ONEFILE mode (only one .exe)
+# portfolio_manager.spec
+# Rulare: python -m PyInstaller portfolio_manager.spec
+
+from PyInstaller.building.build_main import Analysis, PYZ, EXE
 
 a = Analysis(
     ['app.py'],
-    pathex=[],
+    pathex=['.'],
     binaries=[],
     datas=[('index.html', '.')],
     hiddenimports=[
-        'flask', 'flask.json', 'werkzeug',
-        'requests', 'bs4', 'lxml', 'yfinance',
-        'curl_cffi',
-        'google.auth', 'google.auth.transport.requests',
-        'google.oauth2.credentials', 'google_auth_oauthlib.flow',
-        'google.auth.exceptions', 'google.oauth2',
+        # Flask
+        'flask', 'werkzeug', 'werkzeug.serving', 'werkzeug.utils',
+        'jinja2', 'click',
+        # Requests / scraping
+        'requests', 'urllib3', 'charset_normalizer', 'certifi', 'idna',
+        'bs4', 'lxml', 'lxml.etree', 'lxml.html',
+        # yfinance si dependinte
+        'yfinance', 'pandas', 'numpy', 'multitasking', 'frozendict',
+        'requests_cache', 'platformdirs', 'curl_cffi',
+        'peewee', 'appdirs',
+        # pywebview — Windows foloseste EdgeChromium (WebView2)
+        'webview',
+        'webview.platforms.winforms',
+        'webview.platforms.edgechromium',
+        'webview.platforms.cef',
+        'clr',        # pythonnet pentru WinForms
+        'System',
+        'System.Windows.Forms',
     ],
     hookspath=[],
     runtime_hooks=[],
-    excludes=[],
+    excludes=['matplotlib', 'PIL', 'tkinter', 'PyQt5', 'PyQt6'],
     noarchive=False,
 )
 
@@ -26,17 +40,13 @@ exe = EXE(
     pyz,
     a.scripts,
     a.binaries,
+    a.zipfiles,
     a.datas,
+    [],
     name='PortfolioManager',
     debug=False,
-    bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    upx_exclude=[],
-    runtime_tmpdir=None,
-    console=False,
-    disable_windowed_traceback=False,
-    target_arch=None,
-    codesign_identity=None,
-    entitlements_file=None,
+    console=False,    # fara fereastra Command Prompt
+    icon=None,
 )

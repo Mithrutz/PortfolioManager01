@@ -153,6 +153,16 @@ header h1{font-family:Georgia,serif;font-weight:400;font-size:20px} header h1 sp
 .sell-preview-label{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
 .sell-preview-val{font-family:Georgia,serif;font-size:16px}
 
+
+/* ── Update confirmation modal ── */
+#ov-update-confirm{position:fixed;inset:0;background:rgba(0,0,0,.7);
+  display:flex;align-items:center;justify-content:center;z-index:650;
+  opacity:0;pointer-events:none;transition:opacity .2s}
+#ov-update-confirm.open{opacity:1;pointer-events:all}
+.update-confirm-box{background:#111827;border:1px solid #1f2937;border-radius:16px;
+  padding:28px 28px 22px;width:380px;max-width:95vw;
+  box-shadow:0 24px 80px rgba(0,0,0,.6)}
+
 ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-thumb{background:var(--b2);border-radius:4px}
 </style>
 </head>
@@ -165,7 +175,7 @@ header h1{font-family:Georgia,serif;font-weight:400;font-size:20px} header h1 sp
       <button class="tab"    id="tab-pnl"     onclick="setTab('pnl')">📈 Profit / Loss</button>
       <button class="tab"    id="tab-evo"     onclick="setTab('evo')">📉 Evolution</button>
     </div>
-    <button class="btn bs" id="btn-refresh" onclick="startRefresh()">🔄 Update prices</button>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><button class="btn bs" id="btn-refresh" onclick="startRefresh()">🔄 Update prices</button><span id="last-update-label" style="font-size:9px;color:#374151;text-align:center"></span></div>
     <button class="btn bs" id="btn-save" onclick="saveDate()">💾 Save</button>
     <button class="drive-badge drive-off" id="drive-badge" onclick="manualDriveSync()" title="Google Drive sync">☁ Drive</button>
   </div>
@@ -241,6 +251,7 @@ header h1{font-family:Georgia,serif;font-weight:400;font-size:20px} header h1 sp
 <!-- ═══════════ STATE & SIDEBAR (vanilla JS) ═══════════ -->
 <script>
 var ST={cursuri:{EUR:1,USD:1.16,RON:5.23},pozitii:[],next_id:1,tranzactii:[],snapshots:[]};
+var _collapsed={};  // tracks which categories are collapsed in sidebar
 var editId=null, curTab="alloc";
 var CATS=["ETFs","Stocks","Bonds","Cash","Crypto"];
 var PAL={
@@ -264,27 +275,59 @@ async function init(){
 }
 
 function renderSB(){
-  var tot=ST.pozitii.reduce(function(s,p){return s+pVal(p)},0);
+  var total=ST.pozitii.reduce(function(s,p){return s+pVal(p)},0);
   var el=document.getElementById("pl"); el.innerHTML="";
   CATS.forEach(function(cat){
+    // Sort items by EUR value descending
     var items=ST.pozitii.filter(function(p){return p.categorie===cat});
     if(!items.length) return;
+    items=items.slice().sort(function(a,b){return pVal(b)-pVal(a)});
+
+    var catTotal=items.reduce(function(s,p){return s+pVal(p)},0);
+    var catPct=total>0?(catTotal/total*100).toFixed(1):"0";
+    var catColor=(PAL[cat]||{main:"#64748b"}).main;
+    var collapsed=_collapsed[cat]||false;
+    var safeId=cat.replace(/[^a-z]/gi,"");
+
+    // Category header — clickable to collapse
     var l=document.createElement("div"); l.className="cl";
-    l.innerHTML='<span class="cd" style="background:'+(PAL[cat]||{main:"#64748b"}).main+'"></span>'+cat;
+    l.style.cssText="cursor:pointer;justify-content:space-between;";
+    l.innerHTML='<span style="display:flex;align-items:center;gap:6px">'+
+      '<span class="cd" style="background:'+catColor+'"></span>'+
+      '<span>'+cat+'</span>'+
+      '<span style="font-size:10px;color:#6b7280">'+catPct+'%</span>'+
+    '</span>'+
+    '<span id="tog-'+safeId+'" style="font-size:11px;color:#4b5563">'+
+      (collapsed?'▶':'▼')+
+    '</span>';
+    l.onclick=(function(c,sid){return function(){
+      _collapsed[c]=!_collapsed[c];
+      var tog=document.getElementById("tog-"+sid);
+      var grp=document.getElementById("grp-"+sid);
+      if(tog) tog.textContent=_collapsed[c]?"▶":"▼";
+      if(grp) grp.style.display=_collapsed[c]?"none":"";
+    }})(cat,safeId);
     el.appendChild(l);
+
+    // Group container (collapsible)
+    var grp=document.createElement("div");
+    grp.id="grp-"+safeId;
+    grp.style.display=collapsed?"none":"";
+
     items.forEach(function(p,i){
-      var v=pVal(p),pct=tot>0?(v/tot*100).toFixed(1):"0.0",sh=(PAL[cat]||{sh:["#64748b"]}).sh[i%(PAL[cat]||{sh:["#64748b"]}).sh.length];
+      var v=pVal(p),pct=total>0?(v/total*100).toFixed(1):"0.0";
+      var sh=(PAL[cat]||{sh:["#64748b"]}).sh[i%(PAL[cat]||{sh:["#64748b"]}).sh.length];
       var row=document.createElement("div"); row.className="pr";
       var isCash=(p.categorie==="Cash");
       var regBadge='<span style="margin-left:5px;font-size:9px;padding:1px 5px;border-radius:4px;background:'+(p.regiune==="Romania"?"#3b1f0f":"#0f2b3b")+';color:'+(p.regiune==="Romania"?"#fb923c":"#38bdf8")+'">'+( p.regiune||"World")+"</span>";
       if(isCash){
         row.innerHTML='<span style="font-size:14px;flex-shrink:0">💵</span>'+
           '<div class="pi"><div class="pn">'+p.nume+regBadge+'</div>'+
-          '<div class="ps">'+"Cash Balance"+'</div></div>'+
+          '<div class="ps">Cash Balance</div></div>'+
           '<div class="pv"><div class="pvn">'+fe(v)+'</div><div class="pvp">'+pct+'%</div></div>'+
           '<div class="pact">'+
-          '<button class="ib" style="color:#22c55e;font-size:16px;font-weight:bold" onclick="openCashModal('+p.id+',1)" title="'+"Add funds"+'">＋</button>'+
-          '<button class="ib" style="color:#ef4444;font-size:16px;font-weight:bold" onclick="openCashModal('+p.id+',-1)" title="'+"Withdraw funds"+'">—</button>'+
+          '<button class="ib" style="color:#22c55e;font-size:16px;font-weight:bold" onclick="openCashModal('+p.id+',1)" title="Add funds">＋</button>'+
+          '<button class="ib" style="color:#ef4444;font-size:16px;font-weight:bold" onclick="openCashModal('+p.id+',-1)" title="Withdraw funds">—</button>'+
           '<button class="ib d" onclick="delPos('+p.id+')" title="Delete position">🗑</button></div>';
       } else {
         row.innerHTML='<span class="pdot" style="background:'+sh+'"></span>'+
@@ -298,8 +341,9 @@ function renderSB(){
           '<button class="ib e" onclick="openModal('+p.id+')" title="Edit position">✏️</button>'+
           '<button class="ib d" onclick="delPos('+p.id+')" title="Delete position">🗑</button></div>';
       }
-      el.appendChild(row);
+      grp.appendChild(row);
     });
+    el.appendChild(grp);
   });
 }
 
@@ -365,14 +409,15 @@ function savePos(){
   if(isCash && !editId){
     var dup = validateCashDuplicate(m, rg, null);
     if(dup){
-      // Mesaj elegant in loc de alert
       var info=document.getElementById("cash-form-info");
       if(info){
         info.style.display="block";
         info.style.background="#2d1515";
         info.style.borderColor="#dc2626";
-        info.innerHTML='⚠️ <strong>Cash already exists '+m+' / '+rg+'</strong><br>'+
-          '<span style="font-size:12px;color:#9ca3af">Use the <strong>＋</strong> and <strong>—</strong> din sidebar to modify the balance of existing position <em>'+dup.nume+'</em>.</span>';
+        info.innerHTML='⚠️ <strong>Cash '+m+' / '+rg+' already exists</strong><br>'+
+          '<span style="font-size:12px;color:#fca5a5">Use the <strong>＋</strong> / <strong>—</strong> buttons in the sidebar to modify the balance of <em>'+dup.nume+'</em>.</span>';
+      } else {
+        alert("Cash "+m+" / "+rg+" already exists.\nUse ＋ / — buttons in the sidebar.");
       }
       return;
     }
@@ -521,6 +566,8 @@ function AllocChart(props){
   var data=props.data;
   var hovS=React.useState(null);var hov=hovS[0];var setHov=hovS[1];
   var animS=React.useState(0); var anim=animS[0];var setAnim=animS[1];
+  var collS=React.useState({});var collCats=collS[0];var setCollCats=collS[1];
+  function toggleCat(cat){setCollCats(function(prev){var n=Object.assign({},prev);n[cat]=!n[cat];return n;});}
   React.useEffect(function(){
     var start=null;setAnim(0);
     function step(ts){if(!start)start=ts;var p=Math.min((ts-start)/800,1);setAnim(p<1?1-Math.pow(1-p,3):1);if(p<1)requestAnimationFrame(step)}
@@ -666,22 +713,25 @@ function AllocChart(props){
         var pal=PAL_R[cat],clit=hov===cat||hcat===cat,cdim=hov!==null&&!clit;
         return h("div",{key:cat,style:{background:"#111827",border:"1px solid",borderColor:clit?pal.main+"55":"#1f2937",borderRadius:12,overflow:"hidden",opacity:cdim?0.35:1,transition:"all .2s",boxShadow:clit?"0 0 16px "+pal.main+"1a":"none"}},
           h("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 16px 8px",borderBottom:"1px solid #161d29",cursor:"pointer"},
+            onClick:function(){toggleCat(cat)},
             onMouseEnter:function(){setHov(cat)},onMouseLeave:function(){setHov(null)}},
             h("div",{style:{display:"flex",alignItems:"center",gap:6}},
               h("span",{style:{width:9,height:9,borderRadius:3,background:pal.main,display:"inline-block"}}),
               h("span",{style:{fontWeight:700,fontSize:12.5}},cat),
-              h("span",{style:{fontSize:10,color:"#6b7280"}},cd.it.length+" positions")
+              h("span",{style:{fontSize:10,color:"#6b7280"}},cd.it.length+" positions"),
+              h("span",{style:{fontSize:11,fontWeight:600,color:pal.main,marginLeft:4}},fp(cd.pct))
             ),
-            h("div",null,
+            h("div",{style:{display:"flex",alignItems:"center",gap:8}},
               h("span",{style:{fontFamily:"Georgia,serif",fontSize:13.5,color:pal.main}},fe(cd.ve)),
-              h("span",{style:{fontSize:11,color:"#6b7280",marginLeft:7}},fp(cd.pct))
+              h("span",{style:{fontSize:12,color:"#4b5563",transition:"transform .2s",
+                transform:collCats[cat]?"rotate(-90deg)":"rotate(0deg)"}},"▼")
             )
           ),
           h("div",{style:{padding:"0 16px",marginTop:6}},
             h("div",{style:{height:3,background:"#1f2937",borderRadius:2}},
               h("div",{style:{height:"100%",borderRadius:2,background:pal.main+"44",width:(cd.pct*anim)+"%",transition:"width .8s cubic-bezier(.22,1,.36,1)"}}))
           ),
-          h("div",{style:{padding:"7px 16px 12px",display:"flex",flexDirection:"column",gap:7}},
+          !collCats[cat] && h("div",{style:{padding:"7px 16px 12px",display:"flex",flexDirection:"column",gap:7}},
             cd.it.map(function(p,i){
               var sh=pal.sh[i%pal.sh.length],plit=hov===p.id,pdim=hov!==null&&!plit&&!clit,pcc=p.ve/cd.ve*100;
               return h("div",{key:p.id,style:{opacity:pdim?0.3:1,transition:"opacity .15s",cursor:"pointer"},
@@ -690,7 +740,7 @@ function AllocChart(props){
                   h("div",{style:{display:"flex",alignItems:"center",gap:5}},
                     h("span",{style:{width:5,height:5,borderRadius:"50%",background:sh,display:"inline-block",boxShadow:plit?"0 0 5px "+sh:undefined}}),
                     h("span",{style:{fontSize:12,fontWeight:plit?700:500,color:plit?"#e6e1d8":"#9ca3af",transition:"color .15s"}},p.nume),
-                    h("span",{style:{fontSize:9.5,color:"#4b5563"}},Number(p.cantitate).toLocaleString("en-US")+" × "+p.pret+" "+p.moneda)
+                    h("span",{style:{fontSize:9.5,color:"#6b7280",fontWeight:600}},fp(p.ve/tot*100)+" portfolio · "),h("span",{style:{fontSize:9.5,color:"#4b5563"}},Number(p.cantitate).toLocaleString("en-US")+" × "+p.pret+" "+p.moneda)
                   ),
                   h("div",{style:{display:"flex",gap:7,alignItems:"baseline"}},
                     h("span",{style:{fontFamily:"Georgia,serif",fontSize:12.5,color:plit?sh:"#d1d5db",transition:"color .15s"}},fe(p.ve)),
@@ -770,6 +820,7 @@ function AllocChart(props){
       );
     })(),
     h("div",{style:{fontSize:10,color:"#374151",paddingTop:2,display:"flex",justifyContent:"space-between",flexWrap:"wrap"}},
+    h(CurrencyChart,{data:data}),
         h("span",null,"EUR/USD "+data.cursuri.USD+" · EUR/RON "+data.cursuri.RON),
         h("span",null,"Date orientative"))
     ),
@@ -1414,6 +1465,70 @@ function EvolutionChart(){
 }
 
 
+
+/* ════════ CURRENCY ALLOCATION CHART ════════ */
+function CurrencyChart({data}){
+  var cur = data.cursuri;
+  function toEur(v,m){ return v/(cur[m]||1); }
+  var totals = {"EUR":0,"USD":0,"RON":0};
+  data.pozitii.forEach(function(p){
+    var v = toEur(p.cantitate*p.pret, p.moneda);
+    totals[p.moneda] = (totals[p.moneda]||0)+v;
+  });
+  var grand = Object.values(totals).reduce(function(s,v){return s+v},0);
+  if(grand<=0) return null;
+
+  var CUR_COLORS = {"EUR":"#f59e0b","USD":"#38bdf8","RON":"#a78bfa"};
+  var entries = Object.entries(totals).filter(function(e){return e[1]>0})
+    .sort(function(a,b){return b[1]-a[1]});
+
+  /* Mini donut SVG */
+  var R=50, r=32, cx=60, cy=60, W=120, H=120;
+  var slices=[]; var angle=-Math.PI/2;
+  entries.forEach(function(e){
+    var frac=e[1]/grand, sweep=frac*2*Math.PI;
+    var x1=cx+R*Math.cos(angle), y1=cy+R*Math.sin(angle);
+    var x2=cx+R*Math.cos(angle+sweep), y2=cy+R*Math.sin(angle+sweep);
+    var xi=cx+r*Math.cos(angle), yi=cy+r*Math.sin(angle);
+    var xo=cx+r*Math.cos(angle+sweep), yo=cy+r*Math.sin(angle+sweep);
+    var large=sweep>Math.PI?1:0;
+    slices.push({currency:e[0],val:e[1],pct:(frac*100).toFixed(1),
+      d:"M"+x1.toFixed(1)+","+y1.toFixed(1)+" A"+R+","+R+" 0 "+large+",1 "+x2.toFixed(1)+","+y2.toFixed(1)+
+        " L"+xo.toFixed(1)+","+yo.toFixed(1)+" A"+r+","+r+" 0 "+large+",0 "+xi.toFixed(1)+","+yi.toFixed(1)+" Z",
+      col:CUR_COLORS[e[0]]||"#64748b"});
+    angle+=sweep;
+  });
+
+  return h("div",{style:{background:"#111827",border:"1px solid #1f2937",borderRadius:14,padding:"16px 20px"}},
+    h("div",{style:{fontSize:10,color:"#6b7280",letterSpacing:".08em",textTransform:"uppercase",marginBottom:12}},
+      "ALLOCATION BY CURRENCY"),
+    h("div",{style:{display:"flex",alignItems:"center",gap:24,flexWrap:"wrap"}},
+      /* Donut */
+      h("svg",{viewBox:"0 0 120 120",style:{width:100,height:100,flexShrink:0}},
+        slices.map(function(s,i){
+          return h("path",{key:s.currency,d:s.d,fill:s.col,opacity:0.9,
+            stroke:"#111827",strokeWidth:1.5});
+        })
+      ),
+      /* Legend */
+      h("div",{style:{display:"flex",flexDirection:"column",gap:8,flex:1}},
+        slices.map(function(s){
+          return h("div",{key:s.currency,style:{display:"flex",alignItems:"center",gap:8}},
+            h("span",{style:{width:10,height:10,borderRadius:2,background:s.col,flexShrink:0}}),
+            h("div",null,
+              h("div",{style:{display:"flex",gap:8,alignItems:"baseline"}},
+                h("span",{style:{fontWeight:600,fontSize:13,color:"#e6e1d8"}},s.currency),
+                h("span",{style:{fontFamily:"Georgia,serif",fontSize:14,color:s.col}},s.pct+"%")
+              ),
+              
+            )
+          );
+        })
+      )
+    )
+  );
+}
+
 /* ════════════ ROOT ════════════ */
 function App(props){
   var data=props.data,tab=props.tab;
@@ -1462,6 +1577,32 @@ function ovRefreshCk(e){if(e.target===document.getElementById("ov-refresh"))clos
 function closeRefresh(){document.getElementById("ov-refresh").classList.remove("open")}
 
 async function startRefresh(){
+  // Show custom confirmation modal
+  showUpdateConfirm();
+}
+
+function showUpdateConfirm(){
+  var n = ST.pozitii.filter(function(p){return p.ticker_stooq && p.ticker_stooq.trim()}).length;
+  var lastUp = localStorage.getItem("pm_last_update");
+  document.getElementById("upd-ticker-count").textContent =
+    n + " position" + (n!==1?"s":"") + " with tickers will be updated.";
+  var lastDiv = document.getElementById("upd-last-update");
+  var lastTime = document.getElementById("upd-last-time");
+  if(lastUp && lastDiv && lastTime){
+    lastDiv.style.display = "block";
+    lastTime.textContent = lastUp;
+  } else if(lastDiv){
+    lastDiv.style.display = "none";
+  }
+  document.getElementById("ov-update-confirm").classList.add("open");
+}
+
+function closeUpdateConfirm(){
+  document.getElementById("ov-update-confirm").classList.remove("open");
+}
+
+async function confirmAndStartRefresh(){
+  closeUpdateConfirm();
   var btn=document.getElementById("btn-refresh");
   btn.disabled=true; btn.innerHTML='<span class="spin"></span>';
   document.getElementById("rmodal-title").textContent="🔄 " + "🔄 Update prices".replace("🔄 ","").trim();
@@ -1526,8 +1667,15 @@ async function startRefresh(){
       }
       document.getElementById("btn-apply").disabled=false;
       btn.disabled=false;btn.innerHTML="🔄 Update prices";
+      // Save last update timestamp
+      var now = new Date();
+      var ts = now.toLocaleDateString("en-US",{month:"short",day:"numeric"})+" "+
+               now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+      localStorage.setItem("pm_last_update", ts);
+      var lbl = document.getElementById("last-update-label");
+      if(lbl) lbl.textContent = "Last: "+ts;
       renderSB();genChart();
-      // Re-incarca snapshot-urile in tab-ul Evolutie
+      // Reload snapshots in Evolution tab
       setTimeout(function(){
         if(typeof window._evoReloadFn === "function") window._evoReloadFn();
       }, 500);
@@ -2300,6 +2448,33 @@ init();
     <div class="mf">
       <button class="btn bs" onclick="closeCashModal()">Cancel</button>
       <button class="btn bp" id="cash-confirm-btn" onclick="confirmCash()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Update prices confirmation modal -->
+<div id="ov-update-confirm">
+  <div class="update-confirm-box">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <span style="font-size:28px">🔄</span>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#e6e1d8">Update Prices</div>
+        <div style="font-size:11px;color:#6b7280" id="upd-subtitle">Fetching live prices for all positions</div>
+      </div>
+    </div>
+    <div id="upd-last-update" style="background:#0d1117;border-radius:8px;padding:10px 14px;
+      margin-bottom:18px;font-size:12px;color:#6b7280;display:none">
+      <span style="color:#4b5563">Last update:</span>
+      <span id="upd-last-time" style="color:#9ca3af;margin-left:6px"></span>
+    </div>
+    <div id="upd-ticker-count" style="font-size:12px;color:#4b5563;margin-bottom:18px"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn bs" onclick="closeUpdateConfirm()" 
+        style="font-size:13px">Cancel</button>
+      <button class="btn bp" onclick="confirmAndStartRefresh()"
+        style="background:#f59e0b;color:#000;font-size:13px;font-weight:600">
+        🔄 Update now
+      </button>
     </div>
   </div>
 </div>
