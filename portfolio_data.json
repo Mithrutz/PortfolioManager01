@@ -1,80 +1,974 @@
 {
-  "_comment": "Modify the file with your data",
   "cursuri": {
     "EUR": 1,
-    "RON": 5.23,
-    "USD": 1.14
+    "RON": 5.2444,
+    "USD": 1.1534
   },
-  "next_id": 7,
+  "next_id": 32,
   "pozitii": [
     {
-      "cantitate": 10,
-      "categorie": "ETFs",
-      "dividende": [],
       "id": 1,
-      "moneda": "EUR",
       "nume": "VWCE",
-      "pret": 166.18,
-      "pret_mediu": 120,
-      "regiune": "World",
-      "ticker_source": "yahoo",
-      "ticker_stooq": "vwce.de"
-    },
-    {
-      "cantitate": 1000,
-      "categorie": "Stocks",
-      "dividende": [],
-      "id": 2,
-      "moneda": "RON",
-      "nume": "SNP",
-      "pret": 1.228,
-      "pret_mediu": 0.9,
-      "regiune": "Romania",
-      "ticker_source": "yahoo",
-      "ticker_stooq": "snp.ro"
-    },
-    {
-      "cantitate": 10,
-      "categorie": "Bonds",
-      "dividende": [],
-      "id": 3,
+      "categorie": "ETFs",
+      "cantitate": 940,
+      "pret": 166.54,
+      "pret_mediu": 97.4,
       "moneda": "EUR",
+      "ticker_stooq": "vwce.de",
+      "ticker_source": "yahoo",
+      "regiune": "World",
+      "dividende": []
+    },
+    {
+      "id": 2,
+      "nume": "CSPX",
+      "categorie": "ETFs",
+      "cantitate": 295,
+      "pret": 824.76,
+      "pret_mediu": 392.8,
+      "moneda": "USD",
+      "ticker_stooq": "cspx.uk",
+      "ticker_source": "yahoo",
+      "regiune": "World",
+      "dividende": []
+    },
+    {
+      "id": 3,
+      "nume": "EUNK.DE",
+      "categorie": "ETFs",
+      "cantitate": 660,
+      "pret": 105.22,
+      "pret_mediu": 81.2,
+      "moneda": "EUR",
+      "ticker_stooq": "eunk.de",
+      "ticker_source": "yahoo",
+      "regiune": "World",
+      "dividende": [
+        {
+          "data": "2024-03-20",
+          "moneda": "EUR",
+          "valoare": 1254
+        },
+        {
+          "data": "2024-09-18",
+          "moneda": "EUR",
+          "valoare": 1320
+        },
+        {
+          "data": "2025-03-19",
+          "moneda": "EUR",
+          "valoare": 1386
+        },
+        {
+          "data": "2025-09-17",
+          "moneda": "EUR",
+          "valoare": 1452
+        },
+        {
+          "data": "2026-03-18",
+          "moneda": "EUR",
+          "valoare": 1518
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "nume": "IGLN",
+      "categorie": "ETFs",
+      "cantitate": 500,
+      "pret": 85.0425,
+      "pret_mediu": 63.4,
+      "moneda": "USD",
+      "ticker_stooq": "igln.uk",
+      "ticker_source": "yahoo",
+      "regiune": "World",
+      "dividende": []
+    },
+    {
+      "id": 5,
+      "nume": "CEBL.DE",
+      "categorie": "ETFs",
+      "cantitate": 40,
+      "pret": 259.45,
+      "pret_mediu": 196.8,
+      "moneda": "EUR",
+      "ticker_stooq": "cebl.de",
+      "ticker_source": "yahoo",
+      "regiune": "World",
+      "dividende": []
+    },
+    {
+      "id": 6,
+      "nume": "AAPL",
+      "categorie": "Stocks",
+      "cantitate": 440,
+      "pret": 316.85,
+      "pret_mediu": 146.2,
+      "moneda": "USD",
+      "ticker_stooq": "aapl.us",
+      "ticker_source": "yahoo",
+      "regiune": "World",
+      "dividende": [
+        {
+          "data": "2024-02-15",
+          "moneda": "USD",
+          "valoare": 71.28
+        },
+        {
+          "data": "2024-08-15",
+          "moneda": "USD",
+          "valoare": 79.2
+        },
+        {
+          "data": "2025-02-13",
+          "moneda": "USD",
+          "valoare": 83.6
+        },
+        {
+          "data": "2025-08-14",
+          "moneda": "USD",
+          "valoare": 88
+        },
+        {
+          "data": "2026-02-12",
+          "moneda": "USD",
+          "valoare": 92.4
+        },
+        {
+          "data": "2026-05-14",
+          "moneda": "USD",
+          "valoare": 92.4
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "nume": "MSFT",
+      "categorie": "Stocks",
+      "cantitate": 185,
+      "pret": 507.29,
+      "pret_mediu": 308.6,
+      "moneda": "USD",
+      "ticker_stooq": "msft.us",
+      "ticker_source": "yahoo",
+      "regiune": "World",
+      "dividende": [
+        {
+          "data": "2024-03-21",
+          "moneda": "USD",
+          "valoare": 46.25
+        },
+        {
+          "data": "2024-09-19",
+          "moneda": "USD",
+          "valoare": 50.88
+        },
+        {
+          "data": "2025-03-20",
+          "moneda": "USD",
+          "valoare": 55.5
+        },
+        {
+          "data": "2025-09-18",
+          "moneda": "USD",
+          "valoare": 60.05
+        },
+        {
+          "data": "2026-03-19",
+          "moneda": "USD",
+          "valoare": 64.75
+        },
+        {
+          "data": "2026-06-18",
+          "moneda": "USD",
+          "valoare": 64.75
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "nume": "NVDA",
+      "categorie": "Stocks",
+      "cantitate": 400,
+      "pret": 220.78,
+      "pret_mediu": 46.2,
+      "moneda": "USD",
+      "ticker_stooq": "nvda.us",
+      "ticker_source": "yahoo",
+      "regiune": "World",
+      "dividende": [
+        {
+          "data": "2024-04-03",
+          "moneda": "USD",
+          "valoare": 1.6
+        },
+        {
+          "data": "2024-10-03",
+          "moneda": "USD",
+          "valoare": 4
+        },
+        {
+          "data": "2025-04-03",
+          "moneda": "USD",
+          "valoare": 4
+        },
+        {
+          "data": "2025-10-03",
+          "moneda": "USD",
+          "valoare": 4
+        },
+        {
+          "data": "2026-04-03",
+          "moneda": "USD",
+          "valoare": 4
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "nume": "BRK.B",
+      "categorie": "Stocks",
+      "cantitate": 125,
+      "pret": 504.03,
+      "pret_mediu": 338.4,
+      "moneda": "USD",
+      "ticker_stooq": "brk-b.us",
+      "ticker_source": "yahoo",
+      "regiune": "World",
+      "dividende": []
+    },
+    {
+      "id": 10,
+      "nume": "GOOG",
+      "categorie": "Stocks",
+      "cantitate": 100,
+      "pret": 335.41,
+      "pret_mediu": 122.8,
+      "moneda": "USD",
+      "ticker_stooq": "goog.us",
+      "ticker_source": "yahoo",
+      "regiune": "World",
+      "dividende": [
+        {
+          "data": "2024-06-17",
+          "moneda": "USD",
+          "valoare": 20
+        },
+        {
+          "data": "2024-12-16",
+          "moneda": "USD",
+          "valoare": 20
+        },
+        {
+          "data": "2025-06-16",
+          "moneda": "USD",
+          "valoare": 22
+        },
+        {
+          "data": "2025-12-15",
+          "moneda": "USD",
+          "valoare": 22
+        },
+        {
+          "data": "2026-06-15",
+          "moneda": "USD",
+          "valoare": 25
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "nume": "SNP",
+      "categorie": "Stocks",
+      "cantitate": 185000,
+      "pret": 1.205,
+      "pret_mediu": 0.772,
+      "moneda": "RON",
+      "ticker_stooq": "snp.ro",
+      "ticker_source": "yahoo",
+      "regiune": "Romania",
+      "dividende": [
+        {
+          "data": "2023-10-12",
+          "moneda": "RON",
+          "valoare": 7400
+        },
+        {
+          "data": "2024-05-14",
+          "moneda": "RON",
+          "valoare": 9990
+        },
+        {
+          "data": "2025-05-13",
+          "moneda": "RON",
+          "valoare": 12950
+        },
+        {
+          "data": "2026-05-12",
+          "moneda": "RON",
+          "valoare": 14800
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "nume": "TLV",
+      "categorie": "Stocks",
+      "cantitate": 3900,
+      "pret": 35.62,
+      "pret_mediu": 17.6,
+      "moneda": "RON",
+      "ticker_stooq": "tlv.ro",
+      "ticker_source": "yahoo",
+      "regiune": "Romania",
+      "dividende": [
+        {
+          "data": "2023-04-28",
+          "moneda": "RON",
+          "valoare": 1170
+        },
+        {
+          "data": "2024-04-29",
+          "moneda": "RON",
+          "valoare": 1560
+        },
+        {
+          "data": "2025-04-28",
+          "moneda": "RON",
+          "valoare": 1950
+        },
+        {
+          "data": "2026-04-27",
+          "moneda": "RON",
+          "valoare": 2340
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "nume": "H2O",
+      "categorie": "Stocks",
+      "cantitate": 1250,
+      "pret": 183.4,
+      "pret_mediu": 66.4,
+      "moneda": "RON",
+      "ticker_stooq": "h2o.ro",
+      "ticker_source": "yahoo",
+      "regiune": "Romania",
+      "dividende": [
+        {
+          "data": "2023-06-28",
+          "moneda": "RON",
+          "valoare": 3375
+        },
+        {
+          "data": "2024-06-26",
+          "moneda": "RON",
+          "valoare": 4500
+        },
+        {
+          "data": "2025-06-25",
+          "moneda": "RON",
+          "valoare": 5625
+        },
+        {
+          "data": "2026-06-24",
+          "moneda": "RON",
+          "valoare": 6750
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "nume": "SNG",
+      "categorie": "Stocks",
+      "cantitate": 30000,
+      "pret": 17.46,
+      "pret_mediu": 0.384,
+      "moneda": "RON",
+      "ticker_stooq": "sng.ro",
+      "ticker_source": "yahoo",
+      "regiune": "Romania",
+      "dividende": [
+        {
+          "data": "2023-10-05",
+          "moneda": "RON",
+          "valoare": 2700
+        },
+        {
+          "data": "2024-10-04",
+          "moneda": "RON",
+          "valoare": 3600
+        },
+        {
+          "data": "2025-10-03",
+          "moneda": "RON",
+          "valoare": 4500
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "nume": "R2907A",
+      "categorie": "Bonds",
+      "cantitate": 1850,
+      "pret": 103.5,
+      "pret_mediu": 100,
+      "moneda": "RON",
+      "ticker_stooq": "R2907A",
+      "ticker_source": "bvb",
+      "regiune": "Romania",
+      "dividende": [
+        {
+          "data": "2024-01-15",
+          "moneda": "RON",
+          "valoare": 14245
+        },
+        {
+          "data": "2025-01-15",
+          "moneda": "RON",
+          "valoare": 14245
+        },
+        {
+          "data": "2026-01-15",
+          "moneda": "RON",
+          "valoare": 14245
+        }
+      ]
+    },
+    {
+      "id": 16,
       "nume": "R3604AE",
+      "categorie": "Bonds",
+      "cantitate": 430,
+      "pret": 100.6872,
+      "pret_mediu": 100,
+      "moneda": "EUR",
+      "ticker_stooq": "R3604AE",
+      "ticker_source": "bvb",
+      "regiune": "Romania",
+      "dividende": [
+        {
+          "data": "2024-04-10",
+          "moneda": "EUR",
+          "valoare": 2752
+        },
+        {
+          "data": "2025-04-10",
+          "moneda": "EUR",
+          "valoare": 2752
+        },
+        {
+          "data": "2026-04-10",
+          "moneda": "EUR",
+          "valoare": 2752
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "nume": "Tezaur 7.5%",
+      "categorie": "Bonds",
+      "cantitate": 8500,
       "pret": 100,
       "pret_mediu": 100,
-      "regiune": "Romania",
+      "moneda": "RON",
+      "ticker_stooq": "",
       "ticker_source": "",
-      "ticker_stooq": ""
+      "regiune": "Romania",
+      "dividende": [
+        {
+          "data": "2024-03-15",
+          "moneda": "RON",
+          "valoare": 6375
+        },
+        {
+          "data": "2024-09-15",
+          "moneda": "RON",
+          "valoare": 6375
+        },
+        {
+          "data": "2025-03-15",
+          "moneda": "RON",
+          "valoare": 6375
+        },
+        {
+          "data": "2025-09-15",
+          "moneda": "RON",
+          "valoare": 6375
+        },
+        {
+          "data": "2026-03-15",
+          "moneda": "RON",
+          "valoare": 6375
+        }
+      ]
     },
     {
-      "cantitate": 1,
-      "categorie": "Cash",
-      "dividende": [],
-      "id": 4,
-      "moneda": "EUR",
+      "id": 18,
       "nume": "Cash EUR",
-      "pret": 5000,
-      "pret_mediu": 5000,
-      "regiune": "World",
+      "categorie": "Cash",
+      "cantitate": 1,
+      "pret": 29200,
+      "pret_mediu": 29200,
+      "moneda": "EUR",
+      "ticker_stooq": "",
       "ticker_source": "",
-      "ticker_stooq": ""
+      "regiune": "World",
+      "dividende": []
+    },
+    {
+      "id": 19,
+      "nume": "Cash USD",
+      "categorie": "Cash",
+      "cantitate": 1,
+      "pret": 48400,
+      "pret_mediu": 48400,
+      "moneda": "USD",
+      "ticker_stooq": "",
+      "ticker_source": "",
+      "regiune": "World",
+      "dividende": []
+    },
+    {
+      "id": 29,
+      "nume": "Bitcoin",
+      "categorie": "Crypto",
+      "cantitate": 1,
+      "pret": 78030.0078,
+      "pret_mediu": 77000,
+      "moneda": "USD",
+      "ticker_stooq": "BTC-USD",
+      "ticker_source": "yahoo",
+      "regiune": "World",
+      "dividende": []
+    },
+    {
+      "id": 30,
+      "nume": "Cash RON",
+      "categorie": "Cash",
+      "cantitate": 1,
+      "pret": 98765,
+      "pret_mediu": 98765,
+      "moneda": "RON",
+      "ticker_stooq": "",
+      "ticker_source": "",
+      "regiune": "Romania",
+      "dividende": []
+    },
+    {
+      "id": 31,
+      "nume": "Cash Eur Rom",
+      "categorie": "Cash",
+      "cantitate": 1,
+      "pret": 43200,
+      "pret_mediu": 43200,
+      "moneda": "EUR",
+      "ticker_stooq": "",
+      "ticker_source": "",
+      "regiune": "Romania",
+      "dividende": []
     }
   ],
   "snapshots": [
     {
-      "data": "2026-09-14",
-      "total_eur": 7895.5,
       "categorii": {
-        "ETFs": 1661.8,
-        "Stocks": 233.7,
-        "Bonds": 1000.0,
-        "Cash": 5000.0
+        "Stocks": 260002.88,
+        "Cash": 53149.76,
+        "ETFs": 307406.72,
+        "Bonds": 97680.64
       },
       "cursuri": {
-        "USD": 1.1592,
-        "RON": 5.2547
-      }
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2023-07-01",
+      "total_eur": 718240,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 254370.16,
+        "Cash": 51998.32,
+        "ETFs": 300747.04,
+        "Bonds": 95564.48
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2023-09-01",
+      "total_eur": 702680,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 267499.9,
+        "Cash": 54682.3,
+        "ETFs": 316270.6,
+        "Bonds": 100497.2
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2023-11-01",
+      "total_eur": 738950,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 280484.84,
+        "Cash": 57336.68,
+        "ETFs": 331622.96,
+        "Bonds": 105375.52
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2024-01-02",
+      "total_eur": 774820,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 296601.08,
+        "Cash": 60631.16,
+        "ETFs": 350677.52,
+        "Bonds": 111430.24
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2024-03-01",
+      "total_eur": 819340,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 312471.16,
+        "Cash": 63875.32,
+        "ETFs": 369441.04,
+        "Bonds": 117392.48
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2024-05-01",
+      "total_eur": 863180,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 325307.68,
+        "Cash": 66499.36,
+        "ETFs": 384617.92,
+        "Bonds": 122215.04
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2024-07-01",
+      "total_eur": 898640,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 337123.36,
+        "Cash": 68914.72,
+        "ETFs": 398587.84,
+        "Bonds": 126654.08
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2024-09-02",
+      "total_eur": 931280,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 349988.84,
+        "Cash": 71544.68,
+        "ETFs": 413798.96,
+        "Bonds": 131487.52
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2024-11-04",
+      "total_eur": 966820,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 358249.68,
+        "Cash": 73233.36,
+        "ETFs": 423565.92,
+        "Bonds": 134591.04
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2025-01-07",
+      "total_eur": 989640,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 350502.88,
+        "Cash": 71649.76,
+        "ETFs": 414406.72,
+        "Bonds": 131680.64
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2025-03-03",
+      "total_eur": 968240,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 373395.76,
+        "Cash": 76329.52,
+        "ETFs": 441473.44,
+        "Bonds": 140281.28
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2025-05-05",
+      "total_eur": 1031480,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 389084.84,
+        "Cash": 79536.68,
+        "ETFs": 460022.96,
+        "Bonds": 146175.52
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2025-07-01",
+      "total_eur": 1074820,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 379723.52,
+        "Cash": 77623.04,
+        "ETFs": 448954.88,
+        "Bonds": 142658.56
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2025-09-02",
+      "total_eur": 1048960,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 396129.36,
+        "Cash": 80976.72,
+        "ETFs": 468351.84,
+        "Bonds": 148822.08
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2025-11-03",
+      "total_eur": 1094280,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 409653.68,
+        "Cash": 83741.36,
+        "ETFs": 484341.92,
+        "Bonds": 153903.04
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2026-01-06",
+      "total_eur": 1131640,
+      "manual": false
+    },
+    {
+      "categorii": {},
+      "data": "2026-03-01",
+      "manual": true,
+      "total_eur": 1500000
+    },
+    {
+      "categorii": {
+        "Stocks": 399944.84,
+        "Cash": 81756.68,
+        "ETFs": 472862.96,
+        "Bonds": 150255.52
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2026-03-03",
+      "total_eur": 1104820,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 421179.76,
+        "Cash": 86097.52,
+        "ETFs": 497969.44,
+        "Bonds": 158233.28
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2026-05-05",
+      "total_eur": 1163480,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 430649.68,
+        "Cash": 88033.36,
+        "ETFs": 509165.92,
+        "Bonds": 161791.04
+      },
+      "cursuri": {
+        "RON": 5.2317,
+        "USD": 1.1435
+      },
+      "data": "2026-07-07",
+      "total_eur": 1189640,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 586300.55,
+        "Cash": 54907.87,
+        "ETFs": 492435.12,
+        "Bonds": 241151.17
+      },
+      "cursuri": {
+        "RON": 5.2444,
+        "USD": 1.1534
+      },
+      "data": "2026-08-14",
+      "total_eur": 1374794.71,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 583771.93,
+        "Cash": 54873.78,
+        "ETFs": 491062.16,
+        "Bonds": 241209.22
+      },
+      "cursuri": {
+        "RON": 5.2427,
+        "USD": 1.1567
+      },
+      "data": "2026-08-17",
+      "total_eur": 1370917.08,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 581100.69,
+        "Cash": 54851.47,
+        "ETFs": 485874.84,
+        "Bonds": 241497.56
+      },
+      "cursuri": {
+        "RON": 5.2395,
+        "USD": 1.1593
+      },
+      "data": "2026-08-18",
+      "total_eur": 1363324.56,
+      "manual": false
+    },
+    {
+      "categorii": {
+        "Stocks": 572561.18,
+        "Cash": -11600.5,
+        "Crypto": 67290.45,
+        "ETFs": 482857.05,
+        "Bonds": 241324.66
+      },
+      "cursuri": {
+        "RON": 5.2592,
+        "USD": 1.1596
+      },
+      "data": "2026-09-01",
+      "total_eur": 1352432.84,
+      "manual": false
     }
   ],
-  "tranzactii": []
+  "tranzactii": [
+    {
+      "cantitate": 20,
+      "categorie": "Stocks",
+      "data": "2024-01-15",
+      "id": 1704067200000,
+      "moneda": "USD",
+      "pct": 73.19,
+      "pozitie_id": 99,
+      "pozitie_nume": "META",
+      "pret_mediu": 282,
+      "pret_vanzare": 488.4,
+      "profit": 4128,
+      "regiune": "World",
+      "tip": "vanzare"
+    },
+    {
+      "cantitate": 50,
+      "categorie": "Stocks",
+      "data": "2024-04-08",
+      "id": 1712534400000,
+      "moneda": "USD",
+      "pct": -23.49,
+      "pozitie_id": 98,
+      "pozitie_nume": "TSLA",
+      "pret_mediu": 218,
+      "pret_vanzare": 166.8,
+      "profit": -2560,
+      "regiune": "World",
+      "tip": "vanzare"
+    },
+    {
+      "cantitate": 12000,
+      "categorie": "Stocks",
+      "data": "2024-08-26",
+      "id": 1724630400000,
+      "moneda": "RON",
+      "pct": 43.14,
+      "pozitie_id": 97,
+      "pozitie_nume": "SNG",
+      "pret_mediu": 0.408,
+      "pret_vanzare": 0.584,
+      "profit": 422.4,
+      "regiune": "Romania",
+      "tip": "vanzare"
+    }
+  ]
 }
