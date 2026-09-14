@@ -1,65 +1,80 @@
 {
   "_comment": "Modify the file with your data",
   "cursuri": {
-    "EUR": 1.0,
-    "USD": 1.14,
-    "RON": 5.23
+    "EUR": 1,
+    "RON": 5.23,
+    "USD": 1.14
   },
   "next_id": 7,
-  "tranzactii": [],
-  "snapshots": [],
   "pozitii": [
     {
-      "id": 1,
-      "nume": "VWCE",
+      "cantitate": 10,
       "categorie": "ETFs",
-      "regiune": "World",
-      "cantitate": 10,
-      "pret": 140.0,
-      "pret_mediu": 120.0,
+      "dividende": [],
+      "id": 1,
       "moneda": "EUR",
-      "ticker_stooq": "vwce.de",
-      "ticker_source": "",
-      "dividende": []
+      "nume": "VWCE",
+      "pret": 166.18,
+      "pret_mediu": 120,
+      "regiune": "World",
+      "ticker_source": "yahoo",
+      "ticker_stooq": "vwce.de"
     },
     {
-      "id": 2,
-      "nume": "SNP",
-      "categorie": "Stocks",
-      "regiune": "România",
       "cantitate": 1000,
-      "pret": 1.25,
-      "pret_mediu": 0.9,
+      "categorie": "Stocks",
+      "dividende": [],
+      "id": 2,
       "moneda": "RON",
-      "ticker_stooq": "snp.ro",
-      "ticker_source": "",
-      "dividende": []
+      "nume": "SNP",
+      "pret": 1.228,
+      "pret_mediu": 0.9,
+      "regiune": "Romania",
+      "ticker_source": "yahoo",
+      "ticker_stooq": "snp.ro"
     },
     {
-      "id": 3,
-      "nume": "R3604AE",
-      "categorie": "Bonds",
-      "regiune": "România",
       "cantitate": 10,
-      "pret": 100.0,
-      "pret_mediu": 100.0,
+      "categorie": "Bonds",
+      "dividende": [],
+      "id": 3,
       "moneda": "EUR",
-      "ticker_stooq": "",
+      "nume": "R3604AE",
+      "pret": 100,
+      "pret_mediu": 100,
+      "regiune": "Romania",
       "ticker_source": "",
-      "dividende": []
+      "ticker_stooq": ""
     },
     {
-      "id": 4,
-      "nume": "Cash EUR",
-      "categorie": "Cash",
-      "regiune": "World",
       "cantitate": 1,
-      "pret": 5000.0,
-      "pret_mediu": 5000.0,
+      "categorie": "Cash",
+      "dividende": [],
+      "id": 4,
       "moneda": "EUR",
-      "ticker_stooq": "",
+      "nume": "Cash EUR",
+      "pret": 5000,
+      "pret_mediu": 5000,
+      "regiune": "World",
       "ticker_source": "",
-      "dividende": []
+      "ticker_stooq": ""
     }
-  ]
+  ],
+  "snapshots": [
+    {
+      "data": "2026-09-14",
+      "total_eur": 7895.5,
+      "categorii": {
+        "ETFs": 1661.8,
+        "Stocks": 233.7,
+        "Bonds": 1000.0,
+        "Cash": 5000.0
+      },
+      "cursuri": {
+        "USD": 1.1592,
+        "RON": 5.2547
+      }
+    }
+  ],
+  "tranzactii": []
 }
