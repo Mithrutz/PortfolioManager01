@@ -580,7 +580,7 @@ function AllocChart(props){
   poz.forEach(function(p){p.pct=p.ve/tot*100});
   var cm={};
   CATS_R.forEach(function(c){
-    var it=poz.filter(function(p){return p.categorie===c});
+    var it=poz.filter(function(p){return p.categorie===c}).sort(function(a,b){return b.ve-a.ve});
     cm[c]={it:it,ve:it.reduce(function(s,p){return s+p.ve},0)};
     cm[c].pct=cm[c].ve/tot*100;
   });
