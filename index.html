@@ -566,8 +566,10 @@ function AllocChart(props){
   var data=props.data;
   var hovS=React.useState(null);var hov=hovS[0];var setHov=hovS[1];
   var animS=React.useState(0); var anim=animS[0];var setAnim=animS[1];
-  var collS=React.useState({});var collCats=collS[0];var setCollCats=collS[1];
-  function toggleCat(cat){setCollCats(function(prev){var n=Object.assign({},prev);n[cat]=!n[cat];return n;});}
+  var collS=React.useState(function(){
+    try{return JSON.parse(localStorage.getItem("pm_alloc_expanded"))||{};}catch(e){return {};}
+  });var collCats=collS[0];var setCollCats=collS[1];
+  function toggleCat(cat){setCollCats(function(prev){var n=Object.assign({},prev);n[cat]=!prev[cat];localStorage.setItem("pm_alloc_expanded",JSON.stringify(n));return n;});}
   React.useEffect(function(){
     var start=null;setAnim(0);
     function step(ts){if(!start)start=ts;var p=Math.min((ts-start)/800,1);setAnim(p<1?1-Math.pow(1-p,3):1);if(p<1)requestAnimationFrame(step)}
@@ -724,14 +726,14 @@ function AllocChart(props){
             h("div",{style:{display:"flex",alignItems:"center",gap:8}},
               h("span",{style:{fontFamily:"Georgia,serif",fontSize:13.5,color:pal.main}},fe(cd.ve)),
               h("span",{style:{fontSize:12,color:"#4b5563",transition:"transform .2s",
-                transform:collCats[cat]?"rotate(-90deg)":"rotate(0deg)"}},"▼")
+                transform:collCats[cat]?"rotate(0deg)":"rotate(-90deg)"}},"▼")
             )
           ),
           h("div",{style:{padding:"0 16px",marginTop:6}},
             h("div",{style:{height:3,background:"#1f2937",borderRadius:2}},
               h("div",{style:{height:"100%",borderRadius:2,background:pal.main+"44",width:(cd.pct*anim)+"%",transition:"width .8s cubic-bezier(.22,1,.36,1)"}}))
           ),
-          !collCats[cat] && h("div",{style:{padding:"7px 16px 12px",display:"flex",flexDirection:"column",gap:7}},
+          collCats[cat] && h("div",{style:{padding:"7px 16px 12px",display:"flex",flexDirection:"column",gap:7}},
             cd.it.map(function(p,i){
               var sh=pal.sh[i%pal.sh.length],plit=hov===p.id,pdim=hov!==null&&!plit&&!clit,pcc=p.ve/cd.ve*100;
               return h("div",{key:p.id,style:{opacity:pdim?0.3:1,transition:"opacity .15s",cursor:"pointer"},
@@ -760,65 +762,6 @@ function AllocChart(props){
           )
         )
       }),
-      
-    /* ── Realized section (tranzactii inchise) ── */
-    (function(){
-      var tranz = (data.tranzactii||[]);
-      if(tranz.length===0) return null;
-      var cur = data.cursuri;
-      function toEurT(v,m){return v/(cur[m]||1)}
-      var totRealEur = tranz.reduce(function(s,t){return s+toEurT(t.profit||0,t.moneda||"EUR")},0);
-      return h("div",{style:{background:"#111827",border:"1px solid",
-        borderColor:totRealEur>=0?"#16a34a44":"#dc262644",
-        borderRadius:12,overflow:"hidden"}},
-        h("div",{style:{padding:"10px 16px 8px",borderBottom:"1px solid #161d29",
-          display:"flex",justifyContent:"space-between",alignItems:"center"}},
-          h("div",{style:{display:"flex",alignItems:"center",gap:8}},
-            h("span",{style:{fontSize:12,fontWeight:700}},"💸 Realized Gains / Losses"),
-            h("span",{style:{fontSize:10,color:"#6b7280"}},tranz.length+" transactions")
-          ),
-          h("div",{style:{display:"flex",alignItems:"baseline",gap:8}},
-            h("span",{style:{fontFamily:"Georgia,serif",fontSize:15,
-              color:totRealEur>=0?"#22c55e":"#ef4444"}},
-              (totRealEur>=0?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(totRealEur)+" €"),
-            h("span",{style:{fontSize:10,color:"#6b7280"}},"echiv. EUR")
-          )
-        ),
-        h("div",{style:{padding:"8px 16px 12px",display:"flex",flexDirection:"column",gap:8}},
-          tranz.map(function(t){
-            var isPos = (t.profit||0)>=0;
-            var profEur = toEurT(t.profit||0, t.moneda||"EUR");
-            var catColor = {"ETFs":"#f59e0b","Stocks":"#14d9c4","Bonds":"#a78bfa","Cash":"#64748b"}[t.categorie]||"#64748b";
-            return h("div",{key:t.id,style:{
-              background:"#0d1117",borderRadius:8,padding:"10px 12px",
-              borderLeft:"3px solid "+(isPos?"#22c55e":"#ef4444")}},
-              h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"baseline",flexWrap:"wrap",gap:4}},
-                h("div",{style:{display:"flex",alignItems:"center",gap:6}},
-                  h("span",{style:{fontWeight:700,fontSize:13,color:"#e6e1d8"}},t.pozitie_nume),
-                  h("span",{style:{fontSize:9,padding:"1px 6px",borderRadius:4,
-                    background:"#1f2937",color:catColor}},t.categorie),
-                  t.data&&h("span",{style:{fontSize:10,color:"#6b7280"}},t.data)
-                ),
-                h("div",{style:{display:"flex",gap:10,alignItems:"baseline"}},
-                  h("span",{style:{fontSize:13,fontFamily:"Georgia,serif",
-                    color:isPos?"#22c55e":"#ef4444",fontWeight:600}},
-                    (isPos?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(t.profit||0)+" "+(t.moneda||"EUR")),
-                  profEur!==t.profit&&h("span",{style:{fontSize:10,color:"#4b5563"}},
-                    "("+( profEur>=0?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(profEur)+" €)"),
-                  h("span",{style:{fontSize:11,color:isPos?"#16a34a":"#dc2626",minWidth:44,textAlign:"right"}},
-                    (isPos?"+":"")+( t.pct||0).toFixed(1).replace(".",",")+"%")
-                )
-              ),
-              h("div",{style:{fontSize:10,color:"#4b5563",marginTop:4}},
-                new Intl.NumberFormat("en-US",{maximumFractionDigits:4}).format(t.cantitate||0)+" units",
-                " × "+(t.pret_vanzare||0)+" "+(t.moneda||"")+" (sale price)",
-                " · avg. cost: "+(t.pret_mediu||0)+" "+(t.moneda||"")
-              )
-            )
-          })
-        )
-      );
-    })(),
     h("div",{style:{fontSize:10,color:"#374151",paddingTop:2,display:"flex",justifyContent:"space-between",flexWrap:"wrap"}},
     h(CurrencyChart,{data:data}),
         h("span",null,"EUR/USD "+data.cursuri.USD+" · EUR/RON "+data.cursuri.RON),
@@ -851,6 +794,10 @@ function PnlChart(props){
   var data=props.data;
   var animS=React.useState(0);var anim=animS[0];var setAnim=animS[1];
   var hovS=React.useState(null);var hov=hovS[0];var setHov=hovS[1];
+  var realS=React.useState(function(){
+    try{return localStorage.getItem("pm_pnl_realized_expanded")==="1";}catch(e){return false;}
+  });var realOpen=realS[0];var setRealOpen=realS[1];
+  function toggleReal(){setRealOpen(function(prev){var n=!prev;localStorage.setItem("pm_pnl_realized_expanded",n?"1":"0");return n;});}
   React.useEffect(function(){
     var start=null;setAnim(0);
     function step(ts){if(!start)start=ts;var p=Math.min((ts-start)/900,1);setAnim(p<1?1-Math.pow(1-p,3):1);if(p<1)requestAnimationFrame(step)}
@@ -978,7 +925,69 @@ function PnlChart(props){
             )
           })
         )
-      )
+      ),
+
+      /* ── Realized section (tranzactii inchise) ── */
+      (function(){
+        var tranz = (data.tranzactii||[]);
+        if(tranz.length===0) return null;
+        var cur = data.cursuri;
+        function toEurT(v,m){return v/(cur[m]||1)}
+        var totRealEur = tranz.reduce(function(s,t){return s+toEurT(t.profit||0,t.moneda||"EUR")},0);
+        return h("div",{style:{background:"#111827",border:"1px solid",
+          borderColor:totRealEur>=0?"#16a34a44":"#dc262644",
+          borderRadius:12,overflow:"hidden"}},
+          h("div",{style:{padding:"10px 16px 8px",borderBottom:realOpen?"1px solid #161d29":"none",
+            display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer",flexWrap:"wrap",gap:6},
+            onClick:toggleReal},
+            h("div",{style:{display:"flex",alignItems:"center",gap:8}},
+              h("span",{style:{fontSize:12,fontWeight:700}},"💸 Realized Gains / Losses"),
+              h("span",{style:{fontSize:10,color:"#6b7280"}},tranz.length+" transactions")
+            ),
+            h("div",{style:{display:"flex",alignItems:"center",gap:8}},
+              h("span",{style:{fontFamily:"Georgia,serif",fontSize:15,
+                color:totRealEur>=0?"#22c55e":"#ef4444"}},
+                (totRealEur>=0?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(totRealEur)+" €"),
+              h("span",{style:{fontSize:10,color:"#6b7280"}},"echiv. EUR"),
+              h("span",{style:{fontSize:12,color:"#4b5563",transition:"transform .2s",
+                transform:realOpen?"rotate(0deg)":"rotate(-90deg)"}},"▼")
+            )
+          ),
+          realOpen && h("div",{style:{padding:"8px 16px 12px",display:"flex",flexDirection:"column",gap:8}},
+            tranz.map(function(t){
+              var isPos = (t.profit||0)>=0;
+              var profEur = toEurT(t.profit||0, t.moneda||"EUR");
+              var catColor = {"ETFs":"#f59e0b","Stocks":"#14d9c4","Bonds":"#a78bfa","Cash":"#64748b"}[t.categorie]||"#64748b";
+              return h("div",{key:t.id,style:{
+                background:"#0d1117",borderRadius:8,padding:"10px 12px",
+                borderLeft:"3px solid "+(isPos?"#22c55e":"#ef4444")}},
+                h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"baseline",flexWrap:"wrap",gap:4}},
+                  h("div",{style:{display:"flex",alignItems:"center",gap:6}},
+                    h("span",{style:{fontWeight:700,fontSize:13,color:"#e6e1d8"}},t.pozitie_nume),
+                    h("span",{style:{fontSize:9,padding:"1px 6px",borderRadius:4,
+                      background:"#1f2937",color:catColor}},t.categorie),
+                    t.data&&h("span",{style:{fontSize:10,color:"#6b7280"}},t.data)
+                  ),
+                  h("div",{style:{display:"flex",gap:10,alignItems:"baseline"}},
+                    h("span",{style:{fontSize:13,fontFamily:"Georgia,serif",
+                      color:isPos?"#22c55e":"#ef4444",fontWeight:600}},
+                      (isPos?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(t.profit||0)+" "+(t.moneda||"EUR")),
+                    profEur!==t.profit&&h("span",{style:{fontSize:10,color:"#4b5563"}},
+                      "("+( profEur>=0?"+":"")+new Intl.NumberFormat("en-US",{maximumFractionDigits:0}).format(profEur)+" €)"),
+                    h("span",{style:{fontSize:11,color:isPos?"#16a34a":"#dc2626",minWidth:44,textAlign:"right"}},
+                      (isPos?"+":"")+( t.pct||0).toFixed(1).replace(".",",")+"%")
+                  )
+                ),
+                h("div",{style:{fontSize:10,color:"#4b5563",marginTop:4}},
+                  new Intl.NumberFormat("en-US",{maximumFractionDigits:4}).format(t.cantitate||0)+" units",
+                  " × "+(t.pret_vanzare||0)+" "+(t.moneda||"")+" (sale price)",
+                  " · avg. cost: "+(t.pret_mediu||0)+" "+(t.moneda||"")
+                )
+              )
+            })
+          )
+        );
+      })()
     ),
 
     /* ── Waterfall vertical ── */
