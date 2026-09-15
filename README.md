@@ -2,7 +2,7 @@
 
 A local investment portfolio tracker built with **Flask + React**, featuring real-time price updates, evolution charts, P&L analysis, and optional Google Drive sync.
 
-> Interface available in **Romanian and English** — toggle with the 🇬🇧/🇷🇴 button in the header.
+> Interface available in **English** — toggle with the 🇬🇧/🇷🇴 button in the header.
 
 ---
 
