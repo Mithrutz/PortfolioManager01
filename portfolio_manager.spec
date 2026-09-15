@@ -48,5 +48,5 @@ exe = EXE(
     strip=False,
     upx=True,
     console=False,    # fara fereastra Command Prompt
-    icon=None,
+    icon='app.ico',
 )
